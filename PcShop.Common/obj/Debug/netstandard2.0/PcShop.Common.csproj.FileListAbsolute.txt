@@ -1,0 +1,9 @@
+C:\Users\ledgo\Desktop\iw5\PcShop.Common\bin\Debug\netstandard2.0\PcShop.Common.deps.json
+C:\Users\ledgo\Desktop\iw5\PcShop.Common\bin\Debug\netstandard2.0\PcShop.Common.dll
+C:\Users\ledgo\Desktop\iw5\PcShop.Common\obj\Debug\netstandard2.0\PcShop.Common.csprojAssemblyReference.cache
+C:\Users\ledgo\Desktop\iw5\PcShop.Common\obj\Debug\netstandard2.0\PcShop.Common.AssemblyInfoInputs.cache
+C:\Users\ledgo\Desktop\iw5\PcShop.Common\obj\Debug\netstandard2.0\PcShop.Common.AssemblyInfo.cs
+C:\Users\ledgo\Desktop\iw5\PcShop.Common\bin\Debug\netstandard2.0\PcShop.Common.pdb
+C:\Users\ledgo\Desktop\iw5\PcShop.Common\obj\Debug\netstandard2.0\PcShop.Common.csproj.CoreCompileInputs.cache
+C:\Users\ledgo\Desktop\iw5\PcShop.Common\obj\Debug\netstandard2.0\PcShop.Common.dll
+C:\Users\ledgo\Desktop\iw5\PcShop.Common\obj\Debug\netstandard2.0\PcShop.Common.pdb

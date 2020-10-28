@@ -1,0 +1,15 @@
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\bin\Debug\netcoreapp3.1\PcShop.Console.exe
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\bin\Debug\netcoreapp3.1\PcShop.Console.deps.json
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\bin\Debug\netcoreapp3.1\PcShop.Console.runtimeconfig.json
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\bin\Debug\netcoreapp3.1\PcShop.Console.runtimeconfig.dev.json
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\bin\Debug\netcoreapp3.1\PcShop.Console.dll
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\bin\Debug\netcoreapp3.1\PcShop.Console.pdb
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\obj\Debug\netcoreapp3.1\PcShop.Console.csprojAssemblyReference.cache
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\obj\Debug\netcoreapp3.1\PcShop.Console.AssemblyInfoInputs.cache
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\obj\Debug\netcoreapp3.1\PcShop.Console.AssemblyInfo.cs
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\obj\Debug\netcoreapp3.1\PcShop.Console.csproj.CoreCompileInputs.cache
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\obj\Debug\netcoreapp3.1\PcShop.Console.csproj.CopyComplete
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\obj\Debug\netcoreapp3.1\PcShop.Console.dll
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\obj\Debug\netcoreapp3.1\PcShop.Console.pdb
+C:\Users\ledgo\Desktop\iw5\PcShop.Console\obj\Debug\netcoreapp3.1\PcShop.Console.genruntimeconfig.cache

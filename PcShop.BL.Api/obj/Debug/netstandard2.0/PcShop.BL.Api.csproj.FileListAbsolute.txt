@@ -1,0 +1,28 @@
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.BL.Api.deps.json
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.BL.Api.dll
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.csprojAssemblyReference.cache
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.AssemblyInfoInputs.cache
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.AssemblyInfo.cs
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.BL.Api.pdb
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.Common.dll
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.DAL.dll
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.Common.pdb
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.DAL.pdb
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.csproj.CoreCompileInputs.cache
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.csproj.CopyComplete
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.dll
+C:\Users\ledgo\Desktop\iw5\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.pdb
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.BL.Api.deps.json
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.BL.Api.dll
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.BL.Api.pdb
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.Common.dll
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.DAL.dll
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.Common.pdb
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\bin\Debug\netstandard2.0\PcShop.DAL.pdb
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.csprojAssemblyReference.cache
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.AssemblyInfoInputs.cache
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.AssemblyInfo.cs
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.csproj.CoreCompileInputs.cache
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.csproj.CopyComplete
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.dll
+C:\Users\ledgo\Desktop\iw5 – kópia\PcShop.BL.Api\obj\Debug\netstandard2.0\PcShop.BL.Api.pdb
