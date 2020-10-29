@@ -1,6 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
+using PcShop.Common.Extensions;
 using PcShop.DAL.Entities;
-using System;
 using PcShop.DAL.Entities;
 
 namespace PcShop.BL.Api.Models.Category
@@ -12,10 +13,9 @@ namespace PcShop.BL.Api.Models.Category
         public string Name { get; set; }
     }
 
-
-    public class CategoryUpdateModelMapperProfile : Profile
+    public class CategoryUpdateModelModelMapperProfile : Profile
     {
-        public CategoryUpdateModelMapperProfile()
+        public CategoryUpdateModelModelMapperProfile()
         {
             CreateMap<CategoryUpdateModel, CategoryEntity>();
         }

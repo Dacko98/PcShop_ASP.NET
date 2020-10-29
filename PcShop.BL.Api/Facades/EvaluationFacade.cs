@@ -38,7 +38,7 @@ namespace PcShop.BL.Api.Facades
             return evaluationRepository.Insert(evaluationEntity);
         }
 
-        public Guid? Update(EvaluationUpdateModel evaluation)
+        public Guid? Update(EvaluationDetailModel evaluation)
         {
             var evaluationEntity = mapper.Map<EvaluationEntity>(evaluation);
             return evaluationRepository.Update(evaluationEntity);

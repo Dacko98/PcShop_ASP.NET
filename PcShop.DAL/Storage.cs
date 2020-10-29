@@ -22,17 +22,28 @@ namespace PcShop.DAL
         {
             new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
         };
-
+        private readonly IList<Guid> GodsCategoryGuids = new List<Guid>
+        {
+            new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
+        };
+        private readonly IList<Guid> GoodsGuids = new List<Guid>
+        {
+            new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
+        };
 
         public IList<EvaluationEntity> Evaluations { get; } = new List<EvaluationEntity>();
         public IList<ManufacturerEntity> Manufacturers { get; } = new List<ManufacturerEntity>();
         public IList<CategoryEntity> Categories { get; } = new List<CategoryEntity>();
+        public IList<GoodsEntity> Goods { get; } = new List<GoodsEntity>();
+        public IList<GoodsCategoryEntity> GoodsCategory { get; } = new List<GoodsCategoryEntity>();
 
         public Storage()
         {
             SeedEvaluations();
             SeedManufacturers();
             SeedCategory();
+            SeedGoods();
+            //SeedGoodsCategory();
         }
 
         private void SeedEvaluations()
@@ -41,7 +52,7 @@ namespace PcShop.DAL
             {
                 Id = EvaluationGuids[0],
                 TextEvaluation = "Good",
-                PercentEvaluation= 50
+                PercentEvaluation = 50
             });
             Evaluations.Add(new EvaluationEntity
             {
@@ -69,6 +80,20 @@ namespace PcShop.DAL
             {
                 Id = CategoryGuids[0],
                 Name = "Gaming"
+            });
+        }
+
+        private void SeedGoods()
+        {
+            Goods.Add(new GoodsEntity
+            {
+                Id = GoodsGuids[0],
+                Name = "Lattitude",
+                Description = "Intel i5",
+                Price = 50,
+                Weight = 200,
+                CountInStock = 10,
+                Photo = "path"
             });
         }
     }

@@ -9,37 +9,37 @@ namespace PcShop.DAL.Repositories
 {
     public class CategoryRepository : IAppRepository<CategoryEntity>
     {
-        private readonly IList<CategoryEntity> categorys;
+        private readonly IList<CategoryEntity> categories;
         private readonly IMapper mapper;
 
         public CategoryRepository(
             Storage storage,
             IMapper mapper)
         {
-            categorys = storage.Categories;
+            categories = storage.Categories;
             this.mapper = mapper;
         }
 
         public IList<CategoryEntity> GetAll()
         {
-            return categorys;
+            return categories;
         }
 
         public CategoryEntity GetById(Guid id)
         {
-            return categorys.SingleOrDefault(entity => entity.Id == id);
+            return categories.SingleOrDefault(entity => entity.Id == id);
         }
 
         public Guid Insert(CategoryEntity category)
         {
             category.Id = Guid.NewGuid();
-            categorys.Add(category);
+            categories.Add(category);
             return category.Id;
         }
 
         public Guid? Update(CategoryEntity categoryUpdated)
         {
-            var categoryExisting = categorys.SingleOrDefault(categoryInStorage => categoryInStorage.Id == categoryUpdated.Id);
+            var categoryExisting = categories.SingleOrDefault(categoryInStorage => categoryInStorage.Id == categoryUpdated.Id);
             if (categoryExisting != null)
             {
                 mapper.Map(categoryUpdated, categoryExisting);
@@ -50,8 +50,8 @@ namespace PcShop.DAL.Repositories
 
         public void Remove(Guid id)
         {
-            var categoryToRemove = categorys.Single(category => category.Id.Equals(id));
-            categorys.Remove(categoryToRemove);
+            var categoryToRemove = categories.Single(category => category.Id.Equals(id));
+            categories.Remove(categoryToRemove);
         }
     }
 }

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using System;
+using PcShop.DAL.Entities;
 
-namespace PcShop.DAL.Entities
+namespace PcShop.BL.Api.Models.Goods
 {
-    public class GoodsEntity : IEntity
+    public class GoodsDetailModel
     {
         public Guid Id { get; set; }
+
 
         public string Name { get; set; }
         public string Photo { get; set; }
@@ -17,14 +18,13 @@ namespace PcShop.DAL.Entities
 
         public Guid ManufacturerId { get; set; }
         public virtual ManufacturerEntity Manufacturer { get; set; }
-
     }
-    public class GoodsEntityMapperProfile : Profile
+
+    public class GoodsDetailModelMapperProfile : Profile
     {
-        public GoodsEntityMapperProfile()
+        public GoodsDetailModelMapperProfile()
         {
-            CreateMap<GoodsEntity, GoodsEntity>();
+            CreateMap<GoodsEntity, GoodsDetailModel>();
         }
     }
-
 }

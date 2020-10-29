@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
+using PcShop.BL.Api.Models.Goods;
 using PcShop.Common.Extensions;
 using PcShop.DAL.Entities;
 using PcShop.DAL.Entities;
@@ -11,6 +13,8 @@ namespace PcShop.BL.Api.Models.Manufacturer
         public string Description { get; set; }
         public string Logo { get; set; }
         public string CountryOfOrigin { get; set; }
+
+
     }
 
     public class ManufacturerNewModelMapperProfile : Profile
@@ -18,7 +22,8 @@ namespace PcShop.BL.Api.Models.Manufacturer
         public ManufacturerNewModelMapperProfile()
         {
             CreateMap<ManufacturerNewModel, ManufacturerEntity>()
-                .Ignore(dst => dst.Id);
+                .Ignore(dst => dst.Id)
+                .Ignore(dst => dst.Goods);
         }
     }
 }
