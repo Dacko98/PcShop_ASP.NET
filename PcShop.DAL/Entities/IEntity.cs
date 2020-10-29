@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PcShopIW5_DAL.Entities
+namespace PcShop.DAL.Entities
 {
     public interface IEntity
     {

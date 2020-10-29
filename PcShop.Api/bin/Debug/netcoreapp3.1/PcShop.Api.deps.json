@@ -1502,10 +1502,10 @@
           "Scrutor": "3.2.0"
         },
         "runtime": {
-          "PcShop.BL.Api.dll": {}
+          "PcShop.Bl.Api.dll": {}
         },
         "compile": {
-          "PcShop.BL.Api.dll": {}
+          "PcShop.Bl.Api.dll": {}
         }
       },
       "PcShop.Common/1.0.0": {

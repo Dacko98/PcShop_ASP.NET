@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using PcShop.DAL.Entities;
 using System;
-using PcShop.DAL.Entities;
 
 namespace PcShop.BL.Api.Models.Evaluation
 {

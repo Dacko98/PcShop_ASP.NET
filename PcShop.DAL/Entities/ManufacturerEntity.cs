@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 
 namespace PcShop.DAL.Entities
 {
@@ -12,7 +13,15 @@ namespace PcShop.DAL.Entities
         public string Logo { get; set; }
         public string CountryOfOrigin { get; set; }
 
-       
 
- }
+
+    }
+
+    public class ManufacturerEntityMapperProfile : Profile
+    {
+        public ManufacturerEntityMapperProfile()
+        {
+            CreateMap<ManufacturerEntity, ManufacturerEntity>();
+        }
+    }
 }

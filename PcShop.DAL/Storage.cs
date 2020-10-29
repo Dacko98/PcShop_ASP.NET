@@ -18,14 +18,21 @@ namespace PcShop.DAL
             new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
         };
 
+        private readonly IList<Guid> CategoryGuids = new List<Guid>
+        {
+            new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
+        };
+
 
         public IList<EvaluationEntity> Evaluations { get; } = new List<EvaluationEntity>();
         public IList<ManufacturerEntity> Manufacturers { get; } = new List<ManufacturerEntity>();
+        public IList<CategoryEntity> Categories { get; } = new List<CategoryEntity>();
 
         public Storage()
         {
             SeedEvaluations();
             SeedManufacturers();
+            SeedCategory();
         }
 
         private void SeedEvaluations()
@@ -53,6 +60,15 @@ namespace PcShop.DAL
                 Description = "Best one",
                 Logo = "Path",
                 CountryOfOrigin = "USA",
+            });
+        }
+
+        private void SeedCategory()
+        {
+            Categories.Add(new CategoryEntity
+            {
+                Id = CategoryGuids[0],
+                Name = "Gaming"
             });
         }
     }
