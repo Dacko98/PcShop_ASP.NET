@@ -49,7 +49,7 @@ namespace PcShop.Api.Controllers
 
         [HttpPut]
         [OpenApiOperation(ApiOperationBaseName + nameof(Update))]
-        public ActionResult<Guid> Update(EvaluationDetailModel evaluation)
+        public ActionResult<Guid> Update(EvaluationUpdateModel evaluation)
         {
             return evaluationFacade.Update(evaluation);
         }

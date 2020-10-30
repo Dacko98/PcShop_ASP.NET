@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
+using PcShop.BL.Api.Models.Evaluation;
 using PcShop.Common.Extensions;
 using PcShop.DAL.Entities;
 using PcShop.DAL.Entities;
@@ -11,7 +13,6 @@ namespace PcShop.BL.Api.Models.Goods
 
         public Guid Id { get; set; }
 
-
         public string Name { get; set; }
         public string Photo { get; set; }
         public string Description { get; set; }
@@ -21,13 +22,20 @@ namespace PcShop.BL.Api.Models.Goods
 
         public Guid ManufacturerId { get; set; }
         public virtual ManufacturerEntity Manufacturer { get; set; }
+
+        public Guid CategoryId { get; set; }
+        public virtual CategoryEntity Category { get; set; }
+
+        public virtual IList<EvaluationUpdateModel> Evaluations { get; set; }
+
     }
 
     public class GoodsUpdateModelMapperProfile : Profile
     {
         public GoodsUpdateModelMapperProfile()
         {
-            CreateMap<GoodsUpdateModel, GoodsEntity>();
+            CreateMap<GoodsUpdateModel, GoodsEntity>()
+                ;
         }
     }
 }

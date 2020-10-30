@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using System;
+using System.Collections.Generic;
+using PcShop.BL.Api.Models.Evaluation;
 using PcShop.DAL.Entities;
 
 namespace PcShop.BL.Api.Models.Goods
@@ -18,6 +20,9 @@ namespace PcShop.BL.Api.Models.Goods
 
         public Guid ManufacturerId { get; set; }
         public virtual ManufacturerEntity Manufacturer { get; set; }
+
+        public virtual IList<EvaluationDetailModel> Evaluations { get; set; }
+       
     }
 
     public class GoodsDetailModelMapperProfile : Profile

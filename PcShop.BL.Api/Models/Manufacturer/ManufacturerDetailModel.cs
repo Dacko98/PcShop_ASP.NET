@@ -16,7 +16,7 @@ namespace PcShop.BL.Api.Models.Manufacturer
         public string Logo { get; set; }
         public string CountryOfOrigin { get; set; }
 
-        public IList<GoodsListModel> Goods { get; set; }
+        public IList<GoodsDetailModel> Goods { get; set; }
     }
 
     public class ManufacturerDetailModelMapperProfile : Profile

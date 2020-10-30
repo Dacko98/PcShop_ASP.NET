@@ -18,6 +18,11 @@ namespace PcShop.DAL.Entities
         public Guid ManufacturerId { get; set; }
         public virtual ManufacturerEntity Manufacturer { get; set; }
 
+        public Guid CategoryId { get; set; }
+        public virtual CategoryEntity Category { get; set; }
+
+        public virtual ICollection<EvaluationEntity> Evaluations { get; set; } = new List<EvaluationEntity>();
+
     }
     public class GoodsEntityMapperProfile : Profile
     {

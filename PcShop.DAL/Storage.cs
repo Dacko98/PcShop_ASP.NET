@@ -35,7 +35,7 @@ namespace PcShop.DAL
         public IList<ManufacturerEntity> Manufacturers { get; } = new List<ManufacturerEntity>();
         public IList<CategoryEntity> Categories { get; } = new List<CategoryEntity>();
         public IList<GoodsEntity> Goods { get; } = new List<GoodsEntity>();
-        public IList<GoodsCategoryEntity> GoodsCategory { get; } = new List<GoodsCategoryEntity>();
+      
 
         public Storage()
         {
@@ -43,7 +43,6 @@ namespace PcShop.DAL
             SeedManufacturers();
             SeedCategory();
             SeedGoods();
-            //SeedGoodsCategory();
         }
 
         private void SeedEvaluations()

@@ -16,6 +16,9 @@ namespace PcShop.BL.Api.Models.Goods
 
         public Guid ManufacturerId { get; set; }
         public virtual ManufacturerEntity Manufacturer { get; set; }
+
+        public Guid CategoryId { get; set; }
+        public virtual CategoryEntity Category { get; set; }
     }
 
     public class GoodsListModelMapperProfile : Profile

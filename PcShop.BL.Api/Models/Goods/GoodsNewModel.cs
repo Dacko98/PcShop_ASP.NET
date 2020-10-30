@@ -19,6 +19,9 @@ namespace PcShop.BL.Api.Models.Goods
 
         public Guid ManufacturerId { get; set; }
         public virtual ManufacturerEntity Manufacturer { get; set; }
+
+        public Guid CategoryId { get; set; }
+        public virtual CategoryEntity Category { get; set; }
     }
 
     public class GoodsNewModelMapperProfile : Profile
@@ -26,7 +29,8 @@ namespace PcShop.BL.Api.Models.Goods
         public GoodsNewModelMapperProfile()
         {
             CreateMap<GoodsNewModel, GoodsEntity>()
-                .Ignore(dst => dst.Id);
+                .Ignore(dst => dst.Id)
+                .Ignore(dst => dst.Evaluations);
         }
     }
 }
