@@ -2,7 +2,6 @@
 using AutoMapper;
 using PcShop.Common.Extensions;
 using PcShop.DAL.Entities;
-using PcShop.DAL.Entities;
 
 namespace PcShop.BL.Api.Models.Goods
 {
@@ -18,10 +17,9 @@ namespace PcShop.BL.Api.Models.Goods
         public int CountInStock { get; set; }
 
         public Guid ManufacturerId { get; set; }
-        public virtual ManufacturerEntity Manufacturer { get; set; }
 
         public Guid CategoryId { get; set; }
-        public virtual CategoryEntity Category { get; set; }
+  
     }
 
     public class GoodsNewModelMapperProfile : Profile
@@ -30,7 +28,9 @@ namespace PcShop.BL.Api.Models.Goods
         {
             CreateMap<GoodsNewModel, GoodsEntity>()
                 .Ignore(dst => dst.Id)
-                .Ignore(dst => dst.Evaluations);
+                .Ignore(dst => dst.Evaluations)
+                .Ignore(dst => dst.Manufacturer)
+                .Ignore(dst => dst.Category);
         }
     }
 }

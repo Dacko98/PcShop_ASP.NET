@@ -35,6 +35,15 @@ namespace PcShop.DAL.Repositories
             moregoods.Add(goods);
             return goods.Id;
         }
+        public IList<GoodsEntity> GetByCategoryId(Guid categoryId)
+        {
+            return moregoods.Where(goods => goods.CategoryId == categoryId).ToList();
+        }
+
+        public IList<GoodsEntity> GetByManufacturerId(Guid manufacturerId)
+        {
+            return moregoods.Where(goods => goods.ManufacturerId == manufacturerId).ToList();
+        }
 
         public Guid? Update(GoodsEntity goodsUpdated)
         {

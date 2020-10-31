@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using PcShop.DAL.Entities;
+using PcShop.Common.Extensions;
 
 namespace PcShop.BL.Api.Models.Evaluation
 {
@@ -9,16 +10,17 @@ namespace PcShop.BL.Api.Models.Evaluation
         public Guid Id { get; set; }
         public string TextEvaluation { get; set; }
         public int PercentEvaluation { get; set; }
+        public string ProductName { get; set; }
 
         public Guid GoodsId { get; set; }
-        public virtual GoodsEntity Goods { get; set; }
     }
 
     public class EvaluationDetailModelMapperProfile : Profile
     {
         public EvaluationDetailModelMapperProfile()
         {
-            CreateMap<EvaluationEntity, EvaluationDetailModel>();
+            CreateMap<EvaluationEntity, EvaluationDetailModel>()
+                .MapMember(dst => dst.ProductName, src => src.Goods.Name);
         }
     }
 }

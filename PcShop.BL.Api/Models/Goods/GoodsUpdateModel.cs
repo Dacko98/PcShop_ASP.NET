@@ -21,10 +21,8 @@ namespace PcShop.BL.Api.Models.Goods
         public int CountInStock { get; set; }
 
         public Guid ManufacturerId { get; set; }
-        public virtual ManufacturerEntity Manufacturer { get; set; }
 
         public Guid CategoryId { get; set; }
-        public virtual CategoryEntity Category { get; set; }
 
         public virtual IList<EvaluationUpdateModel> Evaluations { get; set; }
 
@@ -35,7 +33,8 @@ namespace PcShop.BL.Api.Models.Goods
         public GoodsUpdateModelMapperProfile()
         {
             CreateMap<GoodsUpdateModel, GoodsEntity>()
-                ;
+                .Ignore(dst => dst.Manufacturer)
+                .Ignore(dst => dst.Category);
         }
     }
 }

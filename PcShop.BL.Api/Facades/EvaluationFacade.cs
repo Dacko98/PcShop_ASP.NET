@@ -13,23 +13,33 @@ namespace PcShop.BL.Api.Facades
     {
         private readonly EvaluationRepository evaluationRepository;
         private readonly IMapper mapper;
+        private readonly GoodsRepository goodsRepository;
 
         public EvaluationFacade(
             EvaluationRepository evaluationRepository,
+            GoodsRepository goodsRepository,
             IMapper mapper)
         {
             this.evaluationRepository = evaluationRepository;
             this.mapper = mapper;
+            this.goodsRepository = goodsRepository;
         }
 
         public List<EvaluationListModel> GetAll()
         {
-            return mapper.Map<List<EvaluationListModel>>(evaluationRepository.GetAll());
+            var evaluationEntityList = evaluationRepository.GetAll();
+            foreach (var evaluationEntity in evaluationEntityList)
+            {
+                evaluationEntity.Goods = goodsRepository.GetById(evaluationEntity.GoodsId);
+            }
+            return mapper.Map<List<EvaluationListModel>>(evaluationEntityList);
         }
 
         public EvaluationDetailModel GetById(Guid id)
         {
-            return mapper.Map<EvaluationDetailModel>(evaluationRepository.GetById(id));
+            var evaluationEntity = evaluationRepository.GetById(id);
+            evaluationEntity.Goods = goodsRepository.GetById(evaluationEntity.GoodsId);
+            return mapper.Map<EvaluationDetailModel>(evaluationEntity);
         }
 
         public Guid Create(EvaluationNewModel evaluation)

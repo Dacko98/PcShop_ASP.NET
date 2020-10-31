@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
+using PcShop.BL.Api.Models.Goods;
 using PcShop.Common.Extensions;
 using PcShop.DAL.Entities;
 
@@ -8,6 +12,7 @@ namespace PcShop.BL.Api.Models.Category
     {
 
         public string Name { get; set; }
+
     }
 
     public class CategoryNewModelMapperProfile : Profile

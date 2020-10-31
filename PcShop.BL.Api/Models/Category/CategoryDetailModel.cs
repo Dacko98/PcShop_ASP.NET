@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using PcShop.BL.Api.Models.Evaluation;
+using PcShop.BL.Api.Models.Goods;
 using PcShop.DAL.Entities;
 
 namespace PcShop.BL.Api.Models.Category
@@ -11,7 +13,7 @@ namespace PcShop.BL.Api.Models.Category
 
         public string Name { get; set; }
 
-        public virtual ICollection<GoodsEntity> Goods { get; set; } = new List<GoodsEntity>();
+        public virtual IList<GoodsListModel> Goods { get; set; }
     }
 
     public class CategoryDetailModelMapperProfile : Profile

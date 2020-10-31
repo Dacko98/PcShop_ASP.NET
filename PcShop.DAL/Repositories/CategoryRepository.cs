@@ -30,6 +30,7 @@ namespace PcShop.DAL.Repositories
             return categories.SingleOrDefault(entity => entity.Id == id);
         }
 
+
         public Guid Insert(CategoryEntity category)
         {
             category.Id = Guid.NewGuid();

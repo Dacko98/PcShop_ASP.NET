@@ -24,6 +24,10 @@ namespace PcShop.DAL.Repositories
         {
             return evaluations;
         }
+        public IList<EvaluationEntity> GetByGoodsId(Guid goodsId)
+        {
+            return evaluations.Where(evaluation => evaluation.GoodsId== goodsId).ToList();
+        }
 
         public EvaluationEntity GetById(Guid id)
         {

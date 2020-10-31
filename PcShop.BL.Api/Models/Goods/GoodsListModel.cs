@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using PcShop.DAL.Entities;
 using System;
-using PcShop.BL.Api.Models.Manufacturer;
-using PcShop.DAL.Entities;
 using PcShop.Common.Extensions;
 
 namespace PcShop.BL.Api.Models.Goods
@@ -14,18 +12,17 @@ namespace PcShop.BL.Api.Models.Goods
         public string Name { get; set; }
         public string Photo { get; set; }
 
-        public Guid ManufacturerId { get; set; }
-        public virtual ManufacturerEntity Manufacturer { get; set; }
-
-        public Guid CategoryId { get; set; }
-        public virtual CategoryEntity Category { get; set; }
+        public string ManufacturerName { get; set; }
+        public string CategoryName { get; set; }
     }
 
     public class GoodsListModelMapperProfile : Profile
     {
         public GoodsListModelMapperProfile()
         {
-            CreateMap<GoodsEntity, GoodsListModel>();
+            CreateMap<GoodsEntity, GoodsListModel>()
+                .MapMember(dst => dst.ManufacturerName, src => src.Manufacturer.Name)
+                .MapMember(dst => dst.CategoryName, src => src.Category.Name);
         }
     }
 }

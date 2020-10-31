@@ -12,7 +12,6 @@ namespace PcShop.BL.Api.Models.Evaluation
         public int PercentEvaluation { get; set; }
 
         public Guid GoodsId { get; set; }
-        public virtual GoodsEntity Goods { get; set; }
     }
 
     public class EvaluationNewModelMapperProfile : Profile
@@ -20,7 +19,8 @@ namespace PcShop.BL.Api.Models.Evaluation
         public EvaluationNewModelMapperProfile()
         {
             CreateMap<EvaluationNewModel, EvaluationEntity>()
-                .Ignore(dst => dst.Id);
+                .Ignore(dst => dst.Id)
+                .Ignore(dst => dst.Goods);
         }
     }
 }

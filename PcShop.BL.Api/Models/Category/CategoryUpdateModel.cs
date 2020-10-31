@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using PcShop.BL.Api.Models.Goods;
 using PcShop.Common.Extensions;
 using PcShop.DAL.Entities;
 using PcShop.DAL.Entities;
@@ -13,7 +14,7 @@ namespace PcShop.BL.Api.Models.Category
 
         public string Name { get; set; }
 
-        public virtual ICollection<GoodsEntity> Goods { get; set; } = new List<GoodsEntity>();
+        public virtual IList<GoodsOnlyIdUpdateModel> Goods { get; set; }
 
     }
 
