@@ -11,7 +11,7 @@ namespace PcShop.BL.Api.Models.Evaluation
         public string TextEvaluation { get; set; }
         public int PercentEvaluation { get; set; }
 
-        public Guid GoodsId { get; set; }
+        public Guid ProductId { get; set; }
   
     }
 
@@ -20,7 +20,7 @@ namespace PcShop.BL.Api.Models.Evaluation
         public EvaluationUpdateModelMapperProfile()
         {
             CreateMap<EvaluationUpdateModel, EvaluationEntity>()
-                .Ignore(dst => dst.Goods);
+                .Ignore(dst => dst.Product);
             CreateMap<EvaluationUpdateModel, EvaluationNewModel>();
         }
     }

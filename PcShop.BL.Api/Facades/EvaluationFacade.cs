@@ -13,16 +13,16 @@ namespace PcShop.BL.Api.Facades
     {
         private readonly EvaluationRepository evaluationRepository;
         private readonly IMapper mapper;
-        private readonly GoodsRepository goodsRepository;
+        private readonly ProductRepository productRepository;
 
         public EvaluationFacade(
             EvaluationRepository evaluationRepository,
-            GoodsRepository goodsRepository,
+            ProductRepository productRepository,
             IMapper mapper)
         {
             this.evaluationRepository = evaluationRepository;
             this.mapper = mapper;
-            this.goodsRepository = goodsRepository;
+            this.productRepository = productRepository;
         }
 
         public List<EvaluationListModel> GetAll()
@@ -30,7 +30,7 @@ namespace PcShop.BL.Api.Facades
             var evaluationEntityList = evaluationRepository.GetAll();
             foreach (var evaluationEntity in evaluationEntityList)
             {
-                evaluationEntity.Goods = goodsRepository.GetById(evaluationEntity.GoodsId);
+                evaluationEntity.Product = productRepository.GetById(evaluationEntity.ProductId);
             }
             return mapper.Map<List<EvaluationListModel>>(evaluationEntityList);
         }
@@ -38,7 +38,7 @@ namespace PcShop.BL.Api.Facades
         public EvaluationDetailModel GetById(Guid id)
         {
             var evaluationEntity = evaluationRepository.GetById(id);
-            evaluationEntity.Goods = goodsRepository.GetById(evaluationEntity.GoodsId);
+            evaluationEntity.Product = productRepository.GetById(evaluationEntity.ProductId);
             return mapper.Map<EvaluationDetailModel>(evaluationEntity);
         }
 

@@ -19,7 +19,7 @@ namespace PcShop.BL.Api.Models.Evaluation
         public EvaluationListModelMapperProfile()
         {
             CreateMap<EvaluationEntity, EvaluationListModel>()
-                .MapMember(dst => dst.ProductName, src => src.Goods.Name);
+                .MapMember(dst => dst.ProductName, src => src.Product.Name);
         }
     }
 }

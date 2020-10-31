@@ -10,7 +10,7 @@ namespace PcShop.DAL.Entities
 
         public string Name { get; set; }
 
-        public virtual ICollection<GoodsEntity> Goods { get; set; } = new List<GoodsEntity>();
+        public virtual ICollection<ProductEntity> Product { get; set; } = new List<ProductEntity>();
 
     }
     public class CategoryEntityMapperProfile : Profile

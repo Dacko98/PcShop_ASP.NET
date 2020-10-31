@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
-using PcShop.BL.Api.Models.Goods;
+using PcShop.BL.Api.Models.Product;
 using PcShop.Common.Extensions;
 using PcShop.DAL.Entities;
 using PcShop.DAL.Entities;
@@ -23,7 +23,7 @@ namespace PcShop.BL.Api.Models.Manufacturer
         {
             CreateMap<ManufacturerNewModel, ManufacturerEntity>()
                 .Ignore(dst => dst.Id)
-                .Ignore(dst => dst.Goods);
+                .Ignore(dst => dst.Product);
         }
     }
 }

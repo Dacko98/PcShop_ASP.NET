@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
-using PcShop.BL.Api.Models.Goods;
+using PcShop.BL.Api.Models.Product;
 using PcShop.Common.Extensions;
 using PcShop.DAL.Entities;
 
@@ -16,7 +16,7 @@ namespace PcShop.BL.Api.Models.Manufacturer
         public string Logo { get; set; }
         public string CountryOfOrigin { get; set; }
 
-        public IList<GoodsOnlyIdUpdateModel> Goods { get; set; }
+        public IList<ProductOnlyIdUpdateModel> Product { get; set; }
     }
 
     public class ManufacturerUpdateModelMapperProfile : Profile

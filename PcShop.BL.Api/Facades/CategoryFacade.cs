@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PcShop.BL.Api.Facades.Interfaces;
 using PcShop.BL.Api.Models.Category;
-using PcShop.BL.Api.Models.Goods;
+using PcShop.BL.Api.Models.Product;
 using PcShop.DAL.Entities;
 
 namespace PcShop.BL.Api.Facades
@@ -14,20 +14,20 @@ namespace PcShop.BL.Api.Facades
     public class CategoryFacade : IAppFacade
     {
         private readonly CategoryRepository categoryRepository;
-        private readonly GoodsRepository goodsRepository;
-        private readonly GoodsFacade goodsFacade;
+        private readonly ProductRepository productRepository;
+        private readonly ProductFacade productFacade;
         private readonly IMapper mapper;
 
         public CategoryFacade(
-            GoodsRepository goodsRepository,
+            ProductRepository productRepository,
             CategoryRepository categoryRepository,
-            GoodsFacade goodsFacade,
+            ProductFacade productFacade,
             IMapper mapper)
         {
             this.categoryRepository = categoryRepository;
             this.mapper = mapper;
-            this.goodsFacade = goodsFacade;
-            this.goodsRepository = goodsRepository;
+            this.productFacade = productFacade;
+            this.productRepository = productRepository;
         }
 
         public List<CategoryListModel> GetAll()
@@ -38,7 +38,7 @@ namespace PcShop.BL.Api.Facades
         public CategoryDetailModel GetById(Guid id)
         {
             var categoryEntity = categoryRepository.GetById(id);
-            categoryEntity.Goods = goodsRepository.GetByCategoryId(id);
+            categoryEntity.Product = productRepository.GetByCategoryId(id);
             return mapper.Map<CategoryDetailModel>(categoryEntity);
         }
 
@@ -51,7 +51,7 @@ namespace PcShop.BL.Api.Facades
         public Guid? Update(CategoryUpdateModel categoryUpdateModel)
         {
             var categoryEntityExisting = categoryRepository.GetById(categoryUpdateModel.Id);
-            categoryEntityExisting.Goods = goodsRepository.GetByCategoryId(categoryUpdateModel.Id);
+            categoryEntityExisting.Product = productRepository.GetByCategoryId(categoryUpdateModel.Id);
             UpdateCategory(categoryUpdateModel, categoryEntityExisting);
 
             var categoryEntityUpdated = mapper.Map<CategoryEntity>(categoryUpdateModel);
@@ -60,25 +60,25 @@ namespace PcShop.BL.Api.Facades
 
         private void UpdateCategory(CategoryUpdateModel categoryUpdateModel, CategoryEntity categoryEntity)
         {
-            var goodsToRemove = categoryEntity.Goods.Where(goods =>
-                !categoryUpdateModel.Goods.Any(goodss => goodss.Id == goods.Id));
+            var productToRemove = categoryEntity.Product.Where(product =>
+                !categoryUpdateModel.Product.Any(products => products.Id == product.Id));
         
-            foreach (var goods in goodsToRemove)
+            foreach (var product in productToRemove)
             {
-                goods.CategoryId = Guid.Empty;
-                goods.Category = null;
-                goodsRepository.Update(goods);
+                product.CategoryId = Guid.Empty;
+                product.Category = null;
+                productRepository.Update(product);
             }
         
-            var goodsToAdd = categoryUpdateModel.Goods.Where(
-                goods => !categoryEntity.Goods.Any(goodss => goodss.Id == goods.Id));
+            var productToAdd = categoryUpdateModel.Product.Where(
+                product => !categoryEntity.Product.Any(products => products.Id == product.Id));
 
 
-            foreach (var goods in goodsToAdd)
+            foreach (var product in productToAdd)
             {
-                var goodEntity = goodsRepository.GetById(goods.Id);
+                var goodEntity = productRepository.GetById(product.Id);
                 goodEntity.CategoryId = categoryUpdateModel.Id;
-                goodsRepository.Update(goodEntity);
+                productRepository.Update(goodEntity);
             }
             
         }
@@ -86,11 +86,11 @@ namespace PcShop.BL.Api.Facades
         public void Delete(Guid id)
         {
             var categoryEntity = categoryRepository.GetById(id);
-            categoryEntity.Goods = goodsRepository.GetByCategoryId(id);
-            foreach (var goods in categoryEntity.Goods)
+            categoryEntity.Product = productRepository.GetByCategoryId(id);
+            foreach (var product in categoryEntity.Product)
             {
-                goods.CategoryId = Guid.Empty;
-                goods.Category = null;
+                product.CategoryId = Guid.Empty;
+                product.Category = null;
             }
             categoryRepository.Remove(id);
         }

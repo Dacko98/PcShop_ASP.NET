@@ -11,8 +11,8 @@ namespace PcShop.DAL.Entities
         public string TextEvaluation { get; set; }
         public int PercentEvaluation { get; set; }
 
-        public Guid GoodsId { get; set; }
-        public virtual GoodsEntity Goods { get; set; }
+        public Guid ProductId { get; set; }
+        public virtual ProductEntity Product { get; set; }
 
  }
 

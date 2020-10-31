@@ -13,7 +13,7 @@ namespace PcShop.DAL.Entities
         public string Logo { get; set; }
         public string CountryOfOrigin { get; set; }
 
-        public virtual ICollection<GoodsEntity> Goods { get; set; } = new List<GoodsEntity>();
+        public virtual ICollection<ProductEntity> Product { get; set; } = new List<ProductEntity>();
 
     }
 

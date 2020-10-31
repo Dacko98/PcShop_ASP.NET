@@ -6,59 +6,59 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using PcShop.BL.Api.Facades;
-using PcShop.BL.Api.Models.Goods;
+using PcShop.BL.Api.Models.Product;
 
 namespace PcShop.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GoodsController : ControllerBase
+    public class ProductController : ControllerBase
     {
-        private const string ApiOperationBaseName = "Goods";
-        private readonly GoodsFacade goodsFacade;
+        private const string ApiOperationBaseName = "Product";
+        private readonly ProductFacade productFacade;
         
 
-        public GoodsController(
-            GoodsFacade goodsFacade)
+        public ProductController(
+            ProductFacade productFacade)
         {
-            this.goodsFacade = goodsFacade;
+            this.productFacade = productFacade;
         }
 
         [HttpGet]
         [OpenApiOperation(ApiOperationBaseName + nameof(GetAll))]
-        public ActionResult<List<GoodsListModel>> GetAll()
+        public ActionResult<List<ProductListModel>> GetAll()
         {
-            return goodsFacade.GetAll().ToList();
+            return productFacade.GetAll().ToList();
         }
 
         [HttpGet("{id}")]
         [OpenApiOperation(ApiOperationBaseName + nameof(GetById))]
-        public ActionResult<GoodsDetailModel> GetById(Guid id)
+        public ActionResult<ProductDetailModel> GetById(Guid id)
         {
-            var goods = goodsFacade.GetById(id);
+            var product = productFacade.GetById(id);
 
-            return goods;
+            return product;
         }
 
         [HttpPost]
         [OpenApiOperation(ApiOperationBaseName + nameof(Create))]
-        public ActionResult<Guid> Create(GoodsNewModel goods)
+        public ActionResult<Guid> Create(ProductNewModel product)
         {
-            return goodsFacade.Create(goods);
+            return productFacade.Create(product);
         }
 
         [HttpPut]
         [OpenApiOperation(ApiOperationBaseName + nameof(Update))]
-        public ActionResult<Guid> Update(GoodsUpdateModel goods)
+        public ActionResult<Guid> Update(ProductUpdateModel product)
         {
-            return goodsFacade.Update(goods);
+            return productFacade.Update(product);
         }
 
         [HttpDelete("{id}")]
         [OpenApiOperation(ApiOperationBaseName + nameof(Delete))]
         public IActionResult Delete(Guid id)
         {
-            goodsFacade.Delete(id);
+            productFacade.Delete(id);
             return Ok();
         }
     }
