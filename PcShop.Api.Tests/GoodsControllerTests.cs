@@ -75,7 +75,8 @@ namespace PcShop.Api.Tests
                 CountInStock = 10,
                 Photo = "path",
                 ManufacturerName = "Dell",
-                CategoryName = "Graphic design"
+                CategoryName = "Graphic design",
+                Evaluations = new List<EvaluationListModel>()
             },
             new ProductDetailModel
             {
@@ -87,7 +88,8 @@ namespace PcShop.Api.Tests
                 CountInStock = 10,
                 Photo = "path",
                 ManufacturerName = "Lenovo",
-                CategoryName = "Professional"
+                CategoryName = "Professional",
+                Evaluations = new List<EvaluationListModel>()
             }
         };
 
@@ -436,7 +438,7 @@ namespace PcShop.Api.Tests
 
             // GetById deleted Product -> assert NotFound
                 // Act
-            var response_GetById = await _client.GetAsync($"api/Category/{newProductGuid}");
+            var response_GetById = await _client.GetAsync($"api/Product/{newProductGuid}");
 
             // Assert
             response_GetById.Should().NotBeNull();
