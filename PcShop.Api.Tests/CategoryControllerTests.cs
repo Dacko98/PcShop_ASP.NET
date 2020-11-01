@@ -137,19 +137,6 @@ namespace PcShop.Api.Tests
             category.Should().NotBeNull();
         }
 
-        [Theory]
-        [InlineData(CATEGORYID_1, "Professional")]
-        [InlineData(CATEGORYID_2, "Graphic design")]
-        public async Task GetById_Should_return_Category_by_Id(string Id, string name)
-        {
-            var response = await _client.GetAsync($"api/Category/{Id}");
-
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            var category = JsonConvert.DeserializeObject<CategoryDetailModel>(await response.Content.ReadAsStringAsync());
-            category.Name.Should().Be(name);
-            category.Id.Should().Be(Id);
-        }
 
         /// <summary>
         /// Try GetById with empty ID (non-existing category). Should return BadRequest (400) 

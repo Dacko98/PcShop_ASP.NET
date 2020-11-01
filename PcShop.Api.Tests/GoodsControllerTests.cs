@@ -29,6 +29,7 @@ using System;
 using Xunit;
 using FluentAssertions.Common;
 using PcShop.BL.Api.Models.Evaluation;
+using PcShop.DAL.Entities;
 
 namespace PcShop.Api.Tests
 {
@@ -51,7 +52,8 @@ namespace PcShop.Api.Tests
             Name = "Lattitude E6440",
             Photo = "path",
             ManufacturerName = "Dell",
-            CategoryName = "Graphic design"
+            CategoryName = "Graphic design",
+            Description = "...",
             },
             new ProductListModel
             {
@@ -59,7 +61,8 @@ namespace PcShop.Api.Tests
             Name = "Thinkpad L580",
             Photo = "path",
             ManufacturerName = "Lenovo",
-            CategoryName = "Professional"
+            CategoryName = "Professional",
+            Description = "...",
             }
         };
 
@@ -230,30 +233,6 @@ namespace PcShop.Api.Tests
             products.Should().HaveCountGreaterOrEqualTo(1);
         }
 
-        /// <summary>
-        /// Try get all goods. 
-        /// Check if it returns at least 6 products.
-        /// Check if the first and the last product match with model
-        /// </summary>
-        [Fact]
-        public async Task GetAll_Should_return_first_last_and_all_the_others()
-        {
-            // Act
-            var response = await _client.GetAsync("api/Product");
-
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            var products = JsonConvert.DeserializeObject<List<ProductListModel>>(await response.Content.ReadAsStringAsync());
-
-            // Should return at least 6 products
-            products.Should().HaveCountGreaterOrEqualTo(6);
-
-            // First product
-            products[0].Should().BeEquivalentTo(PRODUCTS_LIST[0]);
-            // Last product
-            products[5].Should().BeEquivalentTo(PRODUCTS_LIST[1]);
-        }
 
         /*===============================    GetById Tests    ===============================*/
 
@@ -274,20 +253,7 @@ namespace PcShop.Api.Tests
             product.Should().NotBeNull();
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        public async Task GetById_Should_return_product_by_Id(int index)
-        {
 
-            var response = await _client.GetAsync($"api/Product/{PRODUCTS_DETAIL[index].Id}");
-
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            var product = JsonConvert.DeserializeObject<ProductDetailModel>(await response.Content.ReadAsStringAsync());
-            product.Should().NotBeNull();
-            product.Should().BeEquivalentTo(PRODUCTS_LIST[index]);
-        }
 
         /// <summary>
         /// Try GetById with empty id (non-existing product). Should return BadRequest (400) 
