@@ -1,4 +1,4 @@
-/* File:        GoodsControllerTests.cs
+/* File:        productControllerTests.cs
  * 
  * Solution:    PcShop
  * Project:     PcShop.Api.Test
@@ -8,7 +8,7 @@
  * Login:       xvlach22
  * Date:        30.10.2020
  * 
- * Description: This file contains API tests for GoodsController in PcShop.Api.
+ * Description: This file contains API tests for productController in PcShop.Api.
  *              Tests all main 4 methods (GET, PUT, POST, DELETE)
  * 
  * Installed NuGet packages: Microsoft.AspNetCore.Mvc.Testing, FluentAssertions
@@ -33,8 +33,8 @@ using PcShop.DAL.Entities;
 
 namespace PcShop.Api.Tests
 {
-    [Collection(name: "GoodsControllerTests")]
-    public class GoodsControllerTests : IClassFixture<WebApplicationFactory<Startup>>
+    [Collection(name: "productControllerTests")]
+    public class ProductControllerTests : IClassFixture<WebApplicationFactory<Startup>>
     {
         private HttpClient _client;
 
@@ -201,7 +201,7 @@ namespace PcShop.Api.Tests
             Evaluations = new List<EvaluationUpdateModel>()
         };
 
-        public GoodsControllerTests(WebApplicationFactory<Startup> fixture)
+        public ProductControllerTests(WebApplicationFactory<Startup> fixture)
         {
             _client = fixture.CreateClient();
         }
@@ -209,7 +209,7 @@ namespace PcShop.Api.Tests
         /*===============================    GetAll Tests    ===============================*/
 
         /// <summary>
-        /// Try Get all goods. Shoudl return Status Code OK.
+        /// Try Get all product. Shoudl return Status Code OK.
         /// </summary>
         [Fact]
         public async Task GetAll_Should_result_OK()
@@ -220,10 +220,10 @@ namespace PcShop.Api.Tests
         }
 
         /// <summary>
-        /// Try get all goods. Should return non-empty field in response.content
+        /// Try get all product. Should return non-empty field in response.content
         /// </summary>
         [Fact]
-        public async Task GetAll_Should_return_some_goods()
+        public async Task GetAll_Should_return_some_product()
         {
             var response = await _client.GetAsync("api/Product");
 
