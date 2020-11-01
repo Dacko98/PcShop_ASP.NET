@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
-using PcShop.BL.Api.Models.Category;
-using PcShop.BL.Api.Models.Interfaces;
 using PcShop.BL.Api.Models.Product;
 using Xunit;
 
@@ -24,7 +22,7 @@ namespace PcShop.Api.Tests
         {
             new ProductNewModel
             {
-                Name = "this is seArChed",
+                Name = "this is searched",
                 Photo = "path",
                 Description = "...",
                 Price = 8000,
@@ -95,7 +93,7 @@ namespace PcShop.Api.Tests
         [Fact]
         public async Task Search_Should_result_OK()
         {
-            var response = await _client.GetAsync("api/Search/{searchedString}");
+            var response = await _client.GetAsync($"api/Search/{_searchedString}");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
@@ -110,5 +108,37 @@ namespace PcShop.Api.Tests
 
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
+
+
+
+        /// <summary>
+        /// Search request should find 2 products
+        /// </summary>
+        [Fact]
+        public async Task Search_Should_findTwoProducts()
+        {
+
+            foreach (var product in products_ContainsTwoWithSearchedString)
+            {
+                var newProductSerialized = JsonConvert.SerializeObject(product);
+                var stringContent = new StringContent(newProductSerialized, Encoding.UTF8, "application/json");
+                await _client.PostAsync("api/Product", stringContent);
+            }
+
+            var response = await _client.GetAsync($"api/Search/{_searchedString}");
+
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var products = JsonConvert.DeserializeObject<List<ProductListModel>>(await response.Content.ReadAsStringAsync());
+
+            products.Count.Should().Be(2);
+        }
+
+
+
+
+
+
+
     }
 }
