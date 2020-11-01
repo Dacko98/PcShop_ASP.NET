@@ -45,7 +45,7 @@ namespace PcShop.BL.Api.Facades
                     foundEntities.Add(manufacturerEntity);
 
             foreach (var productEntity in productEntities)
-                if (productEntity.Name.Contains(searchedText)
+                if ((productEntity.Name ?? "").ToLower().Contains(searchedText)
                     || (productEntity.Description ?? "").ToLower().Contains(searchedText))
                     foundEntities.Add(productEntity);
 

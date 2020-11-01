@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
-using PcShop.BL.Api.Models.Category;
-using PcShop.BL.Api.Models.Interfaces;
 using PcShop.BL.Api.Models.Product;
 using Xunit;
 
