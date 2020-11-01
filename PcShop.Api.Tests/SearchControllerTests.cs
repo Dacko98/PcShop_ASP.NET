@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
+using PcShop.BL.Api.Models.Manufacturer;
 using PcShop.BL.Api.Models.Product;
 using Xunit;
 
@@ -18,11 +19,11 @@ namespace PcShop.Api.Tests
         private HttpClient _client;
         private const string _searchedString = "Searched";
 
-        private readonly ProductNewModel[] products_ContainsTwoWithSearchedString =
+        private readonly ProductNewModel[] _productsContainsTwoWithSearchedString =
         {
             new ProductNewModel
             {
-                Name = "this is searched",
+                Name = "this is seARched",
                 Photo = "path",
                 Description = "...",
                 Price = 8000,
@@ -37,7 +38,7 @@ namespace PcShop.Api.Tests
             },
             new ProductNewModel
             {
-                Name = "this is not seArC hed",
+                Name = "this is seArC hed",
                 Photo = "path",
                 Description = "searched",
                 Price = 8000,
@@ -109,16 +110,14 @@ namespace PcShop.Api.Tests
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
-
-
         /// <summary>
-        /// Search request should find 2 products
+        /// Search request should find first two products from products_ContainsTwoWithSearchedString
         /// </summary>
         [Fact]
-        public async Task Search_Should_findTwoProducts()
+        public async Task Search_Should_find_two_products()
         {
 
-            foreach (var product in products_ContainsTwoWithSearchedString)
+            foreach (var product in _productsContainsTwoWithSearchedString)
             {
                 var newProductSerialized = JsonConvert.SerializeObject(product);
                 var stringContent = new StringContent(newProductSerialized, Encoding.UTF8, "application/json");
@@ -131,14 +130,47 @@ namespace PcShop.Api.Tests
 
             var products = JsonConvert.DeserializeObject<List<ProductListModel>>(await response.Content.ReadAsStringAsync());
 
-            products.Count.Should().Be(2);
+            for (int i = 0; i < 2; ++i)
+            {
+                bool productFound = false;
+                foreach (var product in products)
+                {
+                    if (product.Name == _productsContainsTwoWithSearchedString[i].Name
+                        && product.Description == _productsContainsTwoWithSearchedString[i].Description)
+                        productFound = true;
+                }
+                productFound.Should().BeTrue();
+            }
         }
 
+        /// <summary>
+        /// Search request should find manufacturer
+        /// </summary>
+        [Fact]
+        public async Task Search_Should_find_manufacturer()
+        {
+            ManufacturerNewModel newManufacturer = new ManufacturerNewModel
+            {
+                Name = "HPcseaRchedko",
+                Description = "...",
+                Logo = "path",
+                CountryOfOrigin = "UK"
+            };
+            
+            var newManufacturerSerialized = JsonConvert.SerializeObject(newManufacturer);
+            var stringContent = new StringContent(newManufacturerSerialized, Encoding.UTF8, "application/json");
+            await _client.PostAsync("api/Manufacturer", stringContent);
+            
+            var response = await _client.GetAsync($"api/Search/{_searchedString}");
 
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-
-
-
+            var products = JsonConvert.DeserializeObject<List<ManufacturerListModel>>(await response.Content.ReadAsStringAsync());
+            
+            products[0].Name.Should().Be(newManufacturer.Name);
+            products[0].Description.Should().Be(newManufacturer.Description);
+            products[0].CountryOfOrigin.Should().Be(newManufacturer.CountryOfOrigin);
+        }
 
     }
 }
