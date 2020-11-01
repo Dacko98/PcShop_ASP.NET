@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\ledgo\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\ledgo\\.nuget\\packages"
-    ]
-  }
-}
