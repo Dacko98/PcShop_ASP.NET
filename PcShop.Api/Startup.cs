@@ -44,6 +44,14 @@ namespace PcShop.Api
             new BLApiInstaller().Install(services);
 
             services.AddAutoMapper(typeof(DALInstaller), typeof(BLApiInstaller));
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+            });
         }
 
     
@@ -58,6 +66,8 @@ namespace PcShop.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors();
 
             app.UseHttpsRedirection();
 
