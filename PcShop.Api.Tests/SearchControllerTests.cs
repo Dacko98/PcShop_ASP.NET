@@ -1,14 +1,14 @@
-﻿using System;
+﻿using PcShop.BL.Api.Models.Manufacturer;
+using Microsoft.AspNetCore.Mvc.Testing;
+using PcShop.BL.Api.Models.Product;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net.Http;
 using Newtonsoft.Json;
-using PcShop.BL.Api.Models.Manufacturer;
-using PcShop.BL.Api.Models.Product;
+using System.Text;
+using System.Net;
+using System;
 using Xunit;
 
 namespace PcShop.Api.Tests
@@ -16,10 +16,10 @@ namespace PcShop.Api.Tests
     [Collection(name: "SearchControllerTests")]
     public class SearchControllerTests : IClassFixture<WebApplicationFactory<Startup>>
     {
-        private HttpClient _client;
-        private const string _searchedString = "Searched";
+        private HttpClient client;
+        private const string SEARCHED_STRING = "Searched";
 
-        private readonly ProductNewModel[] _productsContainsTwoWithSearchedString =
+        private readonly ProductNewModel[] PRODUCTS_CONTAINS_TWO_WITH_SEARCHED_STRING =
         {
             new ProductNewModel
             {
@@ -85,46 +85,37 @@ namespace PcShop.Api.Tests
 
         public SearchControllerTests(WebApplicationFactory<Startup> fixture)
         {
-            _client = fixture.CreateClient();
+            client = fixture.CreateClient();
         }
 
-        /// <summary>
-        /// Search request with parameter should return status code OK.
-        /// </summary>
         [Fact]
-        public async Task Search_Should_result_OK()
+        public async Task Search_with_parameter_should_result_OK()
         {
-            var response = await _client.GetAsync($"api/Search/{_searchedString}");
+            var response = await client.GetAsync($"api/Search/{SEARCHED_STRING}");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
-        /// <summary>
-        /// Search request without parameter should return status code NotFound.
-        /// </summary>
         [Fact]
-        public async Task Search_Should_result_NotFound()
+        public async Task Search_without_parameter_should_result_NotFound()
         {
-            var response = await _client.GetAsync("api/Search");
+            var response = await client.GetAsync("api/Search");
 
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
-        /// <summary>
-        /// Search request should find first two products from products_ContainsTwoWithSearchedString
-        /// </summary>
         [Fact]
-        public async Task Search_Should_find_two_products()
+        public async Task Search_should_find_two_products()
         {
 
-            foreach (var product in _productsContainsTwoWithSearchedString)
+            foreach (var product in PRODUCTS_CONTAINS_TWO_WITH_SEARCHED_STRING)
             {
                 var newProductSerialized = JsonConvert.SerializeObject(product);
                 var stringContent = new StringContent(newProductSerialized, Encoding.UTF8, "application/json");
-                await _client.PostAsync("api/Product", stringContent);
+                await client.PostAsync("api/Product", stringContent);
             }
 
-            var response = await _client.GetAsync($"api/Search/{_searchedString}");
+            var response = await client.GetAsync($"api/Search/{SEARCHED_STRING}");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -135,19 +126,16 @@ namespace PcShop.Api.Tests
                 bool productFound = false;
                 foreach (var product in products)
                 {
-                    if (product.Name == _productsContainsTwoWithSearchedString[i].Name
-                        && product.Description == _productsContainsTwoWithSearchedString[i].Description)
+                    if (product.Name == PRODUCTS_CONTAINS_TWO_WITH_SEARCHED_STRING[i].Name
+                        && product.Description == PRODUCTS_CONTAINS_TWO_WITH_SEARCHED_STRING[i].Description)
                         productFound = true;
                 }
                 productFound.Should().BeTrue();
             }
         }
 
-        /// <summary>
-        /// Search request should find manufacturer
-        /// </summary>
         [Fact]
-        public async Task Search_Should_find_manufacturer()
+        public async Task Search_should_find_manufacturer()
         {
             ManufacturerNewModel newManufacturer = new ManufacturerNewModel
             {
@@ -159,9 +147,9 @@ namespace PcShop.Api.Tests
             
             var newManufacturerSerialized = JsonConvert.SerializeObject(newManufacturer);
             var stringContent = new StringContent(newManufacturerSerialized, Encoding.UTF8, "application/json");
-            await _client.PostAsync("api/Manufacturer", stringContent);
+            await client.PostAsync("api/Manufacturer", stringContent);
             
-            var response = await _client.GetAsync($"api/Search/{_searchedString}");
+            var response = await client.GetAsync($"api/Search/{SEARCHED_STRING}");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -171,6 +159,5 @@ namespace PcShop.Api.Tests
             products[0].Description.Should().Be(newManufacturer.Description);
             products[0].CountryOfOrigin.Should().Be(newManufacturer.CountryOfOrigin);
         }
-
     }
 }

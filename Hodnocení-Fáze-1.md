@@ -4,11 +4,11 @@
 - OK.
 
 **Čistota kódu**
-- Blokové komentáre na začiatku v testovacích triedach - veľmi zastaralá praktika, na toto slúži verzovací systém. Niektoré informácie sú tam úplne zbytočné, máte to komentované v angličtine aj češtine…
-- Pomenovanie konštánt - vhodnejšie je asi použiť Pascal case, ale môžete byť aj Upper case, ale slová by som kvôli čitateľnosti oddelil znakom "_".
-- Veľké množstvo zbytočných komentárov.
-- GetAll_Should_return_Proffessional_and_Graphic_design - aký je toto casing? Prečo niektoré slová máte lower case a zvyšné upper case?
-- Zakomentovaný kód nepatrí do remote repozitára, minimálne nie do master branch.
+- [x] Blokové komentáre na začiatku v testovacích triedach - veľmi zastaralá praktika, na toto slúži verzovací systém. Niektoré informácie sú tam úplne zbytočné, máte to komentované v angličtine aj češtine…
+- [x] Pomenovanie konštánt - vhodnejšie je asi použiť Pascal case, ale môžete byť aj Upper case, ale slová by som kvôli čitateľnosti oddelil znakom "\_".
+- [x] Veľké množstvo zbytočných komentárov.
+- [x] GetAll_Should_return_Proffessional_and_Graphic_design - aký je toto casing? Prečo niektoré slová máte lower case a zvyšné upper case?
+- [x] Zakomentovaný kód nepatrí do remote repozitára, minimálne nie do master branch.
 
 **Testy**
 - CategoryControllerTests - aký má zmysel mať tie 3 testy v časti "GetAll Tests"? Nestačil by GetAll_Should_return_Proffessional_and_Graphic_design? A prečo máte v Asserte XXX.Should().HaveCountGreaterOrEqualTo(2);? Nevráti to vždy 2 záznamy?
@@ -19,7 +19,7 @@
 - Prečo v Search_Should_find_two_products a Search_Should_find_manufacturer porovnávate vrátené hodnoty s propertami z XXXNewModel? Endpoint vám vracia XXXListModel a keby ste to porovnávali s týmto modelom, tak v teste, kde pracujete s produktami odhalíte problém uvedený nižšie (Splnenie funkcionality).
 	
 **Splnenie funkcionality**
-- Search vám vracia zlé výsledky. Myslel som si, že je problém niekde v implementácií vyhľadávania, ale problém je v  hodnote property EntityTypeEnum v ProductEntity. 
+- [ ] Search vám vracia zlé výsledky. Myslel som si, že je problém niekde v implementácií vyhľadávania, ale problém je v  hodnote property EntityTypeEnum v ProductEntity. 
 
 **Ostatné**
 - Pre propertu Weight by bolo asi lepšie použiť nejaké desatinné číslo, ale ak to chcete reprezentovať napr. v gramoch tak je to OK.
