@@ -23,6 +23,7 @@ namespace PcShop.Api.Tests
             "This name is too long for the model. This name is too long for the model. This name is too long for the model. ";
         private const string CATEGORY_ID_1 = "fabde0cd-eefe-443f-baf6-3d96cc2cbf2e";
         private const string CATEGORY_ID_2 = "23b3902d-7d4f-4213-9cf0-112348f56238";
+
         private readonly CategoryUpdateModel[] CATEGORIES_UPDATE =
         {
             new CategoryUpdateModel
@@ -216,7 +217,7 @@ namespace PcShop.Api.Tests
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
-        public async Task Update_should_update_existing_category(int index)
+        public async Task Update_Should_update_existing_category(int index)
         {
             var categoryToUpdateSerialized = JsonConvert.SerializeObject(CATEGORIES_UPDATE[index]);
             var stringContent = new StringContent(categoryToUpdateSerialized, Encoding.UTF8, "application/json");
