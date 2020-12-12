@@ -155,10 +155,7 @@ namespace PcShop.Api.Tests
             var newCategoryGuid = JsonConvert.DeserializeObject<Guid>(await response.Content.ReadAsStringAsync());
             newCategoryGuid.Should().NotBeEmpty();
 
-            // GetById
             var response_GetById = await client.GetAsync($"api/Category/{newCategoryGuid}");
-            response_GetById.StatusCode.Should().Be(HttpStatusCode.OK);
-
             var category = JsonConvert.DeserializeObject<CategoryDetailModel>(await response_GetById.Content.ReadAsStringAsync());
             category.Name.Should().Be(newCategoryName);
             category.Id.Should().Be(newCategoryGuid);
@@ -219,6 +216,7 @@ namespace PcShop.Api.Tests
         [InlineData(1)]
         public async Task Update_Should_update_existing_category(int index)
         {
+            // Arrange
             var categoryToUpdateSerialized = JsonConvert.SerializeObject(CATEGORIES_UPDATE[index]);
             var stringContent = new StringContent(categoryToUpdateSerialized, Encoding.UTF8, "application/json");
 
@@ -228,16 +226,13 @@ namespace PcShop.Api.Tests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            // GetById check
             var response_GetById = await client.GetAsync($"api/Category/{CATEGORIES_UPDATE[index].Id}");
-            response_GetById.StatusCode.Should().Be(HttpStatusCode.OK);
-
             var category = JsonConvert.DeserializeObject<CategoryDetailModel>(await response_GetById.Content.ReadAsStringAsync());
             category.Should().BeEquivalentTo(CATEGORIES_UPDATE[index]);
         }
 
         [Fact]
-        public async Task Update_empty_Id()
+        public async Task Update_empty_Id_should_return_NotFound()
         {
             // Arrange 
             var categoryToUpdate = new CategoryUpdateModel
@@ -289,19 +284,12 @@ namespace PcShop.Api.Tests
         [Fact]
         public async Task Delete_existing_category_then_find_it_should_return_NotFound()
         {
-            // Arrange - Create new Category
+            // Arrange - Create new category
             var newCategory = new CategoryNewModel { Name = "Do 10 000,-" };
-
             var newCategorySerialized = JsonConvert.SerializeObject(newCategory);
             var stringContent = new StringContent(newCategorySerialized, Encoding.UTF8, "application/json");
-
-                // Act 
             var response_create = await client.PostAsync("api/Category", stringContent);
-
-                // Assert
-            response_create.StatusCode.Should().Be(HttpStatusCode.OK);
             var newCategoryGuid = JsonConvert.DeserializeObject<Guid>(await response_create.Content.ReadAsStringAsync());
-            newCategoryGuid.Should().NotBeEmpty();
 
             // Act
             var response = await client.DeleteAsync($"api/Category/{newCategoryGuid}");
@@ -309,12 +297,7 @@ namespace PcShop.Api.Tests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             
-            // GetById -> assert BadRequest
-                // Act
             var response_GetById = await client.GetAsync($"api/Category/{newCategoryGuid}");
-
-                // Assert
-            response_GetById.Should().NotBeNull();
             response_GetById.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 

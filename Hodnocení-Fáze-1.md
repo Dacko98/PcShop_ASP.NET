@@ -11,10 +11,10 @@
 - [x] Zakomentovaný kód nepatrí do remote repozitára, minimálne nie do master branch.
 
 **Testy**
-- CategoryControllerTests - aký má zmysel mať tie 3 testy v časti "GetAll Tests"? Nestačil by GetAll_Should_return_Proffessional_and_Graphic_design? A prečo máte v Asserte XXX.Should().HaveCountGreaterOrEqualTo(2);? Nevráti to vždy 2 záznamy?
+- CategoryControllerTests - aký má zmysel mať tie 3 testy v časti "GetAll Tests"? Nestačil by GetAll_Should_return_Proffessional_and_Graphic_design? A prečo máte v Asserte XXX.Should().HaveCountGreaterOrEqualTo(2);? Nevráti to vždy 2 záznamy? (Bohužel ne, testy se provádí v nám neznámém pořadí a ovlivňují se navzájem, tedy některé testy např. přidají určitou kategorii a tento test potom padal.)
 - V GetById_Should_return_something testoch by som očakával, že skontrolujete aj dáta, ktoré vám daný endpoint vracia. Nie len to, že vám príde status code 200 a že deserializovaný objekt nie je prázdny.
 - Aký má zmysel v GetById_With_empty_Id testoch kontrolovať, že response nie je null?
-- Vo viacerých testoch máte TODO komentáre s tým, že vám testy padajú, aj keď všetky pri spustení prechádzajú.
+- [x] Vo viacerých testoch máte TODO komentáre s tým, že vám testy padajú, aj keď všetky pri spustení prechádzajú.
 - Mať v testoch viac Act a Assert častí je zvláštne a horšie čitateľné.
 - Prečo v Search_Should_find_two_products a Search_Should_find_manufacturer porovnávate vrátené hodnoty s propertami z XXXNewModel? Endpoint vám vracia XXXListModel a keby ste to porovnávali s týmto modelom, tak v teste, kde pracujete s produktami odhalíte problém uvedený nižšie (Splnenie funkcionality).
 	

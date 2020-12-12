@@ -30,6 +30,46 @@ namespace PcShop.Api.Tests
         private const string MANUFACTURER_2_ID = "87833e66-05ba-4d6b-900b-fe5ace88dbd8";
         private const string MANUFACTURER_2_COUNTRY = "China";
 
+        private ManufacturerNewModel newManufacturer = new ManufacturerNewModel
+        {
+            Name = "Hpcko",
+            Description = "...",
+            Logo = "path",
+            CountryOfOrigin = "UK"
+        };
+
+        private ManufacturerUpdateModel updateManufacturer = new ManufacturerUpdateModel
+        {
+            Id = Guid.Empty,
+            Name = "Hpcko",
+            Description = "Good Manufacturer, you can count on it.",
+            Logo = "path",
+            CountryOfOrigin = "UK",
+            Product = new List<ProductOnlyIdUpdateModel>()
+        };
+
+        private ManufacturerDetailModel[] expectedManufacturers =
+        {
+            new ManufacturerDetailModel
+            {
+                Id = Guid.Empty,
+                Name = "Hpcko",
+                Description = "...",
+                Logo = "path",
+                CountryOfOrigin = "UK",
+                Product = new List<ProductListModel>()
+            },
+            new ManufacturerDetailModel
+            {
+                Id = Guid.Empty,
+                Name = "Hpcko",
+                Description = "Good Manufacturer, you can count on it.",
+                Logo = "path",
+                CountryOfOrigin = "UK",
+                Product = new List<ProductListModel>() 
+            }
+        };
+        
         public ManufacturerControllerTests(WebApplicationFactory<Startup> fixture)
         {
             client = fixture.CreateClient();
@@ -110,14 +150,6 @@ namespace PcShop.Api.Tests
         public async Task Create_should_return_new_ID()
         {
             // Arrange
-            ManufacturerNewModel newManufacturer = new ManufacturerNewModel 
-            { 
-                Name = "HPcko",
-                Description = "...",
-                Logo = "path",
-                CountryOfOrigin = "UK"
-            };
-            
             var newManufacturerSerialized = JsonConvert.SerializeObject(newManufacturer);
             var stringContent = new StringContent(newManufacturerSerialized, Encoding.UTF8, "application/json");
 
@@ -134,13 +166,6 @@ namespace PcShop.Api.Tests
         public async Task Create_should_create_findable_manufacturer()
         {
             // Arrange
-            ManufacturerNewModel newManufacturer = new ManufacturerNewModel
-            {
-                Name = "HPcko",
-                Description = "...",
-                Logo = "path",
-                CountryOfOrigin = "UK"
-            };
             var newManufacturerSerialized = JsonConvert.SerializeObject(newManufacturer);
             var stringContent = new StringContent(newManufacturerSerialized, Encoding.UTF8, "application/json");
 
@@ -152,23 +177,14 @@ namespace PcShop.Api.Tests
             var newManufacturerGuid = JsonConvert.DeserializeObject<Guid>(await response.Content.ReadAsStringAsync());
             newManufacturerGuid.Should().NotBe(Guid.Empty);
 
-            
-            // GetById
-            ManufacturerDetailModel expectedManufacturer = new ManufacturerDetailModel
-            {
-                Id = newManufacturerGuid,
-                Name = "HPcko",
-                Description = "...",
-                Logo = "path",
-                CountryOfOrigin = "UK", 
-                Product = new List<ProductListModel>()
-            };
+            expectedManufacturers[0].Id = newManufacturerGuid;
+
             var response_GetById = await client.GetAsync($"api/Manufacturer/{newManufacturerGuid}");
             response_GetById.StatusCode.Should().Be(HttpStatusCode.OK);
 
             var manufacturer = JsonConvert.DeserializeObject<ManufacturerDetailModel>(await response_GetById.Content.ReadAsStringAsync());
             manufacturer.Id.Should().NotBe(Guid.Empty);
-            manufacturer.Should().BeEquivalentTo(expectedManufacturer);
+            manufacturer.Should().BeEquivalentTo(expectedManufacturers[0]);
         }
 
         [Theory]
@@ -177,13 +193,6 @@ namespace PcShop.Api.Tests
         public async Task Create_with_invalid_name_should_return_BadRequest(string newName)
         {
             // Arrange 
-            ManufacturerNewModel newManufacturer = new ManufacturerNewModel
-            {
-                Name = newName,
-                Description = "...",
-                Logo = "path",
-                CountryOfOrigin = "Japan"
-            };
             var newwManufacturerSerialized = JsonConvert.SerializeObject(newManufacturer);
             var stringContent = new StringContent(newwManufacturerSerialized, Encoding.UTF8, "application/json");
 
@@ -199,46 +208,14 @@ namespace PcShop.Api.Tests
         [Fact]
         public async Task Update_should_update_existing_Manufacturer()
         {
-            // Create new Manufacturer
-            ManufacturerNewModel newManufacturer = new ManufacturerNewModel
-            {
-                Name = "Hpcko",
-                Description = "...",
-                Logo = "path",
-                CountryOfOrigin = "UK"
-            };
-
-                // Arrange
+            // Arrange
             var newManufacturerSerialized = JsonConvert.SerializeObject(newManufacturer);
             var stringContent_create = new StringContent(newManufacturerSerialized, Encoding.UTF8, "application/json");
-
-                // Act 
             var response_create = await client.PostAsync("api/Manufacturer", stringContent_create);
-
-                // Assert
-            response_create.StatusCode.Should().Be(HttpStatusCode.OK);
             var newManufacturerGuid = JsonConvert.DeserializeObject<Guid>(await response_create.Content.ReadAsStringAsync());
-            newManufacturerGuid.Should().NotBe(Guid.Empty);
 
-            // Arange
-            ManufacturerUpdateModel updateManufacturer = new ManufacturerUpdateModel
-            {
-                Id = newManufacturerGuid,
-                Name = "Hpcko",
-                Description = "Good Manufacturer, you can count on it.",
-                Logo = "path",
-                CountryOfOrigin = "UK",
-                Product = new List<ProductOnlyIdUpdateModel>()
-            };
-            ManufacturerDetailModel expectedManufacturer = new ManufacturerDetailModel
-            {
-                Id = newManufacturerGuid,
-                Name = "Hpcko",
-                Description = "Good Manufacturer, you can count on it.",
-                Logo = "path",
-                CountryOfOrigin = "UK",
-                Product = new List<ProductListModel>()
-            };
+            updateManufacturer.Id = newManufacturerGuid;
+            expectedManufacturers[1].Id = newManufacturerGuid;
 
             var manufacturerToUpdateSerialized = JsonConvert.SerializeObject(updateManufacturer);
             var stringContent = new StringContent(manufacturerToUpdateSerialized, Encoding.UTF8, "application/json");
@@ -249,12 +226,9 @@ namespace PcShop.Api.Tests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            // GetById
             var response_GetById = await client.GetAsync($"api/Manufacturer/{updateManufacturer.Id}");
-            response_GetById.StatusCode.Should().Be(HttpStatusCode.OK);
-
             var manufacturer = JsonConvert.DeserializeObject<ManufacturerDetailModel>(await response_GetById.Content.ReadAsStringAsync());
-            manufacturer.Should().BeEquivalentTo(expectedManufacturer);
+            manufacturer.Should().BeEquivalentTo(expectedManufacturers[1]);
         }
 
         /*===============================    Delete Tests    ===============================*/
@@ -262,24 +236,11 @@ namespace PcShop.Api.Tests
         [Fact]
         public async Task Delete_should_delete_manufacturer()
         {
-            // Arrange - Create new manufacturer
-            ManufacturerNewModel newManufacturer = new ManufacturerNewModel
-            {
-                Name = "Hpcko",
-                Description = "...",
-                Logo = "path",
-                CountryOfOrigin = "UK"
-            };
+            // Arrange
             var newManufactorerSerialized = JsonConvert.SerializeObject(newManufacturer);
             var stringContent = new StringContent(newManufactorerSerialized, Encoding.UTF8, "application/json");
-
-            // Act 
             var response_create = await client.PostAsync("api/Manufacturer", stringContent);
-
-            // Assert
-            response_create.StatusCode.Should().Be(HttpStatusCode.OK);
             var newManufacturerGuid = JsonConvert.DeserializeObject<Guid>(await response_create.Content.ReadAsStringAsync());
-            newManufacturerGuid.Should().NotBe(Guid.Empty);
 
             // Act
             var response = await client.DeleteAsync($"api/Manufacturer/{newManufacturerGuid}");
@@ -287,12 +248,7 @@ namespace PcShop.Api.Tests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            // GetById deleted Manufacturer -> assert NotFound
-            // Act
             var response_GetById = await client.GetAsync($"api/Manufacturer/{newManufacturer}");
-
-            // Assert
-            response_GetById.Should().NotBeNull();
             response_GetById.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 

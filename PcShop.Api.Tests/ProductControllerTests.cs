@@ -268,12 +268,9 @@ namespace PcShop.Api.Tests
             var newProductGuid = JsonConvert.DeserializeObject<Guid>(await response.Content.ReadAsStringAsync());
             newProductGuid.Should().NotBeEmpty();
 
-            // GetById
             var response_GetById = await client.GetAsync($"api/Product/{newProductGuid}");
             response_GetById.StatusCode.Should().Be(HttpStatusCode.OK);
-
             var product = JsonConvert.DeserializeObject<ProductDetailModel>(await response_GetById.Content.ReadAsStringAsync());
-            product.Id.Should().NotBe(Guid.Empty);
             productsDetailModelExpected[0].Id = product.Id;
             product.Should().BeEquivalentTo(productsDetailModelExpected[0]);
         }
