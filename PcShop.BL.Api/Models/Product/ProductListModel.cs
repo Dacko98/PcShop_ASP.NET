@@ -17,6 +17,8 @@ namespace PcShop.BL.Api.Models.Product
 
         public string ManufacturerName { get; set; }
         public string CategoryName { get; set; }
+
+        public int Price { get; set; }
     }
 
     public class ProductListModelMapperProfile : Profile

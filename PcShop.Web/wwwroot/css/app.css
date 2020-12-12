@@ -1,1 +1,27 @@
 ﻿
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    gap: 20px 20px;
+    grid-template-areas: "FiltersArea Products Products Products Products " "FiltersArea Products Products Products Products " "FiltersArea Products Products Products Products " "FiltersArea Products Products Products Products " "FiltersArea Products Products Products Products ";
+}
+
+.FiltersArea {
+    grid-area: FiltersArea;
+}
+
+
+.Products {
+    grid-area: Products;
+} 
+
+img {
+    display: block;
+    width: 100%;
+}
+
+a {
+    text-decoration: none !important;
+    color: black
+}

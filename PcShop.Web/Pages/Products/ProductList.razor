@@ -1,0 +1,43 @@
+﻿@page "/products"
+@inherits MainLayout
+
+<div class="container">
+    <div class="grid-container">
+        <div class="FiltersArea">
+            <div class="d-flex flex-column bd-highlight mb-3">
+                <div class="p-2 bd-highlight">
+                    @foreach (var category in Category)
+                    {
+                        <p>@category.Name</p>
+                    }
+                </div>
+                <div class="p-2 bd-highlight">
+                    @foreach (var manufacturer in Manufacturers)
+                    {
+                        <p>@manufacturer.Name</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="Products">
+            <div class="row">
+                @foreach (var product in Products)
+                {
+
+                    <div class="col-3">
+                        <a href="@($"/product/{product.Id}")">
+                            <img src="/images/@product.Photo" />
+                            <p>@product.Name</p>
+                            <p>@product.Price€</p>
+                        </a>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
