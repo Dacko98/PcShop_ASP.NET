@@ -1,21 +1,27 @@
 ﻿@page "/products"
-@inherits MainLayout
 
 <div class="container">
     <div class="grid-container">
         <div class="FiltersArea">
             <div class="d-flex flex-column bd-highlight mb-3">
-                <div class="p-2 bd-highlight">
-                    @foreach (var category in Category)
-                    {
-                        <p>@category.Name</p>
-                    }
-                </div>
+
                 <div class="p-2 bd-highlight">
                     @foreach (var manufacturer in Manufacturers)
                     {
-                        <p>@manufacturer.Name</p>
+                        <input  type="checkbox" id=@manufacturer.Name  value=@manufacturer.Name @onchange="eventArgs =>{ checkBoxChecked(manufacturer.Name, eventArgs.Value); }"/>
+                        @manufacturer.Name<br />  
+
                     }
+                </div>
+                <h3>Category:</h3>
+                <div class="p-2 bd-highlight">
+                    <select  @onchange=@categorySelect id="select3">
+                        <option value="All" style="color:gray">--Category--</option>C
+                        @foreach (var category in Category)
+                        {
+                            <option value="@category.Name" class="others">@category.Name</option>
+                        }
+                    </select>
                 </div>
             </div>
         </div>
@@ -32,7 +38,6 @@
                             <p>@product.Price€</p>
                         </a>
                     </div>
-
                 }
             </div>
         </div>
