@@ -89,7 +89,7 @@ a {
 
 .pdeval {
     width: 60%;
-    background-color: lightgray;
+    background-color: #ADADAD;
     position: relative;
     left: 15%;
     margin-bottom: 15px;
@@ -101,3 +101,12 @@ a {
     padding-left: 25px;
     padding-right: 25px
 }
+
+body {
+    background: #DEDDDF;
+}
+
+.d-flex.flex-column.bd-highlight.mb-3.flexFilters {
+    background: #B9B9BA;
+}
+
