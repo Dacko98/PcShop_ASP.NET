@@ -46,6 +46,7 @@ namespace PcShop.Web.Pages.Products
         private ICollection<ManufacturerListModel> Manufacturers { get; set; } = new List<ManufacturerListModel>();
         private ICollection<CategoryListModel> Categories { get; set; } = new List<CategoryListModel>();
         private ICollection<EvaluationListModel> Evaluations { get; set; } = new List<EvaluationListModel>();
+        private List<EvaluationNewModel> EvaluationNews { get; set; } = new List<EvaluationNewModel>();
 
         protected override async Task OnInitializedAsync()
         {
@@ -56,7 +57,8 @@ namespace PcShop.Web.Pages.Products
 
             Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
             Categories = await CategoryFacade.GetCategorysAsync();
-            Evaluations = await EvaluationsFacade.GetEvaluationsAsync();
+            //Evaluations = await EvaluationsFacade.GetEvaluationsAsync();
+            EvaluationNews = DetailEvaluationsToNews();
 
             await base.OnInitializedAsync();
         }
@@ -70,6 +72,7 @@ namespace PcShop.Web.Pages.Products
             // push the new evaluation if there is one
             // save new manufacturer name to product
             // push new category and manufacturer
+            // evaluationNews pres product.evaluation (ktery pridat a ktery nechat) to evaluation upgrade
             await ProductFacade.UpdateAsync(await UpdateProduct());
         }
 
@@ -98,7 +101,7 @@ namespace PcShop.Web.Pages.Products
             }
         }
 
-        public async void AddEvaluation()
+        /*public async void AddEvaluation()
         {
             Debug.WriteLine("Adding evaluation is working");
             Debug.WriteLine("Evaluations.Count: " + Evaluations.Count);
@@ -134,7 +137,7 @@ namespace PcShop.Web.Pages.Products
             {
                 createNewEvaluation = true;
             }
-        }
+        }*/
 
         public async Task<ProductUpdateModel> UpdateProduct()
         {
@@ -225,17 +228,37 @@ namespace PcShop.Web.Pages.Products
             return listEvaluationUpdate;
         }
 
-        public void DeleteEvaluation(EvaluationListModel evaluation)
+        public void DeleteEvaluation(EvaluationNewModel evaluation)
         {
-            var evaluationIndex = product.Evaluations.IndexOf(evaluation);
-            product.Evaluations.RemoveAt(evaluationIndex);
+            var evaluationIndex = EvaluationNews.IndexOf(evaluation);
+            EvaluationNews.RemoveAt(evaluationIndex);
             Debug.WriteLine("Deleting this evaluation");
         }
 
-        public void AddEvaluationnew()
+        public void AddEvaluation()
         {
-            product.Evaluations.Add(NewEvaluation);
-            NewEvaluation = new EvaluationNewModel();
+            if(NewEvaluation.TextEvaluation != "")
+            {
+                EvaluationNews.Add(NewEvaluation);
+                NewEvaluation = new EvaluationNewModel();
+            }
+        }
+
+        public List<EvaluationNewModel> DetailEvaluationsToNews()
+        {
+            List<EvaluationNewModel> evaluationNewModels = new List<EvaluationNewModel>();
+
+            foreach(var evaluation in product.Evaluations)
+            {
+                evaluationNewModels.Add(new EvaluationNewModel
+                {
+                    TextEvaluation = evaluation.TextEvaluation,
+                    PercentEvaluation = evaluation.PercentEvaluation,
+                    ProductId = product.Id,
+                }) ;
+            }
+
+            return evaluationNewModels;
         }
     }
 }

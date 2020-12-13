@@ -140,7 +140,7 @@
     <h2>Evaluations</h2>
 
     <ul class="list-group mb-4">
-        @foreach (var evaluation in product.Evaluations)
+        @foreach (var evaluation in EvaluationNews)
         {
             <li class="d-flex justify-content-between align-items-center list-group-item list-group-item-secondary">
                 [@evaluation.PercentEvaluation %] @evaluation.TextEvaluation
@@ -148,6 +148,16 @@
             </li>
         }
     </ul>
+
+    <h3>Add new evaluation:</h3>
+    <div class="input-group">
+        <InputNumber min="0" @bind-Value="NewEvaluation.PercentEvaluation" class="form-control" />
+        <InputTextArea @bind-Value="NewEvaluation.TextEvaluation" class="form-control" />
+        <small class="form-text text-danger"><ValidationMessage For="@(() => NewEvaluation.TextEvaluation)" /></small>
+        <div class="input-group-append">
+            <button type="button" class="btn btn-primary" @onclick="@AddEvaluation">Add</button>
+        </div>
+    </div>
 
     <button type="submit" class="btn btn-success">Save</button>
 
