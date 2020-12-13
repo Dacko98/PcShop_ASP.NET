@@ -68,20 +68,14 @@ namespace PcShop.Web.Pages.Products
         public void PriceStart(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            if (!val.Equals(""))
-            {
-                priceStart = Int32.Parse(val);
-            }
+            priceStart = val.Equals("") ? 0 : Int32.Parse(val);
 
             applyFilters();
         }
         public void PriceEnd(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            if (!val.Equals(""))
-            {
-                priceEnd = Int32.Parse(val);
-            }
+            priceEnd = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
 
             applyFilters();
         }
@@ -89,20 +83,16 @@ namespace PcShop.Web.Pages.Products
         public void WeightStart(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            if (!val.Equals(""))
-            {
-                weightStart = Int32.Parse(val);
-            }
+
+            weightStart = val.Equals("") ? 0 : Int32.Parse(val);
+
 
             applyFilters();
         }
         public void WeightEnd(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            if (!val.Equals(""))
-            {
-                weightEnd = Int32.Parse(val);
-            }
+            weightEnd = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
 
             applyFilters();
         }
@@ -132,7 +122,7 @@ namespace PcShop.Web.Pages.Products
         public void Stock(object aChecked)
         {
 
-            inStock = ((bool) aChecked);
+            inStock = ((bool)aChecked);
             applyFilters();
         }
 
