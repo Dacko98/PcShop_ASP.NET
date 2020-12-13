@@ -114,8 +114,8 @@ namespace PcShop.Web.Pages.Products
                     Debug.WriteLine("percent of the new vec: " + NewEvaluation.PercentEvaluation + ".");
                     NewEvaluation.ProductId = product.Id;
 
-                    Guid newEvaluationId =  await EvaluationsFacade.CreateAsync(NewEvaluation);
-                    
+                    Guid newEvaluationId = await EvaluationsFacade.CreateAsync(NewEvaluation);
+
                     // EvaluationDetailModel newEvaluationDetail = await EvaluationsFacade.GetEvaluationAsync(newEvaluationId);
 
                     // actualize list of all evaluations
@@ -180,7 +180,7 @@ namespace PcShop.Web.Pages.Products
             }
 
             CategoryNewModel newCategoryModel = new CategoryNewModel() { Name = product.CategoryName };
-            var response =  await CategoryFacade.CreateAsync(newCategoryModel);
+            var response = await CategoryFacade.CreateAsync(newCategoryModel);
 
             Debug.WriteLine("NewCategory response: " + response.ToString());
             Debug.WriteLine("NewCategory name: " + product.CategoryName);
@@ -189,7 +189,7 @@ namespace PcShop.Web.Pages.Products
 
         public Guid FindManufacturerByName(string ManufacturerName)
         {
-            foreach(var manufacturer in Manufacturers)
+            foreach (var manufacturer in Manufacturers)
             {
                 if (manufacturer.Name == ManufacturerName)
                     return manufacturer.Id;
@@ -212,17 +212,30 @@ namespace PcShop.Web.Pages.Products
         public List<EvaluationUpdateModel> GetProductUpdateEvaluations()
         {
             List<EvaluationUpdateModel> listEvaluationUpdate = new List<EvaluationUpdateModel>();
-            foreach(var evaluation in product.Evaluations)
+            foreach (var evaluation in product.Evaluations)
             {
-                listEvaluationUpdate.Add( new EvaluationUpdateModel
+                listEvaluationUpdate.Add(new EvaluationUpdateModel
                 {
                     Id = evaluation.Id,
                     TextEvaluation = evaluation.TextEvaluation,
                     PercentEvaluation = evaluation.PercentEvaluation,
                     ProductId = product.Id
-                }) ;
+                });
             }
             return listEvaluationUpdate;
+        }
+
+        public void DeleteEvaluation(EvaluationListModel evaluation)
+        {
+            var evaluationIndex = product.Evaluations.IndexOf(evaluation);
+            product.Evaluations.RemoveAt(evaluationIndex);
+            Debug.WriteLine("Deleting this evaluation");
+        }
+
+        public void AddEvaluationnew()
+        {
+            product.Evaluations.Add(NewEvaluation);
+            NewEvaluation = new EvaluationNewModel();
         }
     }
 }
