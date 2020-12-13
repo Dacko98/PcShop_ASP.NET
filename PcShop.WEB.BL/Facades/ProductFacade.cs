@@ -10,36 +10,36 @@ namespace PcShop.WEB.BL.Facades
 {
     public class ProductsFacade : IAppFacade
     {
-        private readonly IProductClient productClient;
+        private readonly IProductClient _productClient;
 
         public ProductsFacade(IProductClient productClient)
         {
-            this.productClient = productClient;
+            this._productClient = productClient;
         }
 
         public async Task<ICollection<ProductListModel>> GetProductsAsync()
         {
-            return await productClient.ProductGetAsync();
+            return await _productClient.ProductGetAsync();
         }
 
         public async Task<ProductDetailModel> GetProductAsync(Guid id)
         {
-            return await productClient.ProductGetAsync(id);
+            return await _productClient.ProductGetAsync(id);
         }
 
         public async Task<Guid> CreateAsync(ProductNewModel data)
         {
-            return await productClient.ProductPostAsync(data);
+            return await _productClient.ProductPostAsync(data);
         }
 
         public async Task<Guid> UpdateAsync(ProductUpdateModel data)
         {
-            return await productClient.ProductPutAsync(data);
+            return await _productClient.ProductPutAsync(data);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            await productClient.ProductDeleteAsync(id);
+            await _productClient.ProductDeleteAsync(id);
         }
     }
 }

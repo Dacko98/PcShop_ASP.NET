@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
-using System.Collections.Generic;
-using System.Linq;
 using PcShop.BL.Api.Facades;
-using PcShop.BL.Api.Models.Interfaces;
+using PcShop.BL.Api.Models.Search;
 
 namespace PcShop.Api.Controllers
 {
@@ -12,20 +10,20 @@ namespace PcShop.Api.Controllers
     public class SearchController : ControllerBase
     {
         private const string ApiOperationBaseName = "Search";
-        private readonly SearchFacade searchFacade;
+        private readonly SearchFacade _searchFacade;
 
 
         public SearchController(
             SearchFacade searchFacade)
         {
-            this.searchFacade = searchFacade;
+            this._searchFacade = searchFacade;
         }
 
         [HttpGet("{searchedText}")]
         [OpenApiOperation(ApiOperationBaseName + nameof(GetAll))]
-        public ActionResult<List<IListModel>> GetAll(string searchedText)
+        public ActionResult<SearchResultModel> GetAll(string searchedText)
         {
-            return searchFacade.GetAllContainingText(searchedText).ToList();
+            return _searchFacade.GetAllContainingText(searchedText);
         }
     }
 }

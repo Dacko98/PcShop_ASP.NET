@@ -11,10 +11,10 @@ namespace PcShop.BL.Api.Facades
 {
     public class ManufacturerFacade : IAppFacade
     {
-        private readonly ManufacturerRepository manufacturerRepository;
-        private readonly IMapper mapper;
-        private readonly ProductRepository productRepository;
-        private readonly ProductFacade productFacade;
+        private readonly ManufacturerRepository _manufacturerRepository;
+        private readonly IMapper _mapper;
+        private readonly ProductRepository _productRepository;
+        private readonly ProductFacade _productFacade;
 
         public ManufacturerFacade(
             ProductRepository productRepository,
@@ -22,46 +22,46 @@ namespace PcShop.BL.Api.Facades
             ProductFacade productFacade,
             IMapper mapper)
         {
-            this.manufacturerRepository = manufacturerRepository;
-            this.mapper = mapper;
-            this.productFacade = productFacade;
-            this.productRepository = productRepository;
+            this._manufacturerRepository = manufacturerRepository;
+            this._mapper = mapper;
+            this._productFacade = productFacade;
+            this._productRepository = productRepository;
         }
 
         public List<ManufacturerListModel> GetAll()
         {
-            return mapper.Map<List<ManufacturerListModel>>(manufacturerRepository.GetAll());
+            return _mapper.Map<List<ManufacturerListModel>>(_manufacturerRepository.GetAll());
         }
 
         public ManufacturerDetailModel GetById(Guid id)
         {
-            var manufacturerEntity = manufacturerRepository.GetById(id);
+            var manufacturerEntity = _manufacturerRepository.GetById(id);
             if (manufacturerEntity == null)
             {
                 return null;
             }
-            manufacturerEntity.Product = productRepository.GetByManufacturerId(id);
-            return mapper.Map<ManufacturerDetailModel>(manufacturerEntity);
+            manufacturerEntity.Product = _productRepository.GetByManufacturerId(id);
+            return _mapper.Map<ManufacturerDetailModel>(manufacturerEntity);
         }
 
         public Guid Create(ManufacturerNewModel manufacturer)
         {
-            var manufacturerEntity = mapper.Map<ManufacturerEntity>(manufacturer);
-            return manufacturerRepository.Insert(manufacturerEntity);
+            var manufacturerEntity = _mapper.Map<ManufacturerEntity>(manufacturer);
+            return _manufacturerRepository.Insert(manufacturerEntity);
         }
 
         public Guid? Update(ManufacturerUpdateModel manufacturerUpdateModel)
         {
-            var manufacturerEntityExisting = manufacturerRepository.GetById(manufacturerUpdateModel.Id);
+            var manufacturerEntityExisting = _manufacturerRepository.GetById(manufacturerUpdateModel.Id);
             if (manufacturerEntityExisting == null)
             {
                 return null;
             }
-            manufacturerEntityExisting.Product = productRepository.GetByManufacturerId(manufacturerUpdateModel.Id);
+            manufacturerEntityExisting.Product = _productRepository.GetByManufacturerId(manufacturerUpdateModel.Id);
             UpdateManufacturer(manufacturerUpdateModel, manufacturerEntityExisting);
 
-            var manufacturerEntityUpdated = mapper.Map<ManufacturerEntity>(manufacturerUpdateModel);
-            return manufacturerRepository.Update(manufacturerEntityUpdated);
+            var manufacturerEntityUpdated = _mapper.Map<ManufacturerEntity>(manufacturerUpdateModel);
+            return _manufacturerRepository.Update(manufacturerEntityUpdated);
         }
 
         private void UpdateManufacturer(ManufacturerUpdateModel manufacturerUpdateModel, ManufacturerEntity manufacturerEntity)
@@ -73,7 +73,7 @@ namespace PcShop.BL.Api.Facades
             {
                 product.ManufacturerId = Guid.Empty;
                 product.Manufacturer = null;
-                productRepository.Update(product);
+                _productRepository.Update(product);
             }
 
             var productToAdd = manufacturerUpdateModel.Product.Where(
@@ -82,23 +82,23 @@ namespace PcShop.BL.Api.Facades
 
             foreach (var product in productToAdd)
             {
-                var goodEntity = productRepository.GetById(product.Id);
+                var goodEntity = _productRepository.GetById(product.Id);
                 goodEntity.ManufacturerId = manufacturerUpdateModel.Id;
-                productRepository.Update(goodEntity);
+                _productRepository.Update(goodEntity);
             }
 
         }
 
         public void Delete(Guid id)
         {
-            var manufacturerEntity = manufacturerRepository.GetById(id);
-            manufacturerEntity.Product = productRepository.GetByManufacturerId(id);
+            var manufacturerEntity = _manufacturerRepository.GetById(id);
+            manufacturerEntity.Product = _productRepository.GetByManufacturerId(id);
             foreach (var product in manufacturerEntity.Product)
             {
                 product.ManufacturerId = Guid.Empty;
                 product.Manufacturer = null;
             }
-            manufacturerRepository.Remove(id);
+            _manufacturerRepository.Remove(id);
         }
     }
 }

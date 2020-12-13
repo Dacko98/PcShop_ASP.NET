@@ -8,38 +8,38 @@ using PcShop.Console.Api;
 
 namespace PcShop.WEB.BL.Facades
 {
-    public class CategorysFacade : IAppFacade
+    public class CategoriesFacade : IAppFacade
     {
-        private readonly ICategoryClient categoryClient;
+        private readonly ICategoryClient _categoryClient;
 
-        public CategorysFacade(ICategoryClient categoryClient)
+        public CategoriesFacade(ICategoryClient categoryClient)
         {
-            this.categoryClient = categoryClient;
+            this._categoryClient = categoryClient;
         }
 
         public async Task<ICollection<CategoryListModel>> GetCategorysAsync()
         {
-            return await categoryClient.CategoryGetAsync();
+            return await _categoryClient.CategoryGetAsync();
         }
 
         public async Task<CategoryDetailModel> GetCategoryAsync(Guid id)
         {
-            return await categoryClient.CategoryGetAsync(id);
+            return await _categoryClient.CategoryGetAsync(id);
         }
 
         public async Task<Guid> CreateAsync(CategoryNewModel data)
         {
-            return await categoryClient.CategoryPostAsync(data);
+            return await _categoryClient.CategoryPostAsync(data);
         }
 
         public async Task<Guid> UpdateAsync(CategoryUpdateModel data)
         {
-            return await categoryClient.CategoryPutAsync(data);
+            return await _categoryClient.CategoryPutAsync(data);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            await categoryClient.CategoryDeleteAsync(id);
+            await _categoryClient.CategoryDeleteAsync(id);
         }
     }
 }

@@ -10,36 +10,36 @@ namespace PcShop.WEB.BL.Facades
 {
     public class ManufacturersFacade : IAppFacade
     {
-        private readonly IManufacturerClient manufacturerClient;
+        private readonly IManufacturerClient _manufacturerClient;
 
         public ManufacturersFacade(IManufacturerClient manufacturerClient)
         {
-            this.manufacturerClient = manufacturerClient;
+            this._manufacturerClient = manufacturerClient;
         }
 
         public async Task<ICollection<ManufacturerListModel>> GetManufacturersAsync()
         {
-            return await manufacturerClient.ManufacturerGetAsync();
+            return await _manufacturerClient.ManufacturerGetAsync();
         }
 
         public async Task<ManufacturerDetailModel> GetManufacturerAsync(Guid id)
         {
-            return await manufacturerClient.ManufacturerGetAsync(id);
+            return await _manufacturerClient.ManufacturerGetAsync(id);
         }
 
         public async Task<Guid> CreateAsync(ManufacturerNewModel data)
         {
-            return await manufacturerClient.ManufacturerPostAsync(data);
+            return await _manufacturerClient.ManufacturerPostAsync(data);
         }
 
         public async Task<Guid> UpdateAsync(ManufacturerUpdateModel data)
         {
-            return await manufacturerClient.ManufacturerPutAsync(data);
+            return await _manufacturerClient.ManufacturerPutAsync(data);
         }   
 
         public async Task DeleteAsync(Guid id)
         {
-            await manufacturerClient.ManufacturerDeleteAsync(id);
+            await _manufacturerClient.ManufacturerDeleteAsync(id);
         }
     }
 }

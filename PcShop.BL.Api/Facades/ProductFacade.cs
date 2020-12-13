@@ -12,12 +12,12 @@ namespace PcShop.BL.Api.Facades
 {
     public class ProductFacade : IAppFacade
     {
-        private readonly ProductRepository productRepository;
-        private readonly EvaluationRepository evaluationRepository;
-        private readonly ManufacturerRepository manufacturerRepository;
-        private readonly CategoryRepository categoryRepository;
-        private readonly EvaluationFacade evaluationFacade;
-        private readonly IMapper mapper;
+        private readonly ProductRepository _productRepository;
+        private readonly EvaluationRepository _evaluationRepository;
+        private readonly ManufacturerRepository _manufacturerRepository;
+        private readonly CategoryRepository _categoryRepository;
+        private readonly EvaluationFacade _evaluationFacade;
+        private readonly IMapper _mapper;
 
         public ProductFacade(
             ProductRepository productRepository,
@@ -27,56 +27,56 @@ namespace PcShop.BL.Api.Facades
             EvaluationFacade evaluationFacade,
             IMapper mapper)
         {
-            this.evaluationRepository = evaluationRepository;
-            this.productRepository = productRepository;
-            this.categoryRepository = categoryRepository;
-            this.manufacturerRepository = manufacturerRepository;
-            this.mapper = mapper;
-            this.evaluationFacade = evaluationFacade;
+            this._evaluationRepository = evaluationRepository;
+            this._productRepository = productRepository;
+            this._categoryRepository = categoryRepository;
+            this._manufacturerRepository = manufacturerRepository;
+            this._mapper = mapper;
+            this._evaluationFacade = evaluationFacade;
         }
 
         public List<ProductListModel> GetAll()
         {
-            var productEntityList = productRepository.GetAll();
+            var productEntityList = _productRepository.GetAll();
             foreach (var productEntity in productEntityList)
             {
-                productEntity.Manufacturer = manufacturerRepository.GetById(productEntity.ManufacturerId);
-                productEntity.Category = categoryRepository.GetById(productEntity.CategoryId);
+                productEntity.Manufacturer = _manufacturerRepository.GetById(productEntity.ManufacturerId);
+                productEntity.Category = _categoryRepository.GetById(productEntity.CategoryId);
             }
-            return mapper.Map<List<ProductListModel>>(productEntityList);
+            return _mapper.Map<List<ProductListModel>>(productEntityList);
         }
 
         public ProductDetailModel GetById(Guid id)
         {
-            var productEntity = productRepository.GetById(id);
+            var productEntity = _productRepository.GetById(id);
             if (productEntity == null)
             {
                 return null;
             }
-            productEntity.Evaluations = evaluationRepository.GetByProductId(id);
-            productEntity.Manufacturer = manufacturerRepository.GetById(productEntity.ManufacturerId);
-            productEntity.Category = categoryRepository.GetById(productEntity.CategoryId);
-            return mapper.Map<ProductDetailModel>(productEntity);
+            productEntity.Evaluations = _evaluationRepository.GetByProductId(id);
+            productEntity.Manufacturer = _manufacturerRepository.GetById(productEntity.ManufacturerId);
+            productEntity.Category = _categoryRepository.GetById(productEntity.CategoryId);
+            return _mapper.Map<ProductDetailModel>(productEntity);
         }
 
         public Guid Create(ProductNewModel product)
         {
-            var productEntity = mapper.Map<ProductEntity>(product);
-            return productRepository.Insert(productEntity);
+            var productEntity = _mapper.Map<ProductEntity>(product);
+            return _productRepository.Insert(productEntity);
         }
 
         public Guid? Update(ProductUpdateModel productUpdateModel)
         {
-            var productEntityExisting = productRepository.GetById(productUpdateModel.Id);
+            var productEntityExisting = _productRepository.GetById(productUpdateModel.Id);
             if (productEntityExisting == null)
             {
                 return null;
             }
-            productEntityExisting.Evaluations = evaluationRepository.GetByProductId(productUpdateModel.Id);
+            productEntityExisting.Evaluations = _evaluationRepository.GetByProductId(productUpdateModel.Id);
             UpdateEvaluation(productUpdateModel, productEntityExisting);
 
-            var productEntityUpdated = mapper.Map<ProductEntity>(productUpdateModel);
-            return productRepository.Update(productEntityUpdated);
+            var productEntityUpdated = _mapper.Map<ProductEntity>(productUpdateModel);
+            return _productRepository.Update(productEntityUpdated);
         }
 
         private void UpdateEvaluation(ProductUpdateModel productUpdateModel, ProductEntity productEntity)
@@ -86,7 +86,7 @@ namespace PcShop.BL.Api.Facades
             
             foreach (var evaluation in evaluationToDelete)
             {
-                evaluationFacade.Delete(evaluation.Id);
+                _evaluationFacade.Delete(evaluation.Id);
             }
             
             var evaluationToInsert = productUpdateModel.Evaluations.Where(
@@ -95,7 +95,7 @@ namespace PcShop.BL.Api.Facades
             foreach (var evaluation in evaluationToInsert)
             {
                 evaluation.ProductId = productUpdateModel.Id;
-                evaluationFacade.Create(mapper.Map<EvaluationNewModel>(evaluation));
+                _evaluationFacade.Create(_mapper.Map<EvaluationNewModel>(evaluation));
             }
 
             var evaluationToUpdate = productUpdateModel.Evaluations.Where(
@@ -104,20 +104,20 @@ namespace PcShop.BL.Api.Facades
             foreach (var evaluation in evaluationToUpdate)
             {
                 evaluation.ProductId = productUpdateModel.Id;
-                evaluationFacade.Update(evaluation);
+                _evaluationFacade.Update(evaluation);
             }
         }
 
         public void Delete(Guid id)
         {
-            var productEntity = productRepository.GetById(id);
-            productEntity.Evaluations = evaluationRepository.GetByProductId(id);
+            var productEntity = _productRepository.GetById(id);
+            productEntity.Evaluations = _evaluationRepository.GetByProductId(id);
             foreach (var evaluation in productEntity.Evaluations)
             {
-                evaluationRepository.Remove(evaluation.Id);
+                _evaluationRepository.Remove(evaluation.Id);
             }
 
-            productRepository.Remove(id);
+            _productRepository.Remove(id);
         }
     }
 }
