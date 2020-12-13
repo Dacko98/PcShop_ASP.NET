@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using PcShop.BL.Api.Facades.Interfaces;
-using PcShop.BL.Api.Models.Evaluation;
-using PcShop.BL.Api.Models.Interfaces;
-using PcShop.BL.Api.Models.Manufacturer;
-using PcShop.BL.Api.Models.Product;
+﻿using PcShop.BL.Api.Facades.Interfaces;
+using PcShop.BL.Api.Models.Search;
 
 namespace PcShop.BL.Api.Facades
 {
@@ -23,33 +19,24 @@ namespace PcShop.BL.Api.Facades
             this._productFacade = productFacade;
         }
 
-        public IList<IListModel> GetAllContainingText(string searchedText)
+        public SearchResultModel GetAllContainingText(string searchedText)
         {
             searchedText = searchedText.ToLower();
 
-            IList<IListModel> foundEntities = new List<IListModel>();
+            return new SearchResultModel
+            {
+                EvaluationEntities = _evaluationFacade.GetAll()
+                    .FindAll(e => (e.TextEvaluation ?? "").ToLower().Contains(searchedText)),
 
-            List<EvaluationListModel> evaluationEntities = _evaluationFacade.GetAll();
-            List<ManufacturerListModel> manufacturerEntities = _manufacturerFacade.GetAll();
-            List<ProductListModel> productEntities = _productFacade.GetAll();
+                ManufacturerEntities = _manufacturerFacade.GetAll()
+                    .FindAll(m => (m.Name ?? "").ToLower().Contains(searchedText)
+                                  || (m.Description ?? "").ToLower().Contains(searchedText)
+                                  || (m.CountryOfOrigin ?? "").ToLower().Contains(searchedText)),
 
-
-            foreach (var evaluationEntity in evaluationEntities)
-                if ((evaluationEntity.TextEvaluation ?? "").ToLower().Contains(searchedText))
-                    foundEntities.Add(evaluationEntity);
-
-            foreach (var manufacturerEntity in manufacturerEntities)
-                if ((manufacturerEntity.Name ?? "").ToLower().Contains(searchedText)
-                    || (manufacturerEntity.Description ?? "").ToLower().Contains(searchedText)
-                    || (manufacturerEntity.CountryOfOrigin ?? "").ToLower().Contains(searchedText))
-                    foundEntities.Add(manufacturerEntity);
-
-            foreach (var productEntity in productEntities)
-                if ((productEntity.Name ?? "").ToLower().Contains(searchedText)
-                    || (productEntity.Description ?? "").ToLower().Contains(searchedText))
-                    foundEntities.Add(productEntity);
-
-            return foundEntities;
+                ProductEntities = _productFacade.GetAll()
+                    .FindAll(p => (p.Name ?? "").ToLower().Contains(searchedText)
+                                  || (p.Description ?? "").ToLower().Contains(searchedText))
+            };
         }
     }
 }
