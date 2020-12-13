@@ -5,10 +5,9 @@ using PcShop.BL.Api.Models.Interfaces;
 
 namespace PcShop.BL.Api.Models.Category
 {
-    public class CategoryListModel : IListModel
+    public class CategoryListModel : IModel
     {
         public Guid Id { get; set; }
-        public EntityTypeEnum EntityType { get; set; }
 
         public string Name { get; set; }
     }

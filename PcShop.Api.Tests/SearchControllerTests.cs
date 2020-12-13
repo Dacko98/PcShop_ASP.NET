@@ -249,7 +249,7 @@ namespace PcShop.Api.Tests
             {
                 var newManufacturerSerialized = JsonConvert.SerializeObject(evaluation);
                 var stringContent = new StringContent(newManufacturerSerialized, Encoding.UTF8, "application/json");
-                await _client.PostAsync("api/Manufacturer", stringContent);
+                await _client.PostAsync("api/Evaluation", stringContent);
             }
 
             var response = await _client.GetAsync($"api/Search/{SearchedString}");

@@ -5,10 +5,9 @@ using PcShop.BL.Api.Models.Interfaces;
 
 namespace PcShop.BL.Api.Models.Manufacturer
 {
-    public class ManufacturerListModel : IListModel
+    public class ManufacturerListModel : IModel
     {
         public Guid Id { get; set; }
-        public EntityTypeEnum EntityType { get; set; }
 
         public string Name { get; set; }
         public string Description { get; set; }

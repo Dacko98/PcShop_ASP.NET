@@ -28,7 +28,6 @@ namespace PcShop.Api.Tests
                 TextEvaluation = "Good",
                 PercentEvaluation = 80,
                 ProductName = "Lattitude E6440",
-                EntityType = EntityTypeEnum.EvaluationEntity
             },
             new EvaluationListModel()
             {
@@ -36,7 +35,6 @@ namespace PcShop.Api.Tests
                 TextEvaluation = "Broke after one month",
                 PercentEvaluation = 0,
                 ProductName = "Thinkpad T560",
-                EntityType = EntityTypeEnum.EvaluationEntity
             }
         };
 
