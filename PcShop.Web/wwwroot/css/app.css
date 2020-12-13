@@ -1,10 +1,9 @@
 ﻿
-.grid-container {
+.grid-containerList {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 25px 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    gap: 20px 20px;
-    grid-template-areas: "FiltersArea Products Products Products Products " "FiltersArea Products Products Products Products " "FiltersArea Products Products Products Products " "FiltersArea Products Products Products Products " "FiltersArea Products Products Products Products ";
+    grid-template-areas: "FiltersArea . Products Products Products Products " "FiltersArea . Products Products Products Products " "FiltersArea . Products Products Products Products " "FiltersArea . Products Products Products Products " "FiltersArea . Products Products Products Products ";
 }
 
 .FiltersArea {
@@ -14,7 +13,7 @@
 
 .Products {
     grid-area: Products;
-} 
+}
 
 img {
     display: block;
@@ -29,4 +28,76 @@ a {
 
 .others {
     color: black
+}
+
+.flexFilters {
+    border: 1px solid;
+    padding: 5px;
+}
+
+.filterInput {
+    width: 60px
+}
+
+.grid-containerDetail {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 0px 0px;
+    grid-template-areas: "Photo Photo Photo Photo Photo Name Name Name Name Name" "Photo Photo Photo Photo Photo Manufacturer Manufacturer Manufacturer Manufacturer Manufacturer" "Photo Photo Photo Photo Photo Price Price Price Price Price" "Photo Photo Photo Photo Photo Stats Stats Stats Stats Stats" "Description Description Description Description Description Description Description Description Description Description" "Description Description Description Description Description Description Description Description Description Description";
+}
+
+.Description {
+    grid-area: Description;
+}
+
+.Photo {
+    grid-area: Photo;
+}
+
+.Stats {
+    grid-area: Stats;
+}
+
+.Manufacturer {
+    grid-area: Manufacturer;
+}
+
+.Price {
+    grid-area: Price;
+}
+
+.Name {
+    grid-area: Name;
+}
+
+
+
+.pdh1 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-family: system-ui;
+}
+
+.pdh2 {
+    font-size: 1.75rem;
+}
+
+.pdimg {
+    padding: 50px;
+}
+
+.pdeval {
+    width: 60%;
+    background-color: lightgray;
+    position: relative;
+    left: 15%;
+    margin-bottom: 15px;
+    height: auto;
+    border-radius: 15px;
+}
+
+.pdeval h4, p {
+    padding-left: 25px;
+    padding-right: 25px
 }

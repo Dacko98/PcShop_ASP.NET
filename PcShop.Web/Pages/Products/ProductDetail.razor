@@ -1,0 +1,51 @@
+﻿@page "/product/{Id:guid}"
+
+
+<EditForm Model="@Product">
+    <div class="container">
+        <NavLink href="@($"/product/edit/{Product.Id}")" Match="NavLinkMatch.All" ActiveClass="active" class="nav-link">
+            <button type="button" class="btn btn-primary">Edit</button>
+        </NavLink>
+        <div class="grid-containerDetail">
+            <div class="Description">
+                @Product.Description
+            </div>
+            <div class="Photo">
+                <img class="pdimg" src="/images/@Product.Photo"/>
+            </div>
+            <div class="Name">
+                <h1 class="pdh1">@Product.Name</h1>
+            </div>
+            <div class="Manufacturer">
+                <h2 class="pdh2">
+                    <strong>Manufacturer:</strong>@Product.ManufacturerName
+                </h2>
+            </div>
+            <div class="Price">
+                <h2 class="pdh2"><strong>Price:</strong>@Product.Price €</h2><br/>
+                <strong>In stock:</strong>@Product.CountInStock
+            </div>
+            <div class="Stats">
+                <strong>Category:</strong>@Product.CategoryName &nbsp;&nbsp;&nbsp; <strong>Weight:</strong> @Product.Weight<br>
+                <strong>GPU:</strong> @Product.GPU &nbsp;&nbsp;&nbsp;<strong>CPU:</strong> @Product.CPU<br>
+                <strong>HDD:</strong>@Product.HDD &nbsp;&nbsp;&nbsp; <strong>RAM:</strong>@Product.RAM
+            </div>
+        </div>
+
+
+
+
+
+        <h2 style="padding-left: 200px">Evaluations:</h2>
+        @foreach (var evaluation in Evaluations)
+        {
+            if (evaluation.ProductName.Equals(Product.Name))
+            {
+                <div class="pdeval">
+                    <h4>@evaluation.PercentEvaluation %</h4>
+                    <p>@evaluation.TextEvaluation</p>
+                </div>
+            }
+        }
+    </div>
+</EditForm>

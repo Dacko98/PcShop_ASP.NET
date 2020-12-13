@@ -21,6 +21,7 @@ namespace PcShop.BL.Api.Models.Product
         public int Price { get; set; }
 
         public int Weight{ get; set; }
+        public int CountInStock { get; set; }
     }
 
     public class ProductListModelMapperProfile : Profile
