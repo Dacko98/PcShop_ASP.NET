@@ -1,0 +1,29 @@
+﻿@page "/category/{Id:guid}"
+
+
+<EditForm Model="@Category">
+    <div class="container">
+        <NavLink href="@($"/category/edit/{Category.Id}")" Match="NavLinkMatch.All" ActiveClass="active" class="nav-link">
+            <button type="button" class="btn btn-primary">Edit</button>
+        </NavLink>
+        <div class="grid-containerDetail">
+            <div class="Name">
+                <h1>@Category.Name</h1>
+            </div>
+        </div>
+        
+
+        <h2 style="padding-left: 200px">Products:</h2>
+        @foreach (var product in Products)
+        {
+            if (product.CategoryName.Equals(Category.Name))
+            {
+                <div class="pdeval">
+                    <h4>@product.Name</h4>
+                    <p>@product.ManufacturerName</p>
+                    <p>@product.Price</p>
+                </div>
+            }
+        }
+    </div>
+</EditForm>
