@@ -41,6 +41,8 @@ namespace PcShop.Web.Pages.Products
         public int weightStart { get; set; } = 0;
         public int weightEnd { get; set; } = Int32.MaxValue;
 
+        public bool inStock { get; set; } = false;
+
         protected override async Task OnInitializedAsync()
         {
             await LoadData();
@@ -66,32 +68,37 @@ namespace PcShop.Web.Pages.Products
         public void PriceStart(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            priceStart = Int32.Parse(val);
+            priceStart = val.Equals("") ? 0 : Int32.Parse(val);
+
             applyFilters();
         }
         public void PriceEnd(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            Debug.WriteLine(val);
-            priceEnd = Int32.Parse(val);
+            priceEnd = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
+
             applyFilters();
         }
 
         public void WeightStart(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            weightStart = Int32.Parse(val);
+
+            weightStart = val.Equals("") ? 0 : Int32.Parse(val);
+
+
             applyFilters();
         }
         public void WeightEnd(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            weightEnd = Int32.Parse(val);
+            weightEnd = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
+
             applyFilters();
         }
 
 
-        public void checkBoxChecked(string aSelectedId, object aChecked)
+        public void CheckBoxChecked(string aSelectedId, object aChecked)
         {
             {
                 if ((bool)aChecked)
@@ -112,14 +119,24 @@ namespace PcShop.Web.Pages.Products
             applyFilters();
         }
 
+        public void Stock(object aChecked)
+        {
+
+            inStock = ((bool)aChecked);
+            applyFilters();
+        }
+
         public void applyFilters()
         {
 
             Products = category.Equals("All") ? AllProducts : AllProducts.Where(f => f.CategoryName.Equals(category)).ToList();
-            Products = !SelectedValues.Any() ? Products  : Products.Where(f => SelectedValues.Contains(f.ManufacturerName)).ToList();
+            Products = !SelectedValues.Any() ? Products : Products.Where(f => SelectedValues.Contains(f.ManufacturerName)).ToList();
             Products = Products.Where(f => f.Price <= priceEnd && f.Price >= priceStart).ToList();
-            Products = Products.Where(f => f.Weight <= weightEnd&& f.Weight>= weightStart).ToList();
-
+            Products = Products.Where(f => f.Weight <= weightEnd && f.Weight >= weightStart).ToList();
+            if (inStock)
+            {
+                Products = Products.Where(f => f.CountInStock > 0).ToList();
+            }
         }
     }
 }

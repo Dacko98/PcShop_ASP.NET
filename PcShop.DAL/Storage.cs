@@ -164,7 +164,7 @@ namespace PcShop.DAL
             Evaluations.Add(new EvaluationEntity
             {
                 Id = EvaluationGuids[2],
-                TextEvaluation = "Little bit expensive",
+                TextEvaluation = "Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive Little bit expensive ",
                 PercentEvaluation = 50,
                 ProductId = ProductGuids[1]
             });
