@@ -9,18 +9,18 @@ namespace PcShop.BL.Api.Facades
 {
     public class SearchFacade : IAppFacade
     {
-        private readonly EvaluationFacade evaluationFacade;
-        private readonly ManufacturerFacade manufacturerFacade;
-        private readonly ProductFacade productFacade;
+        private readonly EvaluationFacade _evaluationFacade;
+        private readonly ManufacturerFacade _manufacturerFacade;
+        private readonly ProductFacade _productFacade;
 
         public SearchFacade(
             EvaluationFacade evaluationFacade,
             ManufacturerFacade manufacturerFacade,
             ProductFacade productFacade)
         {
-            this.evaluationFacade = evaluationFacade;
-            this.manufacturerFacade = manufacturerFacade;
-            this.productFacade = productFacade;
+            this._evaluationFacade = evaluationFacade;
+            this._manufacturerFacade = manufacturerFacade;
+            this._productFacade = productFacade;
         }
 
         public IList<IListModel> GetAllContainingText(string searchedText)
@@ -29,9 +29,9 @@ namespace PcShop.BL.Api.Facades
 
             IList<IListModel> foundEntities = new List<IListModel>();
 
-            List<EvaluationListModel> evaluationEntities = evaluationFacade.GetAll();
-            List<ManufacturerListModel> manufacturerEntities = manufacturerFacade.GetAll();
-            List<ProductListModel> productEntities = productFacade.GetAll();
+            List<EvaluationListModel> evaluationEntities = _evaluationFacade.GetAll();
+            List<ManufacturerListModel> manufacturerEntities = _manufacturerFacade.GetAll();
+            List<ProductListModel> productEntities = _productFacade.GetAll();
 
 
             foreach (var evaluationEntity in evaluationEntities)

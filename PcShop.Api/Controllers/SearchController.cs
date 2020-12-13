@@ -12,20 +12,20 @@ namespace PcShop.Api.Controllers
     public class SearchController : ControllerBase
     {
         private const string ApiOperationBaseName = "Search";
-        private readonly SearchFacade searchFacade;
+        private readonly SearchFacade _searchFacade;
 
 
         public SearchController(
             SearchFacade searchFacade)
         {
-            this.searchFacade = searchFacade;
+            this._searchFacade = searchFacade;
         }
 
         [HttpGet("{searchedText}")]
         [OpenApiOperation(ApiOperationBaseName + nameof(GetAll))]
         public ActionResult<List<IListModel>> GetAll(string searchedText)
         {
-            return searchFacade.GetAllContainingText(searchedText).ToList();
+            return _searchFacade.GetAllContainingText(searchedText).ToList();
         }
     }
 }

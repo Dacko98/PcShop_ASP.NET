@@ -10,36 +10,36 @@ namespace PcShop.WEB.BL.Facades
 {
     public class EvaluationsFacade : IAppFacade
     {
-        private readonly IEvaluationClient evaluationClient;
+        private readonly IEvaluationClient _evaluationClient;
 
         public EvaluationsFacade(IEvaluationClient evaluationClient)
         {
-            this.evaluationClient = evaluationClient;
+            this._evaluationClient = evaluationClient;
         }
 
         public async Task<ICollection<EvaluationListModel>> GetEvaluationsAsync()
         {
-            return await evaluationClient.EvaluationGetAsync();
+            return await _evaluationClient.EvaluationGetAsync();
         }
 
         public async Task<EvaluationDetailModel> GetEvaluationAsync(Guid id)
         {
-            return await evaluationClient.EvaluationGetAsync(id);
+            return await _evaluationClient.EvaluationGetAsync(id);
         }
 
         public async Task<Guid> CreateAsync(EvaluationNewModel data)
         {
-            return await evaluationClient.EvaluationPostAsync(data);
+            return await _evaluationClient.EvaluationPostAsync(data);
         }
 
         public async Task<Guid> UpdateAsync(EvaluationUpdateModel data)
         {
-            return await evaluationClient.EvaluationPutAsync(data);
+            return await _evaluationClient.EvaluationPutAsync(data);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            await evaluationClient.EvaluationDeleteAsync(id);
+            await _evaluationClient.EvaluationDeleteAsync(id);
         }
     }
 }

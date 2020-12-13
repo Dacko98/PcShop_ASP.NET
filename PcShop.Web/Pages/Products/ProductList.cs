@@ -23,7 +23,7 @@ namespace PcShop.Web.Pages.Products
         [Inject]
         private ManufacturersFacade ManufacturerFacade { get; set; }
         [Inject]
-        private CategorysFacade CategoryFacade { get; set; }
+        private CategoriesFacade CategoryFacade { get; set; }
 
 
         private ICollection<ProductListModel> Products { get; set; } = new List<ProductListModel>();

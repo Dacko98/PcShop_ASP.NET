@@ -27,7 +27,7 @@ namespace PcShop.Web.Pages.Products
         [Inject]
         private ManufacturersFacade ManufacturerFacade { get; set; }
         [Inject]
-        private CategorysFacade CategoryFacade { get; set; }
+        private CategoriesFacade CategoryFacade { get; set; }
         [Inject]
         private EvaluationsFacade EvaluationsFacade { get; set; }
 
