@@ -15,10 +15,6 @@
     grid-area: Products;
 }
 
-.Categories {
-    grid-area: Categories;
-}
-
 .plimg {
     display: block;
     width: 100%;
@@ -73,6 +69,11 @@ a {
 
 .Name {
     grid-area: Name;
+}
+
+
+.Categories {
+    text-align: center;
 }
 
 
