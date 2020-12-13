@@ -3,50 +3,49 @@ using PcShop.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PcShop.DAL.Entities;
 
 namespace PcShop.DAL.Repositories
 {
     public class EvaluationRepository : IAppRepository<EvaluationEntity>
     {
-        private readonly IList<EvaluationEntity> evaluations;
-        private readonly IMapper mapper;
+        private readonly IList<EvaluationEntity> _evaluations;
+        private readonly IMapper _mapper;
 
         public EvaluationRepository(
             Storage storage,
             IMapper mapper)
         {
-            evaluations = storage.Evaluations;
-            this.mapper = mapper;
+            _evaluations = storage.Evaluations;
+            this._mapper = mapper;
         }
 
         public IList<EvaluationEntity> GetAll()
         {
-            return evaluations;
+            return _evaluations;
         }
         public IList<EvaluationEntity> GetByProductId(Guid productId)
         {
-            return evaluations.Where(evaluation => evaluation.ProductId== productId).ToList();
+            return _evaluations.Where(evaluation => evaluation.ProductId== productId).ToList();
         }
 
         public EvaluationEntity GetById(Guid id)
         {
-            return evaluations.SingleOrDefault(entity => entity.Id == id);
+            return _evaluations.SingleOrDefault(entity => entity.Id == id);
         }
 
         public Guid Insert(EvaluationEntity evaluation)
         {
             evaluation.Id = Guid.NewGuid();
-            evaluations.Add(evaluation);
+            _evaluations.Add(evaluation);
             return evaluation.Id;
         }
 
         public Guid? Update(EvaluationEntity evaluationUpdated)
         {
-            var evaluationExisting = evaluations.SingleOrDefault(evaluationInStorage => evaluationInStorage.Id == evaluationUpdated.Id);
+            var evaluationExisting = _evaluations.SingleOrDefault(evaluationInStorage => evaluationInStorage.Id == evaluationUpdated.Id);
             if (evaluationExisting != null)
             {
-                mapper.Map(evaluationUpdated, evaluationExisting);
+                _mapper.Map(evaluationUpdated, evaluationExisting);
             }
 
             return evaluationExisting?.Id;
@@ -54,8 +53,8 @@ namespace PcShop.DAL.Repositories
 
         public void Remove(Guid id)
         {
-            var evaluationToRemove = evaluations.Single(evaluation => evaluation.Id.Equals(id));
-            evaluations.Remove(evaluationToRemove);
+            var evaluationToRemove = _evaluations.Single(evaluation => evaluation.Id.Equals(id));
+            _evaluations.Remove(evaluationToRemove);
         }
     }
 }
