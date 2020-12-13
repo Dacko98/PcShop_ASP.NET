@@ -4,118 +4,137 @@
 @inherits ComponentBase
 @using PcShop.BL.Api
 
-<h1>Edit product</h1>
+<div class="container">
 
-<EditForm Model="@product" OnValidSubmit="SaveData">
-    <DataAnnotationsValidator />
-    <div class="form-group">
-        <label class="w-100" for="NameInput">
-            Name:
-            <InputText @bind-Value="@product.Name" class="form-control" />
-            <small class="form-text text-danger"><ValidationMessage For="@(() => product.Name)" /></small>
-        </label>
-    </div>
+    <h1>Edit product</h1>
 
-    <!--TODO FOTO-->
-
-    <div class="form-group">
-        <label class="w-100" for="Description input">
-            Description:
-            <InputTextArea @bind-Value="@product.Description" class="form-control" />
-            <small class="form-text text-danger"><ValidationMessage For="@(() => product.Description)" /></small>
-        </label>
-    </div>
-
-    <div class="form-group">
-        <label class="w-100" for="PriceInput">
-            Price (€):
-            <InputNumber min="0" @bind-Value="product.Price" class="form-control" id="priceInput" />
-            <small class="form-text text-danger"><ValidationMessage For="@(() => product.Description)" /></small>
-        </label>
-    </div>
-
-    <div class="form-group">
-        <label class="w-100" for="WeightInput">
-            Weight (g):
-            <InputNumber min="0" @bind-Value="product.Weight" class="form-control" id="weightInput" />
-        </label>
-    </div>
-
-    <div class="form-group">
-        <div class="input-group">
-            <label class="w-100" for="CategoryInput">
-                Category:
+    <EditForm Model="@product" OnValidSubmit="SaveData">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label class="w-100" for="NameInput">
+                Name:
+                <InputText @bind-Value="@product.Name" class="form-control" />
+                <small class="form-text text-danger"><ValidationMessage For="@(() => product.Name)" /></small>
             </label>
-            <select value="@product.CategoryName" @onchange="@categorySelect" id="select1">
-                @foreach (var category in Category)
+        </div>
+
+        <!--TODO FOTO-->
+
+        <div class="form-group">
+            <label class="w-100" for="Description input">
+                Description:
+                <InputTextArea @bind-Value="@product.Description" class="form-control" />
+                <small class="form-text text-danger"><ValidationMessage For="@(() => product.Description)" /></small>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="w-100" for="PriceInput">
+                Price (€):
+                <InputNumber min="0" @bind-Value="product.Price" class="form-control" id="priceInput" />
+                <small class="form-text text-danger"><ValidationMessage For="@(() => product.Description)" /></small>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="w-100" for="WeightInput">
+                Weight (g):
+                <InputNumber min="0" @bind-Value="product.Weight" class="form-control" id="weightInput" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <label class="w-100" for="CategoryInput">
+                    Category:
+                </label>
+                <select value="@product.CategoryName" @onchange="@categorySelect" id="select1">
+                    @foreach (var category in Categories)
+                    {
+                        <option value="@category.Name" class="others">@category.Name</option>
+                    }
+                    <option value="new category" style="color:gray">new category</option>
+                </select>
+                @if (createNewCategory)
                 {
-                    <option value="@category.Name" class="others">@category.Name</option>
+                    <InputText @bind-Value="@product.CategoryName" class="form-control" />
                 }
-                <option value="new category" style="color:gray">new category</option>
-            </select>
-            @if (NewCategory)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <label class="w-100" for="CategoryInput">
+                    Manufacturer:
+                </label>
+                <select value="@product.ManufacturerName" @onchange="@manufacturerSelect" id="select2">
+                    @foreach (var manufacturer in Manufacturers)
+                    {
+                        <option value="@manufacturer.Name" class="others">@manufacturer.Name</option>
+                    }
+                    <option value="new manufacturer" style="color:gray">new manufacturer</option>
+                </select>
+            </div>
+
+            @if (createNewManufacturer)
             {
-                <InputText @bind-Value="@product.CategoryName" class="form-control" />
+                <div class="form-smaller">
+                    <label class="w-100" for="ManufacturerNameInput">
+                        Manufacturer name:
+                        <InputText @bind-Value="@newManufacturer.Name" class="form-control" />
+                        <small class="form-text text-danger"><ValidationMessage For="@(() => product.Name)" /></small>
+                    </label>
+
+                    <label class="w-100" for="NameInput">
+                        Manufacturer description:
+                        <InputTextArea @bind-Value="@newManufacturer.Description" class="form-control" />
+                        <small class="form-text text-danger"><ValidationMessage For="@(() => product.Name)" /></small>
+                    </label>
+
+                    <label class="w-100" for="NameInput">
+                        Country of origin:
+                        <InputText @bind-Value="@newManufacturer.CountryOfOrigin" class="form-control" />
+                        <small class="form-text text-danger"><ValidationMessage For="@(() => product.Name)" /></small>
+                    </label>
+                </div>
             }
         </div>
-    </div>
 
-    <div class="form-group">
-        <div class="input-group">
-            <label class="w-100" for="CategoryInput">
-                Manufacturer:
+        <div class="form-group">
+            <label class="w-100" for="RAM">
+                RAM:
+                <InputText @bind-Value="@product.RAM" class="form-control" />
+                <small class="form-text text-danger"><ValidationMessage For="@(() => product.RAM)" /></small>
             </label>
-            <select value="@product.ManufacturerName" @onchange="@manufacturerSelect" id="select2">
-                @foreach (var manufacturer in Manufacturers)
-                {
-                    <option value="@manufacturer.Name" class="others">@manufacturer.Name</option>
-                }
-                <option value="new manufacturer" style="color:gray">new manufacturer</option>
-            </select>
-            @if (NewManufacturer)
-            {
-                <InputText @bind-Value="@product.ManufacturerName" class="form-control" />
-            }
         </div>
-    </div>
 
-    <div class="form-group">
-        <label class="w-100" for="RAM">
-            RAM:
-            <InputText @bind-Value="@product.RAM" class="form-control" />
-            <small class="form-text text-danger"><ValidationMessage For="@(() => product.RAM)" /></small>
-        </label>
-    </div>
+        <div class="form-group">
+            <label class="w-100" for="CPU">
+                CPU:
+                <InputText @bind-Value="@product.CPU" class="form-control" />
+                <small class="form-text text-danger"><ValidationMessage For="@(() => product.CPU)" /></small>
+            </label>
+        </div>
 
-    <div class="form-group">
-        <label class="w-100" for="CPU">
-            CPU:
-            <InputText @bind-Value="@product.CPU" class="form-control" />
-            <small class="form-text text-danger"><ValidationMessage For="@(() => product.CPU)" /></small>
-        </label>
-    </div>
+        <div class="form-group">
+            <label class="w-100" for="GPU">
+                GPU:
+                <InputText @bind-Value="@product.GPU" class="form-control" />
+                <small class="form-text text-danger"><ValidationMessage For="@(() => product.GPU)" /></small>
+            </label>
+        </div>
 
-    <div class="form-group">
-        <label class="w-100" for="GPU">
-            GPU:
-            <InputText @bind-Value="@product.GPU" class="form-control" />
-            <small class="form-text text-danger"><ValidationMessage For="@(() => product.GPU)" /></small>
-        </label>
-    </div>
+        <div class="form-group">
+            <label class="w-100" for="HDD">
+                HDD:
+                <InputText @bind-Value="@product.HDD" class="form-control" />
+                <small class="form-text text-danger"><ValidationMessage For="@(() => product.HDD)" /></small>
+            </label>
+        </div>
 
-    <div class="form-group">
-        <label class="w-100" for="HDD">
-            HDD:
-            <InputText @bind-Value="@product.HDD" class="form-control" />
-            <small class="form-text text-danger"><ValidationMessage For="@(() => product.HDD)" /></small>
-        </label>
-    </div>
+        <h2>Evaluations</h2>
 
-    <h2>Evaluations</h2>
-
-    @foreach (var evalutaion in Evaluations)
-    {
-        if (evalutaion.ProductName == product.Name)
+        @foreach (var evalutaion in product.Evaluations)
         {
             <div class="form-group">
                 <div class="input-group">
@@ -131,33 +150,35 @@
                 </div>
             </div>
         }
-    }
 
-    <button class="btn" onclick="AddEvaluation">Add evalutaion</button>
+        <button class="btn btn-lg" @onclick="AddEvaluation">Add evalutaion</button>
 
-    @if (createNewEvaluation)
-    {
-        <div class="form-group">
-            <div class="input-group">
-                <label class="w-100" for="PercentInput">
-                    Percentage:
-                    <InputNumber min="0" @bind-Value="NewEvaluation.PercentEvaluation" class="form-control" id="PercentInput" />
-                    <small class="form-text text-danger"><ValidationMessage For="@(() => NewEvaluation.PercentEvaluation)" /></small>
-                </label>
-                <label class="w-100" for="TextInput">
-                    Text evaluation:
-                    <InputText @bind-Value="@NewEvaluation.TextEvaluation" class="form-control" />
-                    <small class="form-text text-danger"><ValidationMessage For="@(() => NewEvaluation.TextEvaluation)" /></small>
-                </label>
+        <br />
+
+        @if (createNewEvaluation)
+        {
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="w-100" for="PercentInput">
+                        Percentage:
+                        <InputNumber min="0" @bind-Value="NewEvaluation.PercentEvaluation" class="form-control" id="PercentInput" />
+                        <small class="form-text text-danger"><ValidationMessage For="@(() => NewEvaluation.PercentEvaluation)" /></small>
+                    </label>
+                    <label class="w-100" for="TextInput">
+                        Text evaluation:
+                        <InputText @bind-Value="@NewEvaluation.TextEvaluation" class="form-control" />
+                        <small class="form-text text-danger"><ValidationMessage For="@(() => NewEvaluation.TextEvaluation)" /></small>
+                    </label>
+                </div>
             </div>
-        </div>
-    }
+        }
 
+        <button type="submit" class="btn btn-success">Save</button>
 
-    <button type="submit" class="btn btn-success">Save</button>
-</EditForm>
+    </EditForm>
 
+    <br />
 
-<br />
+    <NavLink href="/products" class="btn btn-primary btn-lg">Go back.</NavLink>
 
-<NavLink href="/products" Match="NavLinkMatch.All" class="btn btn-primary btn-lg">Go back.</NavLink>
+</div>
