@@ -3,13 +3,15 @@ using PcShop.BL.Api.Models.Category;
 using System.Threading.Tasks;
 using PcShop.WEB.BL.Facades;
 using System;
-using System.Diagnostics;
+using System.Linq;
+using PcShop.BL.Api.Models.Product;
 
 namespace PcShop.Web.Pages.Categories
 {
     public partial class CategoryEdit : ComponentBase
     {
         [Inject] private CategoriesFacade CategoryFacade { get; set; }
+        [Inject] private ProductsFacade ProductFacade { get; set; }
 
         [Parameter] public Guid Id { get; set; }
 
@@ -27,14 +29,20 @@ namespace PcShop.Web.Pages.Categories
 
         protected async Task SaveData()
         {
-            Guid response;
             if (NewCategory)
-                response = await CategoryFacade.CreateAsync(new CategoryNewModel {Name = Category.Name});
+                await CategoryFacade.CreateAsync(new CategoryNewModel {Name = Category.Name});
             else
-                response = await CategoryFacade.UpdateAsync(new CategoryUpdateModel {Name = Category.Name, Id = Id});
+            {
+                var products = (await ProductFacade.GetProductsAsync())
+                    .ToList().FindAll(p => p.CategoryName == Category.Name);
 
-            Debug.WriteLine("Data should be saved    " + Id + "   " + Category.Name);
-            Debug.WriteLine("Saving returns:   " + response);
+                await CategoryFacade.UpdateAsync(new CategoryUpdateModel
+                {
+                    Name = Category.Name, 
+                    Id = Id,
+                    Product = products.Select(product => new ProductOnlyIdUpdateModel { Id = product.Id }).ToList()
+                });
+            }
         }
     }
 }

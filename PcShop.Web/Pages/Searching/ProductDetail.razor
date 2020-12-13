@@ -1,0 +1,110 @@
+﻿@page "/search/{Phrase}"
+@page "/search"
+
+
+
+
+
+<div class="container">
+
+
+    @if (FoundedEntities.ManufacturerEntities.Any())
+    {
+
+
+
+
+
+
+
+    }
+
+    @if (FoundedEntities.ProductEntities.Any())
+    {
+
+
+
+        <h1> Notebooks</h1>
+        <div class="grid-containerList">
+            <div class="FiltersArea">
+                <div class="d-flex flex-column bd-highlight mb-3 flexFilters">
+                    <h2>Filters</h2>
+                    <h3>Manufacturers:</h3>
+                    <div class="p-2 bd-highlight">
+                        @foreach (var manufacturer in AllManufacturers)
+                        {
+                            <input type="checkbox" id=@manufacturer.Name value=@manufacturer.Name @onchange="eventArgs =>{ CheckBoxChecked(manufacturer.Name, eventArgs.Value); }" />
+                            @manufacturer.Name<br />
+                        }
+                    </div>
+                    <h3>Category:</h3>
+                    <div class="p-2 bd-highlight">
+                        <select @onchange=@categorySelect id="select3">
+                            <option value="All" style="color:gray">--Category--</option>
+                            @foreach (var category in AllCategories)
+                            {
+                                <option value="@category.Name" class="others">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <h3>Price range</h3>
+                    <div>
+                        <input class="filterInput" @onchange="PriceStart" type="number" />-
+                        <input class="filterInput" @onchange="PriceEnd" type="number" />€
+                    </div>
+
+                    <h3>Weight range</h3>
+                    <div>
+                        <input class="filterInput" @onchange="WeightStart" type="number" />-
+                        <input class="filterInput" @onchange="WeightEnd" type="number" />g
+                    </div>
+                    <div class="p-2 bd-highlight">
+                        <input type="checkbox" @onchange="eventArgs =>{ Stock(eventArgs.Value); }" />
+                        In stock<br />
+                    </div>
+                </div>
+                <NavLink href="/product/create" Match="NavLinkMatch.All" ActiveClass="active" class="nav-link">
+                    <button type="button" class="btn btn-primary">Create new product</button>
+                </NavLink>
+            </div>
+
+            <div class="Products">
+                <div class="row">
+                    @foreach (var product in Products)
+                    {
+                        <div class="col-3">
+                            <a href="@($"/product/{product.Id}")">
+                                <img class="plimg" src="/images/@product.Photo" />
+                                <p>@product.Name</p>
+                                <p>@product.Price€</p>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+    }
+
+    @if (FoundedEntities.EvaluationEntities.Any())
+    {
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+</div>
