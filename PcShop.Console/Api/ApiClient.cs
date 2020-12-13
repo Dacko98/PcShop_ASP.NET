@@ -11,6 +11,7 @@ using PcShop.BL.Api.Models.Evaluation;
 using PcShop.BL.Api.Models.Interfaces;
 using PcShop.BL.Api.Models.Manufacturer;
 using PcShop.BL.Api.Models.Product;
+using PcShop.BL.Api.Models.Search;
 
 #pragma warning disable 108 // Disable "CS0108 '{derivedDto}.ToJson()' hides inherited member '{dtoBase}.ToJson()'. Use the new keyword if hiding was intended."
 #pragma warning disable 114 // Disable "CS0114 '{derivedDto}.RaisePropertyChanged(String)' hides inherited member 'dtoBase.RaisePropertyChanged(String)'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword."
@@ -2203,11 +2204,11 @@ namespace PcShop.Console.Api
     public partial interface ISearchClient
     {
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<IListModel>> SearchAsync(string searchedText);
+        System.Threading.Tasks.Task<SearchResultModel> SearchAsync(string searchedText);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<IListModel>> SearchAsync(string searchedText, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<SearchResultModel> SearchAsync(string searchedText, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -2245,14 +2246,14 @@ namespace PcShop.Console.Api
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<IListModel>> SearchAsync(string searchedText)
+        public System.Threading.Tasks.Task<SearchResultModel> SearchAsync(string searchedText)
         {
             return SearchAsync(searchedText, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<IListModel>> SearchAsync(string searchedText, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<SearchResultModel> SearchAsync(string searchedText, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Search/{searchedText}");
@@ -2288,7 +2289,7 @@ namespace PcShop.Console.Api
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<IListModel>>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<SearchResultModel>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);

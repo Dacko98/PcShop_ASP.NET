@@ -7,7 +7,6 @@ namespace PcShop.DAL.Entities
     public class ProductEntity : IEntity
     {
         public Guid Id { get; set; }
-        public EntityTypeEnum EntityType => EntityTypeEnum.ManufacturerEntity;
 
         public string Name { get; set; }
         public string Photo { get; set; }

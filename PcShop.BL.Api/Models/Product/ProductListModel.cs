@@ -6,10 +6,9 @@ using PcShop.Common.Extensions;
 
 namespace PcShop.BL.Api.Models.Product
 {
-    public class ProductListModel : IListModel
+    public class ProductListModel : IModel
     {
         public Guid Id { get; set; }
-        public EntityTypeEnum EntityType { get; set; }
 
         public string Name { get; set; }
         public string Photo { get; set; }
