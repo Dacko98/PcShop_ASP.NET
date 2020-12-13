@@ -18,7 +18,13 @@
             </label>
         </div>
 
-        <!--TODO FOTO-->
+        <div class="form-group">
+            <label class="w-100" for="PhotoInput">
+                Photo path:
+                <InputText @bind-Value="@product.Photo" class="form-control" />
+                <small class="form-text text-danger"><ValidationMessage For="@(() => product.Photo)" /></small>
+            </label>
+        </div>
 
         <div class="form-group">
             <label class="w-100" for="Description input">
@@ -136,44 +142,14 @@
 
         @foreach (var evalutaion in product.Evaluations)
         {
-            <div class="form-group">
-                <div class="input-group">
-                    <label class="w-100" for="PercentInput">
-                        Percentage:
-                        <InputNumber min="0" @bind-Value="evalutaion.PercentEvaluation" class="form-control" id="PercentInput" />
-                        <small class="form-text text-danger"><ValidationMessage For="@(() => evalutaion.PercentEvaluation)" /></small>
-
-                        Text evaluation:
-                        <InputText @bind-Value="@evalutaion.TextEvaluation" class="form-control" />
-                        <small class="form-text text-danger"><ValidationMessage For="@(() => evalutaion.TextEvaluation)" /></small>
-                    </label>
-                </div>
-            </div>
-        }
-
-        <button class="btn btn-lg" @onclick="AddEvaluation">Add evalutaion</button>
-
-        <br />
-
-        @if (createNewEvaluation)
-        {
-            <div class="form-group">
-                <div class="input-group">
-                    <label class="w-100" for="PercentInput">
-                        Percentage:
-                        <InputNumber min="0" @bind-Value="NewEvaluation.PercentEvaluation" class="form-control" id="PercentInput" />
-                        <small class="form-text text-danger"><ValidationMessage For="@(() => NewEvaluation.PercentEvaluation)" /></small>
-                    </label>
-                    <label class="w-100" for="TextInput">
-                        Text evaluation:
-                        <InputText @bind-Value="@NewEvaluation.TextEvaluation" class="form-control" />
-                        <small class="form-text text-danger"><ValidationMessage For="@(() => NewEvaluation.TextEvaluation)" /></small>
-                    </label>
-                </div>
-            </div>
+            <label>[@evalutaion.PercentEvaluation %]: @evalutaion.TextEvaluation</label> <br />
         }
 
         <button type="submit" class="btn btn-success">Save</button>
+        
+        <br />
+
+        <NavLink href="@($"/evalutaions/editByProduct/{product.Id}")" class="btn-secondary" type="submit">Edit evalutaions</NavLink>
 
     </EditForm>
 

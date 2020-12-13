@@ -36,6 +36,8 @@ namespace PcShop.Web.Pages.Products
         private bool createNewManufacturer = false;
         private bool createNewEvaluation = false;
         private EvaluationNewModel NewEvaluation = new EvaluationNewModel();
+        private readonly EvaluationNewModel EMPTY_EVALUATION = new EvaluationNewModel();
+
         private ManufacturerNewModel newManufacturer = new ManufacturerNewModel();
 
         //private ICollection<ProductListModel> Products { get; set; } = new List<ProductListModel>();
@@ -96,16 +98,37 @@ namespace PcShop.Web.Pages.Products
             }
         }
 
-        public void AddEvaluation()
+        public async void AddEvaluation()
         {
-            // TODO - tadyto nefunguje, ten btn odkazuje na SaveData, idk why...
-
             Debug.WriteLine("Adding evaluation is working");
+            Debug.WriteLine("Evaluations.Count: " + Evaluations.Count);
             if (createNewEvaluation)
             {
-                Debug.WriteLine("Evaluation percent is: " + NewEvaluation.ProductId + ".");
+                Debug.WriteLine("Evaluation percent is: " + NewEvaluation.PercentEvaluation + ".");
 
-                // There is one already, should be pushed or something.
+                if (NewEvaluation.TextEvaluation != EMPTY_EVALUATION.TextEvaluation)
+                {
+                    // There is one already, should be pushed and saved to the list
+                    Debug.WriteLine("The new vec is here");
+                    Debug.WriteLine("text of the new vec: " + NewEvaluation.TextEvaluation + ".");
+                    Debug.WriteLine("percent of the new vec: " + NewEvaluation.PercentEvaluation + ".");
+                    NewEvaluation.ProductId = product.Id;
+
+                    Guid newEvaluationId =  await EvaluationsFacade.CreateAsync(NewEvaluation);
+                    
+                    // EvaluationDetailModel newEvaluationDetail = await EvaluationsFacade.GetEvaluationAsync(newEvaluationId);
+
+                    // actualize list of all evaluations
+                    Evaluations = await EvaluationsFacade.GetEvaluationsAsync();
+
+                    Debug.WriteLine("Evaluations.Count: " + Evaluations.Count);
+
+                    NewEvaluation = new EvaluationNewModel();
+                }
+                else
+                {
+                    Debug.WriteLine("else aaaaaaaaaaaaaaaa");
+                }
             }
             else
             {
@@ -130,10 +153,7 @@ namespace PcShop.Web.Pages.Products
                 HDD = product.HDD,
                 ManufacturerId = await DecideNewManufacturer(),
                 CategoryId = await DecideNewCategory(),
-                Evaluations = 
-                new List<EvaluationUpdateModel>()
-                // Evaluations = product.Evaluations
-                //Evaluations = ListOfEvalutaion()
+                Evaluations = GetProductUpdateEvaluations()
             };
             return productUpdateModel;
         }
@@ -187,6 +207,22 @@ namespace PcShop.Web.Pages.Products
             }
 
             return Guid.Empty;  // shouldn't come to this
+        }
+
+        public List<EvaluationUpdateModel> GetProductUpdateEvaluations()
+        {
+            List<EvaluationUpdateModel> listEvaluationUpdate = new List<EvaluationUpdateModel>();
+            foreach(var evaluation in product.Evaluations)
+            {
+                listEvaluationUpdate.Add( new EvaluationUpdateModel
+                {
+                    Id = evaluation.Id,
+                    TextEvaluation = evaluation.TextEvaluation,
+                    PercentEvaluation = evaluation.PercentEvaluation,
+                    ProductId = product.Id
+                }) ;
+            }
+            return listEvaluationUpdate;
         }
     }
 }
