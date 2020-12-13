@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System;
+using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -34,6 +35,11 @@ namespace PcShop.Web.Pages.Products
 
         public List<string> SelectedValues { get; set; } = new List<string>();
         public string category = "All";
+        public int priceStart { get; set; } = 0;
+        public int priceEnd { get; set; } = Int32.MaxValue;
+
+        public int weightStart { get; set; } = 0;
+        public int weightEnd { get; set; } = Int32.MaxValue;
 
         protected override async Task OnInitializedAsync()
         {
@@ -53,11 +59,35 @@ namespace PcShop.Web.Pages.Products
 
         public void categorySelect(ChangeEventArgs e)
         {
-
-            Debug.WriteLine("My debug string");
             category = e.Value.ToString();
-            Products = category.Equals("All") ? AllProducts : AllProducts.Where(f => f.CategoryName.Equals(category)).ToList();
+            applyFilters();
+        }
 
+        public void PriceStart(ChangeEventArgs e)
+        {
+            string val = e.Value.ToString();
+            priceStart = Int32.Parse(val);
+            applyFilters();
+        }
+        public void PriceEnd(ChangeEventArgs e)
+        {
+            string val = e.Value.ToString();
+            Debug.WriteLine(val);
+            priceEnd = Int32.Parse(val);
+            applyFilters();
+        }
+
+        public void WeightStart(ChangeEventArgs e)
+        {
+            string val = e.Value.ToString();
+            weightStart = Int32.Parse(val);
+            applyFilters();
+        }
+        public void WeightEnd(ChangeEventArgs e)
+        {
+            string val = e.Value.ToString();
+            weightEnd = Int32.Parse(val);
+            applyFilters();
         }
 
 
@@ -79,8 +109,17 @@ namespace PcShop.Web.Pages.Products
                     }
                 }
             }
-            Products = AllProducts.Where(f => SelectedValues.Contains(f.ManufacturerName)).ToList();
+            applyFilters();
         }
 
+        public void applyFilters()
+        {
+
+            Products = category.Equals("All") ? AllProducts : AllProducts.Where(f => f.CategoryName.Equals(category)).ToList();
+            Products = !SelectedValues.Any() ? Products  : Products.Where(f => SelectedValues.Contains(f.ManufacturerName)).ToList();
+            Products = Products.Where(f => f.Price <= priceEnd && f.Price >= priceStart).ToList();
+            Products = Products.Where(f => f.Weight <= weightEnd&& f.Weight>= weightStart).ToList();
+
+        }
     }
 }

@@ -8,14 +8,13 @@
                 <div class="p-2 bd-highlight">
                     @foreach (var manufacturer in Manufacturers)
                     {
-                        <input  type="checkbox" id=@manufacturer.Name  value=@manufacturer.Name @onchange="eventArgs =>{ checkBoxChecked(manufacturer.Name, eventArgs.Value); }"/>
-                        @manufacturer.Name<br />  
-
+                        <input type="checkbox" id=@manufacturer.Name value=@manufacturer.Name @onchange="eventArgs =>{ checkBoxChecked(manufacturer.Name, eventArgs.Value); }" />
+                        @manufacturer.Name<br/> 
                     }
                 </div>
                 <h3>Category:</h3>
                 <div class="p-2 bd-highlight">
-                    <select  @onchange=@categorySelect id="select3">
+                    <select @onchange=@categorySelect id="select3">
                         <option value="All" style="color:gray">--Category--</option>C
                         @foreach (var category in Category)
                         {
@@ -23,6 +22,10 @@
                         }
                     </select>
                 </div>
+                <input @onchange="PriceStart" type="number" />
+                <input @onchange="PriceEnd" type="number" />
+                <input @onchange="WeightStart" type="number" />
+                <input @onchange="WeightEnd" type="number" />
             </div>
         </div>
 
