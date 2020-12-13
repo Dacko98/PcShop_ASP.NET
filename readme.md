@@ -7,3 +7,7 @@ In development by students from VUT FIT:
 xjacko04@vutbr.cz, Daniel Jacko
 xkment06@vutbr.cz, Martin Kmenta
 xvlach22@vutbr.cz, Vojta Vlach
+
+For testing
+Project: http://localhost:55488/
+API testing: https://localhost:44301/swagger/index.html
