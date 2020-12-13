@@ -1,0 +1,21 @@
+﻿@page "/categories"
+
+<h1>pokus</h1>
+
+<div class="container">
+    <h1> Categories</h1>
+    <div class="grid-containerList">
+        <div class="Categories">
+            @foreach (var category in Category)
+            {
+                <div class="col-3">
+                    <a href="@($"/category/{category.Id}")">
+                        <p>@category.Name</p>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

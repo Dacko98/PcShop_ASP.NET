@@ -71,7 +71,7 @@ namespace PcShop.Api.Controllers
             try {
                 _productFacade.Delete(id);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return BadRequest();
             }

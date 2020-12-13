@@ -15,6 +15,10 @@
     grid-area: Products;
 }
 
+.Categories {
+    grid-area: Categories;
+}
+
 .plimg {
     display: block;
     width: 100%;

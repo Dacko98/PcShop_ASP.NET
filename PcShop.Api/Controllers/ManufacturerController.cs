@@ -72,7 +72,7 @@ namespace PcShop.Api.Controllers
             {
                 _manufacturerFacade.Delete(id);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return BadRequest();
             }
