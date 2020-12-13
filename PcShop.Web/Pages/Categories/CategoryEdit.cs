@@ -15,6 +15,7 @@ namespace PcShop.Web.Pages.Categories
 
         [Parameter] public Guid Id { get; set; }
 
+        private string CategoryOldName { get; set; }
         public CategoryDetailModel Category { get; set; }
 
         private bool NewCategory { get; set; }
@@ -23,6 +24,7 @@ namespace PcShop.Web.Pages.Categories
         {
             NewCategory = Id == Guid.Empty;
             Category = NewCategory ? new CategoryDetailModel() : await CategoryFacade.GetCategoryAsync(Id);
+            CategoryOldName = Category.Name;
 
             await base.OnInitializedAsync();
         }
@@ -34,7 +36,7 @@ namespace PcShop.Web.Pages.Categories
             else
             {
                 var products = (await ProductFacade.GetProductsAsync())
-                    .ToList().FindAll(p => p.CategoryName == Category.Name);
+                    .ToList().FindAll(p => p.CategoryName == CategoryOldName);
 
                 await CategoryFacade.UpdateAsync(new CategoryUpdateModel
                 {
