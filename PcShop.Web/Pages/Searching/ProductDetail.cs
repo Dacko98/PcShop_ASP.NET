@@ -17,9 +17,9 @@ namespace PcShop.Web.Pages.Searching
         [Inject] private ManufacturersFacade ManufacturerFacade { get; set; }
         [Inject] private CategoriesFacade CategoryFacade { get; set; }
 
-        [Parameter] public string Phrase { get; set; }
+        [Parameter] public string Phrase { get; set; } = "";
         
-        public SearchResultModel FoundedEntities { get; set; }
+        public SearchResultModel FoundedEntities { get; set; } = new SearchResultModel();
         private ICollection<ProductListModel> Products { get; set; } = new List<ProductListModel>();
         private ICollection<ManufacturerListModel> AllManufacturers { get; set; } = new List<ManufacturerListModel>();
         private ICollection<CategoryListModel> AllCategories { get; set; } = new List<CategoryListModel>();
@@ -35,9 +35,12 @@ namespace PcShop.Web.Pages.Searching
         public bool inStock { get; set; } = false;
         protected override async Task OnInitializedAsync()
         {
-            FoundedEntities = await SearchFacade.GetAllContainingText(Phrase);
-            AllManufacturers = await ManufacturerFacade.GetManufacturersAsync();
-            AllCategories = await CategoryFacade.GetCategorysAsync();
+            if (Phrase.Trim() != "")
+            {
+                FoundedEntities = await SearchFacade.GetAllContainingText(Phrase);
+                AllManufacturers = await ManufacturerFacade.GetManufacturersAsync();
+                AllCategories = await CategoryFacade.GetCategorysAsync();
+            }
 
             await base.OnInitializedAsync();
         }

@@ -24,7 +24,7 @@ namespace PcShop.Web.Pages.Categories
         private ICollection<ProductListModel> AllProducts { get; set; } = new List<ProductListModel>();
         private ICollection<ManufacturerListModel> Manufacturers { get; set; } = new List<ManufacturerListModel>();
 
-        public System.Collections.Generic.List<string> SelectedValues { get; set; } = new System.Collections.Generic.List<string>();
+        public List<string> SelectedValues { get; set; } = new List<string>();
 
         public string category = "All";
         public int priceStart { get; set; } = 0;
