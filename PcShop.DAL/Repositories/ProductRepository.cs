@@ -26,7 +26,7 @@ namespace PcShop.DAL.Repositories
 
         public ProductEntity GetById(Guid id)
         {
-            return products.SingleOrDefault(entity => entity.Id == id);
+            return products.FirstOrDefault(entity => entity.Id == id);
         }
 
         public Guid Insert(ProductEntity product)

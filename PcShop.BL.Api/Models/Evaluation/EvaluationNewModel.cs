@@ -11,6 +11,7 @@ namespace PcShop.BL.Api.Models.Evaluation
     {
         public string TextEvaluation { get; set; }
 
+        [Required]
         [Range(0, 100, ErrorMessage = "Evaluation out of range, insert number between 0 and 100")]
         public int PercentEvaluation { get; set; }
 
