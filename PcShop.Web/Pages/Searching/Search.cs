@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using PcShop.BL.Api.Models.Category;
-using PcShop.BL.Api.Models.Manufacturer;
-using PcShop.BL.Api.Models.Product;
 using PcShop.BL.Api.Models.Search;
 using PcShop.WEB.BL.Facades;
 

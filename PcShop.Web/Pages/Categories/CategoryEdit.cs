@@ -12,7 +12,7 @@ namespace PcShop.Web.Pages.Categories
     {
         [Inject] private CategoriesFacade CategoryFacade { get; set; }
         [Inject] private ProductsFacade ProductFacade { get; set; }
-
+        [Inject] NavigationManager UriHelper { get; set; }
         [Parameter] public Guid Id { get; set; }
 
         private string CategoryOldName { get; set; }
@@ -27,6 +27,14 @@ namespace PcShop.Web.Pages.Categories
             CategoryOldName = Category.Name;
 
             await base.OnInitializedAsync();
+        }
+
+        
+        protected async Task DeleteEntity()
+        {
+            if (!NewCategory)
+                await CategoryFacade.DeleteAsync(Id);
+            UriHelper.NavigateTo("/deleted/categories");
         }
 
         protected async Task SaveData()

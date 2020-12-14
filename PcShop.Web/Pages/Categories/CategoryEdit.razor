@@ -13,7 +13,10 @@
             <small class="form-text text-danger"><ValidationMessage For="@(() => Category.Name)" /></small>
         </label>
     </div>
-    <button type="submit" class="btn btn-success">Save</button>
+    <div class="d-block">
+        <button type="submit" class="btn btn-success d-inline">Save</button>
+        <button type="submit" @onclick="DeleteEntity" class="btn btn-danger d-inline">Delete</button>
+    </div>
 </EditForm>
 
 
