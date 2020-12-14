@@ -133,3 +133,7 @@ p.pl-text {
 .plcol {
     padding: 10px;
 }
+
+textarea.form-control.mr-sm-2.valid {
+    height: 2.4em;
+}
