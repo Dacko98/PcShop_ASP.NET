@@ -509,7 +509,7 @@ namespace PcShop.DAL
                 Id = _manufacturerGuids[0],
                 Name = "Dell",
                 Description = "Dell is computer manufacturer that was first started by Michael Dell at the University of Texas-Austin on May 3, 1984. Today, it is one of the largest and fastest growing major computer companies in the world. Dell allows customers to order their products directly from the factory, and from retail electronics stores.",
-                Logo = "default.jpg",
+                Logo = "default_manufacturer_logo.jpg",
                 CountryOfOrigin = "USA",
             });
             Manufacturers.Add(new ManufacturerEntity
@@ -517,7 +517,7 @@ namespace PcShop.DAL
                 Id = _manufacturerGuids[1],
                 Name = "Lenovo",
                 Description = "Founded in 1984, Lenovo is one of the world's largest manufacturers of computers and portables.",
-                Logo = "default.jpg",
+                Logo = "default_manufacturer_logo.jpg",
                 CountryOfOrigin = "U.S.",
             });
             Manufacturers.Add(new ManufacturerEntity
@@ -525,7 +525,7 @@ namespace PcShop.DAL
                 Id = _manufacturerGuids[2],
                 Name = "Apple",
                 Description = "Founded by Steve Wozniak and Steve Jobs, Apple was incorporated on January 4, 1977. Today, Apple is a leading manufacturer of a line of personal computers, peripherals, and computer software under the Apple Macintosh (Mac) brand name. Apple's line of smartphones, the iPhone, are the third most popular smartphone brand in the world. Apple also develops wearable devices, like the Apple Watch.",
-                Logo = "default.jpg",
+                Logo = "default_manufacturer_logo.jpg",
                 CountryOfOrigin = "U.S.",
             });
             Manufacturers.Add(new ManufacturerEntity
@@ -533,7 +533,7 @@ namespace PcShop.DAL
                 Id = _manufacturerGuids[3],
                 Name = "Acer",
                 Description = "Established in 1977 as a subsidiary of the Acer Group, which is a family of four branks -- Acer, Gateway, Packard Bell, and eMachines. Today, the Acer group sales a wide range of computer-related products.",
-                Logo = "default.jpg",
+                Logo = "default_manufacturer_logo.jpg",
                 CountryOfOrigin = "America",
             });
             Manufacturers.Add(new ManufacturerEntity
@@ -541,7 +541,7 @@ namespace PcShop.DAL
                 Id = _manufacturerGuids[4],
                 Name = "Asus",
                 Description = "Founded April 1, 1989, ASUS is one of the largest manufacturers of computer CPU, motherboards, laptops, tablets, and other computer peripherals.",
-                Logo = "default.jpg",
+                Logo = "default_manufacturer_logo.jpg",
                 CountryOfOrigin = "Taiwan",
             });
             Manufacturers.Add(new ManufacturerEntity
@@ -549,7 +549,7 @@ namespace PcShop.DAL
                 Id = _manufacturerGuids[5],
                 Name = "LG",
                 Description = "Founded in 1958 as GoldStar, LG (Life's Good) Electronics is a company who manufacturers a wide range of products. Their computer-related products today include monitor, data storage, USB modems, and various computer accessories.",
-                Logo = "default.jpg",
+                Logo = "default_manufacturer_logo.jpg",
                 CountryOfOrigin = "U.S.",
             });
             Manufacturers.Add(new ManufacturerEntity
@@ -557,7 +557,7 @@ namespace PcShop.DAL
                 Id = _manufacturerGuids[6],
                 Name = "MSI",
                 Description = "Founded in 1986, MSI (Micro-Star International) is a manufacturer of computer notebooks, tablets, motherboards, video cards and other accessories.",
-                Logo = "default.jpg",
+                Logo = "default_manufacturer_logo.jpg",
                 CountryOfOrigin = "USA",
             });
             Manufacturers.Add(new ManufacturerEntity
@@ -565,7 +565,7 @@ namespace PcShop.DAL
                 Id = _manufacturerGuids[7],
                 Name = "Hewlett-Packard",
                 Description = "Founded on January 1, 1939 by William Hewlett and David Packard, Hewlett-Packard is one of the world's largest computer and peripheral manufacturers. They are also a foremost producer of test and measurement instruments.",
-                Logo = "default.jpg",
+                Logo = "default_manufacturer_logo.jpg",
                 CountryOfOrigin = "USA",
             });
             Manufacturers.Add(new ManufacturerEntity
@@ -573,7 +573,7 @@ namespace PcShop.DAL
                 Id = _manufacturerGuids[8],
                 Name = "Microsoft",
                 Description = "Founded on April 4, 1975, by Bill Gates and Paul Allen, Microsoft is one of the largest and most successful companies in the world. Microsoft is the developer and distributor of Microsoft Windows, Microsoft Office, DirectX, Xbox, and numerous other programs, games, and services.",
-                Logo = "default.jpg",
+                Logo = "default_manufacturer_logo.jpg",
                 CountryOfOrigin = "USA",
             });
         }

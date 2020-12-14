@@ -88,7 +88,7 @@ namespace PcShop.Web.Pages.Products
             if (e.Value.ToString() == "new manufacturer")
             {
                 _createNewManufacturer = true;
-                _newManufacturer = new ManufacturerNewModel();
+                _newManufacturer = new ManufacturerNewModel(); { Logo = "default_manufacturer_logo.jpg" };
             }
             else
             {

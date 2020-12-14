@@ -1,0 +1,43 @@
+﻿@page "/manufacturer/create"
+@page "/manufacturer/edit/{Id:guid}"
+@namespace PcShop.Web.Pages.Manufacturers
+
+<h1>Edit manufacturer</h1>
+
+<EditForm Model="@Manufacturer" OnValidSubmit="SaveData">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label class="w-100">
+            Name:
+            <InputText @bind-Value="@Manufacturer.Name" class="form-control" />
+            <small class="form-text text-danger"><ValidationMessage For="@(() => Manufacturer.Name)" /></small>
+        </label>
+
+        <label class="w-100">
+            Country&nbsp;of&nbsp;origin:
+            <InputText @bind-Value="@Manufacturer.CountryOfOrigin" class="form-control" />
+            <small class="form-text text-danger"><ValidationMessage For="@(() => Manufacturer.CountryOfOrigin)" /></small>
+        </label>
+
+        <label class="w-100">
+            Description:
+            <InputTextArea @bind-Value="@Manufacturer.Description" class="form-control" />
+            <small class="form-text text-danger"><ValidationMessage For="@(() => Manufacturer.Description)" /></small>
+        </label>
+
+        <label class="w-100" for="PhotoInput">
+            Logo path:
+            <InputText @bind-Value="@Manufacturer.Logo" class="form-control" />
+            <small class="form-text text-danger"><ValidationMessage For="@(() => Manufacturer.Logo)" /></small>
+        </label>
+    </div>
+
+    <div class="d-block">
+        <button type="submit" class="btn btn-success d-inline">Save</button>
+        <button type="submit" @onclick="DeleteEntity" class="btn btn-danger d-inline">Delete</button>
+    </div>
+</EditForm>
+
+<br />
+
+<NavLink href="/categories" Match="NavLinkMatch.All" class="btn btn-primary btn-lg">Go back.</NavLink>
