@@ -10,7 +10,7 @@
 <EditForm Model="@Product" OnValidSubmit="SaveData">
     <DataAnnotationsValidator />
     <div class="form-group">
-        <label class="w-100" for="NameInput">
+        <label class="w-100">
             Name:
             <InputText @bind-Value="@Product.Name" class="form-control" />
             <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Name)" /></small>
@@ -18,7 +18,7 @@
     </div>
 
     <div class="form-group">
-        <label class="w-100" for="PhotoInput">
+        <label class="w-100">
             Photo path:
             <InputText @bind-Value="@Product.Photo" class="form-control" />
             <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Photo)" /></small>
@@ -26,7 +26,7 @@
     </div>
 
     <div class="form-group">
-        <label class="w-100" for="Description input">
+        <label class="w-100">
             Description:
             <InputTextArea @bind-Value="@Product.Description" class="form-control" />
             <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Description)" /></small>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="form-group">
-        <label class="w-100" for="PriceInput">
+        <label class="w-100">
             Price (€):
             <InputNumber min="0" @bind-Value="Product.Price" class="form-control" id="priceInput" />
             <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Description)" /></small>
@@ -42,7 +42,7 @@
     </div>
 
     <div class="form-group">
-        <label class="w-100" for="WeightInput">
+        <label class="w-100">
             Weight (g):
             <InputNumber min="0" @bind-Value="Product.Weight" class="form-control" id="weightInput" />
         </label>
@@ -50,7 +50,7 @@
 
     <div class="form-group">
         <div class="input-group">
-            <label class="w-100" for="CategoryInput">
+            <label class="w-100">
                 Category:
             </label>
             <select value="@Product.CategoryName" @onchange="@CategorySelect" id="select1">
@@ -69,7 +69,7 @@
 
     <div class="form-group">
         <div class="input-group">
-            <label class="w-100" for="CategoryInput">
+            <label class="w-100">
                 Manufacturer:
             </label>
             <select value="@Product.ManufacturerName" @onchange="@ManufacturerSelect" id="select2">
@@ -84,19 +84,19 @@
         @if (_createNewManufacturer)
         {
             <div class="form-smaller">
-                <label class="w-100" for="ManufacturerNameInput">
+                <label class="w-100">
                     Manufacturer name:
                     <InputText @bind-Value="@_newManufacturer.Name" class="form-control" />
                     <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Name)" /></small>
                 </label>
 
-                <label class="w-100" for="NameInput">
+                <label class="w-100">
                     Manufacturer description:
                     <InputTextArea @bind-Value="@_newManufacturer.Description" class="form-control" />
                     <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Name)" /></small>
                 </label>
 
-                <label class="w-100" for="NameInput">
+                <label class="w-100">
                     Country of origin:
                     <InputText @bind-Value="@_newManufacturer.CountryOfOrigin" class="form-control" />
                     <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Name)" /></small>
@@ -106,7 +106,7 @@
     </div>
 
     <div class="form-group">
-        <label class="w-100" for="RAM">
+        <label class="w-100">
             RAM:
             <InputText @bind-Value="@Product.Ram" class="form-control" />
             <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Ram)" /></small>
@@ -114,7 +114,7 @@
     </div>
 
     <div class="form-group">
-        <label class="w-100" for="CPU">
+        <label class="w-100">
             CPU:
             <InputText @bind-Value="@Product.Cpu" class="form-control" />
             <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Cpu)" /></small>
@@ -122,7 +122,7 @@
     </div>
 
     <div class="form-group">
-        <label class="w-100" for="GPU">
+        <label class="w-100">
             GPU:
             <InputText @bind-Value="@Product.Gpu" class="form-control" />
             <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Gpu)" /></small>
@@ -130,7 +130,7 @@
     </div>
 
     <div class="form-group">
-        <label class="w-100" for="HDD">
+        <label class="w-100">
             HDD:
             <InputText @bind-Value="@Product.Hdd" class="form-control" />
             <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Hdd)" /></small>

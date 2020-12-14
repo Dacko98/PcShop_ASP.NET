@@ -21,7 +21,6 @@ namespace PcShop.Web.Pages.Products
         [Inject] private ManufacturersFacade ManufacturerFacade { get; set; }
         [Inject] private CategoriesFacade CategoryFacade { get; set; }
 
-        private bool _createNewProduct = false;
         private bool _createNewCategory = false;
         private bool _createNewManufacturer = false;
         private EvaluationNewModel _newEvaluation = new EvaluationNewModel();
@@ -51,7 +50,6 @@ namespace PcShop.Web.Pages.Products
                     CountInStock = 0,
                     Evaluations = new List<EvaluationListModel>()
                 };
-                _createNewProduct = true;
             }
             else
             {
