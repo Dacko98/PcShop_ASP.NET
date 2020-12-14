@@ -3,22 +3,29 @@
 
 <div class="container">
     
-        <input class="form-control mr-sm-2" type="text" @bind="Phrase" />
-        <button class="btn btn-outline-success my-2 my-sm-0" @onclick="HandleSearchChange" placeholder="Search" aria-label="Search" type="search">Search</button>
+        <input class="p-3 form-control mr-sm-2" type="text" @bind="Phrase" />
+        <button class="p-1 btn btn-outline-success my-2 my-sm-0" @onclick="HandleSearchChange" placeholder="Search" aria-label="Search" type="search">Search</button>
 
         @if (FoundedEntities.ManufacturerEntities.Any())
         {
             <h1 class="pt-3 pb-4"> Found manufacturers:</h1>
-            @foreach (var manufacturer in FoundedEntities.ManufacturerEntities)
-            {
-                <NavLink href=@("/manufacturer/" + manufacturer.Id) Match="NavLinkMatch.All" ActiveClass="active">
-                    <div class="pdeval">
-                        <h4 class="pdeval">@manufacturer.Name</h4>
-                        <h5 class="pdeval">@manufacturer.CountryOfOrigin</h5>
-                        <p class="pdeval">@manufacturer.Description</p>
-                    </div>
-                </NavLink>
-            }
+            <div class="Manufacturers">
+                <div class="row">
+                    @foreach (var manufacturer in FoundedEntities.ManufacturerEntities)
+                    {
+                        <div class="col-3 plcol">
+                            <NavLink href=@("/manufacturer/" + manufacturer.Id) Match="NavLinkMatch.All" ActiveClass="active">
+                                <a href="@($"/manufacturer/{manufacturer.Id}")">
+                                    <img class="plimg" src="/images/@manufacturer.Logo" />
+                                    <p class="pl-text">Name: @manufacturer.Name</p>
+                                    <p class="pl-text">Country of origin: @manufacturer.CountryOfOrigin</p>
+                                    <p class="pl-text description-text">@manufacturer.Description ...</p>
+                                </a>
+                            </NavLink>
+                        </div>
+                    }
+                </div>
+            </div>
         }
 
         @if (FoundedEntities.ProductEntities.Any())
