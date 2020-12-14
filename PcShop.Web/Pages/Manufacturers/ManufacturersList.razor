@@ -1,0 +1,25 @@
+﻿@page "/manufacturers"
+
+<div class="container">
+    <div class="d-block pb-5 text-center">
+        <NavLink href="@($"/manufacturers/create")" Match="NavLinkMatch.All" ActiveClass="active" class="d-inline align-middle nav-link">
+            <button type="button" class="btn btn-primary">Create</button>
+        </NavLink>
+        <h1 class="d-inline align-middle">Manufacturers</h1>
+    </div>
+    <div class="Manufacturers">
+        <div class="row">
+            @foreach (var manufacturer in Manufacturers)
+            {
+                <div class="col-3 plcol">
+                    <a href="@($"/manufacturer/{manufacturer.Id}")">
+                        <img class="plimg" src="/images/@manufacturer.Logo" />
+                        <p class="pl-text">Name: @manufacturer.Name</p>
+                        <p class="pl-text">Country of origin: @manufacturer.CountryOfOrigin</p>
+                        <p class="pl-text description-text">@manufacturer.Description ...</p>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
