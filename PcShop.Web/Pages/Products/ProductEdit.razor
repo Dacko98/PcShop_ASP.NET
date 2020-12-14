@@ -62,7 +62,7 @@
             </select>
             @if (_createNewCategory)
             {
-                <InputText @bind-Value="@Product.CategoryName" class="form-control"/>
+                <InputText @bind-Value="@Product.CategoryName" class="form-control" />
             }
         </div>
     </div>
@@ -166,9 +166,10 @@
     </div>
 
     <br />
-
-    <button type="submit" class="btn btn-success">Save</button>
-
+    <div class="d-block">
+        <button type="submit" class="btn btn-success d-inline">Save</button>
+        <button type="submit" @onclick="DeleteEntity" class="btn btn-danger d-inline">Delete</button>
+    </div>
     <br />
 
 

@@ -213,6 +213,11 @@ namespace PcShop.Web.Pages.Products
 
             return evaluationNewModels;
         }
+
+        protected async Task DeleteEntity()
+        {
+            await ProductFacade.DeleteAsync(Product.Id);
+            UriHelper.NavigateTo("/deleted/products");
+        }
     }
 }
-
