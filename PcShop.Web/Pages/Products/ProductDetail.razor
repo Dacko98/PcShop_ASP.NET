@@ -1,4 +1,5 @@
 ﻿@page "/product/{Id:guid}"
+@using AutoMapper.Internal
 
 
 <EditForm Model="@Product">
@@ -23,7 +24,7 @@
                     @if (@Product.AverageScore > -1)
                     {
                         <p class="inline">
-                            @Product.AverageScore %
+                            @Product.AverageScore&nbsp;%
                         </p>
                     }
                     else
@@ -37,14 +38,14 @@
                 <strong>In stock:</strong>&nbsp;@Product.CountInStock
             </div>
             <div class="Stats">
-                <strong>Category:</strong>&nbsp;@Product.CategoryName &nbsp;&nbsp;&nbsp; <strong>Weight:</strong>&nbsp @Product.Weight g<br>
-                <strong>GPU:</strong> &nbsp;@Product.Gpu &nbsp;&nbsp;&nbsp;<strong>CPU:</strong>&nbsp @Product.Cpu<br>
-                <strong>HDD:</strong>&nbsp;@Product.Hdd &nbsp;&nbsp;&nbsp; <strong>RAM:</strong>&nbsp @Product.Ram
+                <strong>Category:</strong>&nbsp;@Product.CategoryName &nbsp;&nbsp;&nbsp; <strong>Weight:</strong>&nbsp;@Product.Weight g<br>
+                <strong>GPU:</strong> &nbsp;@Product.Gpu &nbsp;&nbsp;&nbsp;<strong>CPU:</strong>&nbsp;@Product.Cpu<br>
+                <strong>HDD:</strong>&nbsp;@Product.Hdd &nbsp;&nbsp;&nbsp; <strong>RAM:</strong>&nbsp;@Product.Ram
             </div>
         </div>
 
 
-        @if (Evaluations.Any())
+        @if (Evaluations.ToList().FindAll(p=>p.ProductName == Product.Name).Any())
         {
             <h2 style="padding-left: 200px">Evaluations:</h2>
             @foreach (var evaluation in Evaluations)

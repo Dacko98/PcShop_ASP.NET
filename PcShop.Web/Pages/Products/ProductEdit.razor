@@ -4,7 +4,14 @@
 @inherits ComponentBase
 @using PcShop.BL.Api
 
-<h1>Edit product</h1>
+@if (Id == Guid.Empty)
+{
+    <h1>Add product</h1>
+}
+else
+{
+    <h1>Edit product</h1>
+}
 
 <EditForm Model="@Product" OnValidSubmit="SaveData">
     <DataAnnotationsValidator />
@@ -28,7 +35,7 @@
         <label class="w-100">
             Price (€):
             <InputNumber min="0" @bind-Value="Product.Price" class="form-control" id="priceInput" />
-            <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Description)" /></small>
+            <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Price)" /></small>
         </label>
     </div>
 
