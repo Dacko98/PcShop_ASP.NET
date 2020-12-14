@@ -44,16 +44,18 @@
         </div>
 
 
-
-        <h2 style="padding-left: 200px">Evaluations:</h2>
-        @foreach (var evaluation in Evaluations)
+        @if (Evaluations.Any())
         {
-            if (evaluation.ProductName.Equals(Product.Name))
+            <h2 style="padding-left: 200px">Evaluations:</h2>
+            @foreach (var evaluation in Evaluations)
             {
-                <div class="pdeval">
-                    <h4 class="pdeval-text">@evaluation.PercentEvaluation %</h4>
-                    <p class="pdeval-text">@evaluation.TextEvaluation</p>
-                </div>
+                if (evaluation.ProductName.Equals(Product.Name))
+                {
+                    <div class="pdeval">
+                        <h4 class="pdeval-text">@evaluation.PercentEvaluation %</h4>
+                        <p class="pdeval-text">@evaluation.TextEvaluation</p>
+                    </div>
+                }
             }
         }
     </div>
