@@ -18,6 +18,9 @@
 .plimg {
     display: block;
     width: 100%;
+    object-fit: cover;
+    height: 200px;
+    object-position: center;
 }
 
 a {
@@ -90,6 +93,10 @@ a {
 
 .pdimg {
     padding: 50px;
+    width: 100%;
+    height: 540px;
+    object-position: center;
+    object-fit: cover;
 }
 
 .pdeval {

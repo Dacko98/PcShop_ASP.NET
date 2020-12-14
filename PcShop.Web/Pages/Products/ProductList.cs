@@ -32,13 +32,13 @@ namespace PcShop.Web.Pages.Products
 
         public List<string> SelectedValues { get; set; } = new List<string>();
         public string CategoryVal = "All";
-        public int PriceStartVal { get; set; }
+        public int PriceStartVal { get; set; } = 0;
         public int PriceEndVal { get; set; } = Int32.MaxValue;
 
-        public int WeightStartVal { get; set; }
+        public int WeightStartVal { get; set; } = 0;
         public int WeightEndVal { get; set; } = Int32.MaxValue;
 
-        public int EvaluationStartVal { get; set; }
+        public int EvaluationStartVal { get; set; } = -1;
         public int EvaluationEndVal { get; set; } = Int32.MaxValue;
 
         public bool InStockVal { get; set; } 
@@ -101,7 +101,7 @@ namespace PcShop.Web.Pages.Products
         {
             string val = e.Value.ToString();
 
-            EvaluationStartVal = val.Equals("") ? 0 : Int32.Parse(val);
+            EvaluationStartVal = val.Equals("") ? -1 : Int32.Parse(val);
 
 
             ApplyFilters();

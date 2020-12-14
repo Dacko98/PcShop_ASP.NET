@@ -607,7 +607,7 @@ namespace PcShop.DAL
                 Price = 755,
                 Weight = 2700,
                 CountInStock = 2,
-                Photo = "default.jpg",
+                Photo = "Img1.jpg",
                 ManufacturerId = _manufacturerGuids[3],
                 CategoryId = _categoryGuids[2],
 
@@ -621,7 +621,7 @@ namespace PcShop.DAL
                 Price = 1266,
                 Weight = 3400,
                 CountInStock = 1,
-                Photo = "default.jpg",
+                Photo = "Img2.jpg",
                 ManufacturerId = _manufacturerGuids[3],
                 CategoryId = _categoryGuids[2],
             });
@@ -633,7 +633,7 @@ namespace PcShop.DAL
                 Price = 1178,
                 Weight = 2300,
                 CountInStock = 7,
-                Photo = "default.jpg",
+                Photo = "Img3.jpg",
                 ManufacturerId = _manufacturerGuids[3],
                 CategoryId = _categoryGuids[2],
             });

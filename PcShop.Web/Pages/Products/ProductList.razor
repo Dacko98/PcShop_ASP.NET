@@ -26,18 +26,18 @@
             </div>
             <h3>Price range</h3>
             <div>
-                <input class="filterInput" @onchange="PriceStart" type="number" />-
+                <input class="filterInput" @onchange="PriceStart" type="number"  min="0"/>-
                 <input class="filterInput" @onchange="PriceEnd" type="number" />€
             </div>
 
             <h3>Weight range</h3>
             <div>
-                <input class="filterInput" @onchange="WeightStart" type="number" />-
+                <input class="filterInput" @onchange="WeightStart" type="number"  min="0" />-
                 <input class="filterInput" @onchange="WeightEnd" type="number" />g
             </div>
             <h3>Evaluation</h3>
             <div>
-                <input class="filterInput" @onchange="EvaluationStart" type="number" />-
+                <input class="filterInput" @onchange="EvaluationStart" type="number" min="0" />-
                 <input class="filterInput" @onchange="EvaluationEnd" type="number" />%
             </div>
             <div class="p-2 bd-highlight">
@@ -62,7 +62,7 @@
                         <strong  class="pl-text">Average evaluation:</strong>
                         @if (@product.AverageScore > -1)
                         {
-                            <p class="inline">@product.AverageScore</p>
+                            <p class="inline">@product.AverageScore %</p>
                         }
                         else
                         {
