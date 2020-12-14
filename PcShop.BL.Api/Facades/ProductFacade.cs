@@ -40,9 +40,27 @@ namespace PcShop.BL.Api.Facades
             var productEntityList = _productRepository.GetAll();
             foreach (var productEntity in productEntityList)
             {
+                int avg = 0;
+                int i = 0;
+                IList<EvaluationEntity> evaluations = _evaluationRepository.GetByProductId(productEntity.Id);
+                foreach (var eval in evaluations)
+                {
+                    i++;
+                    avg += eval.PercentEvaluation;
+                }
+
+                if (i==0)
+                {
+                    productEntity.AverageScore = -1;
+                }
+                else
+                {
+                    productEntity.AverageScore = avg / i;
+                }
                 productEntity.Manufacturer = _manufacturerRepository.GetById(productEntity.ManufacturerId);
                 productEntity.Category = _categoryRepository.GetById(productEntity.CategoryId);
             }
+
             return _mapper.Map<List<ProductListModel>>(productEntityList);
         }
 
@@ -54,6 +72,22 @@ namespace PcShop.BL.Api.Facades
                 return null;
             }
             productEntity.Evaluations = _evaluationRepository.GetByProductId(id);
+            int avg = 0;
+            int i = 0;
+            foreach (var eval in productEntity.Evaluations)
+            {
+                i++;
+                avg += eval.PercentEvaluation;
+            }
+
+            if (i == 0)
+            {
+                productEntity.AverageScore = -1;
+            }
+            else
+            {
+                productEntity.AverageScore = avg / i;
+            }
             productEntity.Manufacturer = _manufacturerRepository.GetById(productEntity.ManufacturerId);
             productEntity.Category = _categoryRepository.GetById(productEntity.CategoryId);
             return _mapper.Map<ProductDetailModel>(productEntity);

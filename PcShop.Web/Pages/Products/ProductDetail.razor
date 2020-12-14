@@ -1,5 +1,4 @@
 ﻿@page "/product/{Id:guid}"
-@page "/evaluation/{EvaluationId:guid}"
 
 
 <EditForm Model="@Product">
@@ -19,17 +18,26 @@
             </div>
             <div class="Manufacturer">
                 <h2 class="pdh2">
-                    <strong>Manufacturer:</strong>@Product.ManufacturerName
+                    <strong>Manufacturer:</strong>&nbsp @Product.ManufacturerName <br />
+                    <strong>Average evaluation:</strong>
+                    @if (@Product.AverageScore > -1)
+                    {
+                        @Product.AverageScore
+                    }
+                    else
+                    {
+                        <p class="inline">N/A</p>
+                    }
                 </h2>
             </div>
             <div class="Price">
-                <h2 class="pdh2"><strong>Price:</strong>@Product.Price €</h2><br />
-                <strong>In stock:</strong>@Product.CountInStock
+                <h2 class="pdh2"><strong>Price:</strong>&nbsp @Product.Price €</h2><br />
+                <strong>In stock:</strong>&nbsp @Product.CountInStock
             </div>
             <div class="Stats">
-                <strong>Category:</strong>@Product.CategoryName &nbsp;&nbsp;&nbsp; <strong>Weight:</strong> @Product.Weight<br>
-                <strong>GPU:</strong> @Product.GPU &nbsp;&nbsp;&nbsp;<strong>CPU:</strong> @Product.CPU<br>
-                <strong>HDD:</strong>@Product.HDD &nbsp;&nbsp;&nbsp; <strong>RAM:</strong>@Product.RAM
+                <strong>Category:</strong>&nbsp @Product.CategoryName &nbsp;&nbsp;&nbsp; <strong>Weight:</strong>&nbsp @Product.Weight<br>
+                <strong>GPU:</strong> &nbsp @Product.GPU &nbsp;&nbsp;&nbsp;<strong>CPU:</strong>&nbsp @Product.CPU<br>
+                <strong>HDD:</strong>&nbsp @Product.HDD &nbsp;&nbsp;&nbsp; <strong>RAM:</strong>&nbsp @Product.RAM
             </div>
         </div>
 
@@ -43,8 +51,8 @@
             if (evaluation.ProductName.Equals(Product.Name))
             {
                 <div class="pdeval">
-                    <h4>@evaluation.PercentEvaluation %</h4>
-                    <p>@evaluation.TextEvaluation</p>
+                    <h4 class="pdeval-text">@evaluation.PercentEvaluation %</h4>
+                    <p class="pdeval-text" >@evaluation.TextEvaluation</p>
                 </div>
             }
         }
