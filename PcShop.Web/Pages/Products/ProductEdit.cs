@@ -36,7 +36,7 @@ namespace PcShop.Web.Pages.Products
         {
             Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
             Categories = await CategoryFacade.GetCategorysAsync();
-            
+
             if (Id == Guid.Empty)
             {
                 var newProductId = await ProductFacade.CreateAsync(new ProductNewModel());
@@ -125,7 +125,7 @@ namespace PcShop.Web.Pages.Products
 
             if (!_createNewManufacturer)
             {
-                foreach(var manufacturer in Manufacturers)
+                foreach (var manufacturer in Manufacturers)
                 {
                     if (manufacturer.Name == Product.ManufacturerName)
                         return manufacturer.Id;
@@ -179,8 +179,8 @@ namespace PcShop.Web.Pages.Products
 
             foreach (var evaluation in EvaluationNews)
             {
-                Product.Evaluations.Add(new EvaluationListModel 
-                { 
+                Product.Evaluations.Add(new EvaluationListModel
+                {
                     TextEvaluation = evaluation.TextEvaluation,
                     PercentEvaluation = evaluation.PercentEvaluation,
                     ProductName = Product.Name
@@ -203,7 +203,7 @@ namespace PcShop.Web.Pages.Products
 
         public void AddEvaluation()
         {
-            if(_newEvaluation.TextEvaluation != "")
+            if (_newEvaluation.TextEvaluation != "")
             {
                 EvaluationNews.Add(_newEvaluation);
                 _newEvaluation = new EvaluationNewModel();
@@ -214,14 +214,14 @@ namespace PcShop.Web.Pages.Products
         {
             List<EvaluationNewModel> evaluationNewModels = new List<EvaluationNewModel>();
 
-            foreach(var evaluation in Product.Evaluations)
+            foreach (var evaluation in Product.Evaluations)
             {
                 evaluationNewModels.Add(new EvaluationNewModel
                 {
                     TextEvaluation = evaluation.TextEvaluation,
                     PercentEvaluation = evaluation.PercentEvaluation,
                     ProductId = Product.Id,
-                }) ;
+                });
             }
 
             return evaluationNewModels;
