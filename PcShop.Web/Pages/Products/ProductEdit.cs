@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using PcShop.WEB.BL.Facades;
 using System.Net.Http.Json;
 using System.Diagnostics;
+using Newtonsoft.Json;
 using System.Net.Http;
 using System.Linq;
 using System;
@@ -18,9 +19,9 @@ namespace PcShop.Web.Pages.Products
     public partial class ProductEdit : ComponentBase
     {
         [Parameter]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.Empty;
 
-        public ProductDetailModel product { get; set; }
+        private ProductDetailModel product { get; set; }
 
         [Inject]
         private ProductsFacade ProductFacade { get; set; }
@@ -31,47 +32,64 @@ namespace PcShop.Web.Pages.Products
         [Inject]
         private EvaluationsFacade EvaluationsFacade { get; set; }
 
-        private bool NewCategory = false;
-        private bool NewManufacturer = false;
-        private bool createNewEvaluation = false;
+        private bool createNewProduct = false;
+        private bool createNewCategory = false;
+        private bool createNewManufacturer = false;
         private EvaluationNewModel NewEvaluation = new EvaluationNewModel();
+        private readonly EvaluationNewModel EMPTY_EVALUATION = new EvaluationNewModel();
 
-        //private ICollection<ProductListModel> Products { get; set; } = new List<ProductListModel>();
-
-        //private ICollection<ProductListModel> AllProducts { get; set; } = new List<ProductListModel>();
+        private ManufacturerNewModel newManufacturer = new ManufacturerNewModel();
         private ICollection<ManufacturerListModel> Manufacturers { get; set; } = new List<ManufacturerListModel>();
-        private ICollection<CategoryListModel> Category { get; set; } = new List<CategoryListModel>();
-        private ICollection<EvaluationListModel> Evaluations { get; set; } = new List<EvaluationListModel>();
+        private ICollection<CategoryListModel> Categories { get; set; } = new List<CategoryListModel>();
+        private List<EvaluationNewModel> EvaluationNews { get; set; } = new List<EvaluationNewModel>();
 
         protected override async Task OnInitializedAsync()
         {
-            if(Id == Guid.Empty)
-                product = new ProductDetailModel();
-            else
-                product = await ProductFacade.GetProductAsync(Id);
-
             Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
-            Category = await CategoryFacade.GetCategorysAsync();
-            Evaluations = await EvaluationsFacade.GetEvaluationsAsync();
+            Categories = await CategoryFacade.GetCategorysAsync();
             
+            if (Id == Guid.Empty)
+            {
+                var newProductId = await ProductFacade.CreateAsync(new ProductNewModel());
+                product = new ProductDetailModel()
+                {
+                    Id = newProductId,
+                    Name = "",
+                    Photo = "default.jpg",
+                    Description = "",
+                    Price = 0,
+                    Weight = 0,
+                    CountInStock = 0,
+                    Evaluations = new List<EvaluationListModel>()
+                };
+                createNewProduct = true;
+            }
+            else
+            {
+                product = await ProductFacade.GetProductAsync(Id);
+            }
+            EvaluationNews = DetailEvaluationsToNews();
+
             await base.OnInitializedAsync();
         }
 
         protected async Task SaveData()
         {
-            Debug.WriteLine("Data should be saved");
-            // UpdateAsync(product) or something
-            // actualize all evaluations 
-            // push the new evaluation if there is one
+            await ProductFacade.UpdateAsync(await UpdateProduct());
+
+            createNewCategory = createNewManufacturer = false;
+            Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
+            Categories = await CategoryFacade.GetCategorysAsync();
+            product.ManufacturerName = newManufacturer.Name;
         }
 
         public void categorySelect(ChangeEventArgs e)
         {
             if (e.Value.ToString() == "new category")
-                NewCategory = true;
+                createNewCategory = true;
             else
             {
-                NewCategory = false;
+                createNewCategory = false;
                 product.CategoryName = e.Value.ToString();
             }
         }
@@ -79,26 +97,145 @@ namespace PcShop.Web.Pages.Products
         public void manufacturerSelect(ChangeEventArgs e)
         {
             if (e.Value.ToString() == "new manufacturer")
-                NewManufacturer = true;
+            {
+                createNewManufacturer = true;
+                newManufacturer = new ManufacturerNewModel();
+            }
             else
             {
-                NewManufacturer = false;
+                createNewManufacturer = false;
                 product.ManufacturerName = e.Value.ToString();
             }
         }
 
-        protected void AddEvaluation()
+        public async Task<ProductUpdateModel> UpdateProduct()
         {
-            // TODO - tadyto nefunguje, ten btn odkazuje na SaveData, idk why...
-            Debug.WriteLine("it is working");
-            if (createNewEvaluation)
+            ProductUpdateModel productUpdateModel = new ProductUpdateModel()
             {
-                // There is one already, should be pushed or something.
-            }
-            else
+                Id = product.Id,
+                Name = product.Name,
+                Photo = product.Photo,
+                Description = product.Description,
+                Price = product.Price,
+                Weight = product.Weight,
+                CountInStock = product.CountInStock,
+                RAM = product.RAM,
+                CPU = product.CPU,
+                GPU = product.GPU,
+                HDD = product.HDD,
+                ManufacturerId = await DecideNewManufacturer(),
+                CategoryId = await DecideNewCategory(),
+                Evaluations = GetProductUpdateEvaluations()
+            };
+            return productUpdateModel;
+        }
+
+        public async Task<Guid> DecideNewManufacturer()
+        {
+            Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
+
+            if (!createNewManufacturer)
             {
-                createNewEvaluation = true;
+                foreach(var manufacturer in Manufacturers)
+                {
+                    if (manufacturer.Name == product.ManufacturerName)
+                        return manufacturer.Id;
+                }
             }
+
+            // create new Manufacturer
+            Guid response = await ManufacturerFacade.CreateAsync(newManufacturer);
+            return response;
+        }
+
+        public async Task<Guid> DecideNewCategory()
+        {
+            foreach (var category in Categories)
+            {
+                if (category.Name == product.CategoryName)
+                    return category.Id;
+            }
+
+            CategoryNewModel newCategoryModel = new CategoryNewModel() { Name = product.CategoryName };
+            var response = await CategoryFacade.CreateAsync(newCategoryModel);
+
+            return response;
+        }
+
+        public Guid FindManufacturerByName(string ManufacturerName)
+        {
+            foreach (var manufacturer in Manufacturers)
+            {
+                if (manufacturer.Name == ManufacturerName)
+                    return manufacturer.Id;
+            }
+            return Guid.Empty;  // shouldn't come to this
+        }
+
+        public Guid FindCategoryByName(string CategoryName)
+        {
+            foreach (var category in Categories)
+            {
+                if (category.Name == CategoryName)
+                    return category.Id;
+            }
+            return Guid.Empty;  // shouldn't come to this
+        }
+
+        public List<EvaluationUpdateModel> GetProductUpdateEvaluations()
+        {
+            List<EvaluationUpdateModel> EvaluationUpdateList = new List<EvaluationUpdateModel>();
+
+            product.Evaluations = new List<EvaluationListModel>();
+
+            foreach (var evaluation in EvaluationNews)
+            {
+                product.Evaluations.Add(new EvaluationListModel 
+                { 
+                    TextEvaluation = evaluation.TextEvaluation,
+                    PercentEvaluation = evaluation.PercentEvaluation,
+                    ProductName = product.Name
+                });
+                EvaluationUpdateList.Add(new EvaluationUpdateModel
+                {
+                    TextEvaluation = evaluation.TextEvaluation,
+                    PercentEvaluation = evaluation.PercentEvaluation,
+                    ProductId = product.Id
+                });
+            }
+            return EvaluationUpdateList;
+        }
+
+        public void DeleteEvaluation(EvaluationNewModel evaluation)
+        {
+            var evaluationIndex = EvaluationNews.IndexOf(evaluation);
+            EvaluationNews.RemoveAt(evaluationIndex);
+        }
+
+        public void AddEvaluation()
+        {
+            if(NewEvaluation.TextEvaluation != "")
+            {
+                EvaluationNews.Add(NewEvaluation);
+                NewEvaluation = new EvaluationNewModel();
+            }
+        }
+
+        public List<EvaluationNewModel> DetailEvaluationsToNews()
+        {
+            List<EvaluationNewModel> evaluationNewModels = new List<EvaluationNewModel>();
+
+            foreach(var evaluation in product.Evaluations)
+            {
+                evaluationNewModels.Add(new EvaluationNewModel
+                {
+                    TextEvaluation = evaluation.TextEvaluation,
+                    PercentEvaluation = evaluation.PercentEvaluation,
+                    ProductId = product.Id,
+                }) ;
+            }
+
+            return evaluationNewModels;
         }
     }
 }

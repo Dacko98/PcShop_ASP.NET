@@ -4,6 +4,7 @@
 @inherits ComponentBase
 @using PcShop.BL.Api
 
+
 <h1>Edit product</h1>
 
 <EditForm Model="@product" OnValidSubmit="SaveData">
@@ -16,7 +17,13 @@
         </label>
     </div>
 
-    <!--TODO FOTO-->
+    <div class="form-group">
+        <label class="w-100" for="PhotoInput">
+            Photo path:
+            <InputText @bind-Value="@product.Photo" class="form-control" />
+            <small class="form-text text-danger"><ValidationMessage For="@(() => product.Photo)" /></small>
+        </label>
+    </div>
 
     <div class="form-group">
         <label class="w-100" for="Description input">
@@ -47,15 +54,15 @@
                 Category:
             </label>
             <select value="@product.CategoryName" @onchange="@categorySelect" id="select1">
-                @foreach (var category in Category)
+                @foreach (var category in Categories)
                 {
                     <option value="@category.Name" class="others">@category.Name</option>
                 }
                 <option value="new category" style="color:gray">new category</option>
             </select>
-            @if (NewCategory)
+            @if (createNewCategory)
             {
-                <InputText @bind-Value="@product.CategoryName" class="form-control" />
+                <InputText @bind-Value="@product.CategoryName" class="form-control"/>
             }
         </div>
     </div>
@@ -72,11 +79,30 @@
                 }
                 <option value="new manufacturer" style="color:gray">new manufacturer</option>
             </select>
-            @if (NewManufacturer)
-            {
-                <InputText @bind-Value="@product.ManufacturerName" class="form-control" />
-            }
         </div>
+
+        @if (createNewManufacturer)
+        {
+            <div class="form-smaller">
+                <label class="w-100" for="ManufacturerNameInput">
+                    Manufacturer name:
+                    <InputText @bind-Value="@newManufacturer.Name" class="form-control" />
+                    <small class="form-text text-danger"><ValidationMessage For="@(() => product.Name)" /></small>
+                </label>
+
+                <label class="w-100" for="NameInput">
+                    Manufacturer description:
+                    <InputTextArea @bind-Value="@newManufacturer.Description" class="form-control" />
+                    <small class="form-text text-danger"><ValidationMessage For="@(() => product.Name)" /></small>
+                </label>
+
+                <label class="w-100" for="NameInput">
+                    Country of origin:
+                    <InputText @bind-Value="@newManufacturer.CountryOfOrigin" class="form-control" />
+                    <small class="form-text text-danger"><ValidationMessage For="@(() => product.Name)" /></small>
+                </label>
+            </div>
+        }
     </div>
 
     <div class="form-group">
@@ -113,51 +139,33 @@
 
     <h2>Evaluations</h2>
 
-    @foreach (var evalutaion in Evaluations)
-    {
-        if (evalutaion.ProductName == product.Name)
+    <ul class="list-group mb-4">
+        @foreach (var evaluation in EvaluationNews)
         {
-            <div class="form-group">
-                <div class="input-group">
-                    <label class="w-100" for="PercentInput">
-                        Percentage:
-                        <InputNumber min="0" @bind-Value="evalutaion.PercentEvaluation" class="form-control" id="PercentInput" />
-                        <small class="form-text text-danger"><ValidationMessage For="@(() => evalutaion.PercentEvaluation)" /></small>
-
-                        Text evaluation:
-                        <InputText @bind-Value="@evalutaion.TextEvaluation" class="form-control" />
-                        <small class="form-text text-danger"><ValidationMessage For="@(() => evalutaion.TextEvaluation)" /></small>
-                    </label>
-                </div>
-            </div>
+            <li class="d-flex justify-content-between align-items-center list-group-item list-group-item-secondary">
+                [@evaluation.PercentEvaluation %] @evaluation.TextEvaluation
+                <button class="btn btn-danger btn-sm" type="button" @onclick="() => DeleteEvaluation(evaluation)">Delete</button>
+            </li>
         }
-    }
+    </ul>
 
-    <button class="btn" onclick="AddEvaluation">Add evalutaion</button>
-
-    @if (createNewEvaluation)
-    {
-        <div class="form-group">
-            <div class="input-group">
-                <label class="w-100" for="PercentInput">
-                    Percentage:
-                    <InputNumber min="0" @bind-Value="NewEvaluation.PercentEvaluation" class="form-control" id="PercentInput" />
-                    <small class="form-text text-danger"><ValidationMessage For="@(() => NewEvaluation.PercentEvaluation)" /></small>
-                </label>
-                <label class="w-100" for="TextInput">
-                    Text evaluation:
-                    <InputText @bind-Value="@NewEvaluation.TextEvaluation" class="form-control" />
-                    <small class="form-text text-danger"><ValidationMessage For="@(() => NewEvaluation.TextEvaluation)" /></small>
-                </label>
-            </div>
+    <h3>Add new evaluation:</h3>
+    <div class="input-group">
+        <InputNumber min="0" @bind-Value="NewEvaluation.PercentEvaluation" class="form-control" />
+        <InputText @bind-Value="NewEvaluation.TextEvaluation" class="form-control" />
+        <small class="form-text text-danger"><ValidationMessage For="@(() => NewEvaluation.TextEvaluation)" /></small>
+        <div class="input-group-append">
+            <button type="button" class="btn btn-primary" @onclick="@AddEvaluation">Add</button>
         </div>
-    }
+    </div>
 
+    <br />
 
     <button type="submit" class="btn btn-success">Save</button>
+    
+    <br />
+
+
 </EditForm>
 
-
-<br />
-
-<NavLink href="/products" Match="NavLinkMatch.All" class="btn btn-primary btn-lg">Go back.</NavLink>
+<NavLink href="/products" class="btn btn-primary btn-lg">Go back</NavLink>

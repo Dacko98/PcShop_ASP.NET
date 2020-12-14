@@ -9,6 +9,7 @@ namespace PcShop.BL.Api.Models.Evaluation
 {
     public class EvaluationNewModel : IModel
     {
+        [Required]
         public string TextEvaluation { get; set; }
 
         [Required]
