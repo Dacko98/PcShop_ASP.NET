@@ -21,7 +21,7 @@ namespace PcShop.Web.Pages.Products
         [Parameter]
         public Guid Id { get; set; } = Guid.Empty;
 
-        public ProductDetailModel product { get; set; }
+        private ProductDetailModel product { get; set; }
 
         [Inject]
         private ProductsFacade ProductFacade { get; set; }
@@ -35,33 +35,22 @@ namespace PcShop.Web.Pages.Products
         private bool createNewProduct = false;
         private bool createNewCategory = false;
         private bool createNewManufacturer = false;
-        // private bool createNewEvaluation = false;
         private EvaluationNewModel NewEvaluation = new EvaluationNewModel();
         private readonly EvaluationNewModel EMPTY_EVALUATION = new EvaluationNewModel();
 
         private ManufacturerNewModel newManufacturer = new ManufacturerNewModel();
-
-        //private ICollection<ProductListModel> Products { get; set; } = new List<ProductListModel>();
-
-        //private ICollection<ProductListModel> AllProducts { get; set; } = new List<ProductListModel>();
         private ICollection<ManufacturerListModel> Manufacturers { get; set; } = new List<ManufacturerListModel>();
         private ICollection<CategoryListModel> Categories { get; set; } = new List<CategoryListModel>();
-        //private List<EvaluationListModel> Evaluations { get; set; } = new List<EvaluationListModel>();
         private List<EvaluationNewModel> EvaluationNews { get; set; } = new List<EvaluationNewModel>();
 
         protected override async Task OnInitializedAsync()
         {
             Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
             Categories = await CategoryFacade.GetCategorysAsync();
-            Debug.WriteLine("ManufacturersCount: " + Manufacturers.Count);
             
-
             if (Id == Guid.Empty)
             {
-                Debug.WriteLine("if good.");
-
                 var newProductId = await ProductFacade.CreateAsync(new ProductNewModel());
-
                 product = new ProductDetailModel()
                 {
                     Id = newProductId,
@@ -73,18 +62,12 @@ namespace PcShop.Web.Pages.Products
                     CountInStock = 0,
                     Evaluations = new List<EvaluationListModel>()
                 };
-
                 createNewProduct = true;
-
-                Debug.WriteLine("Photo: " + product.Photo);
-
             }
             else
             {
-                Debug.WriteLine("else aaaaaaaa");
                 product = await ProductFacade.GetProductAsync(Id);
             }
-
             EvaluationNews = DetailEvaluationsToNews();
 
             await base.OnInitializedAsync();
@@ -92,22 +75,12 @@ namespace PcShop.Web.Pages.Products
 
         protected async Task SaveData()
         {
-            Debug.WriteLine("Data should be saved");
-
-            // evaluationNews pres product.evaluation (ktery pridat a ktery nechat) to evaluation upgrade
-
-            // actualize all evaluations 
-            // push the new evaluation if there is one
-            // save new manufacturer name to product
-            // push new category and manufacturer
-            
             await ProductFacade.UpdateAsync(await UpdateProduct());
 
             createNewCategory = createNewManufacturer = false;
             Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
             Categories = await CategoryFacade.GetCategorysAsync();
             product.ManufacturerName = newManufacturer.Name;
-            // UpdateAsync(product)
         }
 
         public void categorySelect(ChangeEventArgs e)
@@ -171,11 +144,7 @@ namespace PcShop.Web.Pages.Products
             }
 
             // create new Manufacturer
-            var response = await ManufacturerFacade.CreateAsync(newManufacturer);
-
-            Debug.WriteLine("NewManufacturer response: " + response.ToString());
-            Debug.WriteLine("NewManufacturer name: " + product.CategoryName);
-            Debug.WriteLine("ManufacturersCount: " + Manufacturers.Count);
+            Guid response = await ManufacturerFacade.CreateAsync(newManufacturer);
             return response;
         }
 
@@ -190,8 +159,6 @@ namespace PcShop.Web.Pages.Products
             CategoryNewModel newCategoryModel = new CategoryNewModel() { Name = product.CategoryName };
             var response = await CategoryFacade.CreateAsync(newCategoryModel);
 
-            Debug.WriteLine("NewCategory response: " + response.ToString());
-            Debug.WriteLine("NewCategory name: " + product.CategoryName);
             return response;
         }
 
@@ -202,7 +169,6 @@ namespace PcShop.Web.Pages.Products
                 if (manufacturer.Name == ManufacturerName)
                     return manufacturer.Id;
             }
-
             return Guid.Empty;  // shouldn't come to this
         }
 
@@ -213,30 +179,23 @@ namespace PcShop.Web.Pages.Products
                 if (category.Name == CategoryName)
                     return category.Id;
             }
-
             return Guid.Empty;  // shouldn't come to this
         }
 
         public List<EvaluationUpdateModel> GetProductUpdateEvaluations()
         {
-            // delete all evalutaions in product.evaluations and create new ones
-
             List<EvaluationUpdateModel> EvaluationUpdateList = new List<EvaluationUpdateModel>();
 
             product.Evaluations = new List<EvaluationListModel>();
 
             foreach (var evaluation in EvaluationNews)
             {
-                // maybe first create this evaluation, idk...
-
-
                 product.Evaluations.Add(new EvaluationListModel 
                 { 
                     TextEvaluation = evaluation.TextEvaluation,
                     PercentEvaluation = evaluation.PercentEvaluation,
                     ProductName = product.Name
                 });
-
                 EvaluationUpdateList.Add(new EvaluationUpdateModel
                 {
                     TextEvaluation = evaluation.TextEvaluation,
@@ -251,7 +210,6 @@ namespace PcShop.Web.Pages.Products
         {
             var evaluationIndex = EvaluationNews.IndexOf(evaluation);
             EvaluationNews.RemoveAt(evaluationIndex);
-            Debug.WriteLine("Deleting this evaluation");
         }
 
         public void AddEvaluation()
