@@ -1,32 +1,13 @@
-﻿/* File:        EvaluationControllerTests.cs
- * 
- * Solution:    PcShop
- * Project:     PcShop.Api.Test
- * 
- * Team:        Team0011
- * Author:      Daniel Jacko
- * Login:       xjacko04
- * Date:        1.11.2020
- * 
- * Description: This file contains API tests for EvaluationController in PcShop.Api.
- *              Tests all main 4 methods (GET, PUT, POST, DELETE)
- * 
- * Installed NuGet packages: Microsoft.AspNetCore.Mvc.Testing, FluentAssertions
- */
-
-using Microsoft.AspNetCore.Mvc.Testing;
-using PcShop.BL.Api.Models.Category;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using PcShop.BL.Api.Models.Evaluation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Diagnostics;
 using FluentAssertions;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 using System.Net;
 using System;
-using PcShop.BL.Api.Models.Evaluation;
-using PcShop.DAL.Entities;
 using Xunit;
 
 namespace PcShop.Api.Tests
@@ -34,15 +15,9 @@ namespace PcShop.Api.Tests
     [Collection(name: "EvaluationControllerTests")]
     public class EvaluationControllerTests : IClassFixture<WebApplicationFactory<Startup>>
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
 
-        // This should maybe go to some sort of shared memory between tests: 
-        // Constant for first Evaluation Evaluation_RIRST
-        private const string TOOSHORTNAME = "c";
-        private const string TOOLONGNAME = "This name is too long for the model. This name is too long for the model. This name is too long for the model. " +
-            "This name is too long for the model. This name is too long for the model. This name is too long for the model. ";
-
-        private readonly EvaluationListModel[] EvaluationS_LIST =
+        private readonly EvaluationListModel[] _evaluationsListModel =
         {
             new EvaluationListModel()
             {
@@ -50,7 +25,6 @@ namespace PcShop.Api.Tests
                 TextEvaluation = "Good",
                 PercentEvaluation = 80,
                 ProductName = "Lattitude E6440",
-                EntityType = EntityTypeEnum.EvaluationEntity
             },
             new EvaluationListModel()
             {
@@ -58,12 +32,10 @@ namespace PcShop.Api.Tests
                 TextEvaluation = "Broke after one month",
                 PercentEvaluation = 0,
                 ProductName = "Thinkpad T560",
-                EntityType = EntityTypeEnum.EvaluationEntity
             }
         };
 
-
-        private readonly EvaluationDetailModel[] EvaluationS_DETAIL =
+        private readonly EvaluationDetailModel[] _evaluationsDetailModel =
         {
             new EvaluationDetailModel
             {
@@ -83,7 +55,7 @@ namespace PcShop.Api.Tests
             }
         };
 
-        private readonly EvaluationNewModel[] EvaluationS_NEW =
+        private readonly EvaluationNewModel[] _evaluationsNewModel =
         {
             new EvaluationNewModel
             {
@@ -105,7 +77,7 @@ namespace PcShop.Api.Tests
             }
         };
 
-        private EvaluationDetailModel[] EvaluationS_DETAIL_EXPECTED =
+        private readonly EvaluationDetailModel[] _evalutaionsExpectedDetailModel =
         {
             new EvaluationDetailModel
             {
@@ -126,7 +98,7 @@ namespace PcShop.Api.Tests
             }
         };
 
-        private readonly EvaluationUpdateModel Evaluation_UPDATE = new EvaluationUpdateModel
+        private readonly EvaluationUpdateModel _evaluationUpdateModel = new EvaluationUpdateModel
         {
             TextEvaluation = "Very very",
             PercentEvaluation = 100,
@@ -141,9 +113,6 @@ namespace PcShop.Api.Tests
 
         /*===============================    GetAll Tests    ===============================*/
 
-        /// <summary>
-        /// Try Get all Evaluation. Shoudl return Status Code OK.
-        /// </summary>
         [Fact]
         public async Task GetAll_Should_result_OK()
         {
@@ -152,9 +121,6 @@ namespace PcShop.Api.Tests
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
-        /// <summary>
-        /// Try get all Evaluation. Should return non-empty field in response.content
-        /// </summary>
         [Fact]
         public async Task GetAll_Should_return_some_Evaluation()
         {
@@ -162,17 +128,12 @@ namespace PcShop.Api.Tests
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var Evaluations = JsonConvert.DeserializeObject<List<EvaluationListModel>>(await response.Content.ReadAsStringAsync());
-            Evaluations.Should().HaveCountGreaterOrEqualTo(1);
+            var evaluations = JsonConvert.DeserializeObject<List<EvaluationListModel>>(await response.Content.ReadAsStringAsync());
+            evaluations.Should().HaveCountGreaterOrEqualTo(1);
         }
 
-        /// <summary>
-        /// Try get all Evaluation. 
-        /// Check if it returns at least 6 Evaluations.
-        /// Check if the first and the last Evaluation match with model
-        /// </summary>
         [Fact]
-        public async Task GetAll_Should_return_first_last_and_all_the_others()
+        public async Task GetAll_should_return_4_check_first_and_last_()
         {
             // Act
             var response = await _client.GetAsync("api/Evaluation");
@@ -180,55 +141,44 @@ namespace PcShop.Api.Tests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var Evaluations = JsonConvert.DeserializeObject<List<EvaluationListModel>>(await response.Content.ReadAsStringAsync());
+            var evaluations = JsonConvert.DeserializeObject<List<EvaluationListModel>>(await response.Content.ReadAsStringAsync());
 
-            // Should return at least 6 Evaluations
-            Evaluations.Should().HaveCountGreaterOrEqualTo(4);
-
-            // First Evaluation
-            Evaluations[0].Should().BeEquivalentTo(EvaluationS_LIST[0]);
-            // Last Evaluation
-            Evaluations[3].Should().BeEquivalentTo(EvaluationS_LIST[1]);
+            evaluations.Should().HaveCountGreaterOrEqualTo(4);
+            evaluations[0].Should().BeEquivalentTo(_evaluationsListModel[0]);
+            evaluations[3].Should().BeEquivalentTo(_evaluationsListModel[1]);
         }
 
         /*===============================    GetById Tests    ===============================*/
 
-        /// <summary>
-        /// Try GetById one Evaluation. Should return StatusCode.OK and response.Content should not be null
-        /// </summary>
-        /// <param name="index">Index of tested Evaluation. (FIRST = 0, LAST = 1)</param>
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
-        public async Task GetById_Should_return_something(int index)
+        public async Task GetById_should_return_OK(int testedIndex)
         {
-            var response = await _client.GetAsync($"api/Evaluation/{EvaluationS_DETAIL[index].Id}");
+            var response = await _client.GetAsync($"api/Evaluation/{_evaluationsDetailModel[testedIndex].Id}");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var Evaluation = JsonConvert.DeserializeObject<EvaluationDetailModel>(await response.Content.ReadAsStringAsync());
-            Evaluation.Should().NotBeNull();
+            var evaluation = JsonConvert.DeserializeObject<EvaluationDetailModel>(await response.Content.ReadAsStringAsync());
+            evaluation.Should().NotBeNull();
         }
 
         [Theory]
         [InlineData(0)]
-        public async Task GetById_Should_return_Evaluation_by_Id(int index)
+        public async Task GetById_should_return_evaluation_by_Id(int index)
         {
 
-            var response = await _client.GetAsync($"api/Evaluation/{EvaluationS_DETAIL[index].Id}");
+            var response = await _client.GetAsync($"api/Evaluation/{_evaluationsDetailModel[index].Id}");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var Evaluation = JsonConvert.DeserializeObject<EvaluationDetailModel>(await response.Content.ReadAsStringAsync());
-            Evaluation.Should().NotBeNull();
-            Evaluation.Should().BeEquivalentTo(EvaluationS_DETAIL[index]);
+            var evaluation = JsonConvert.DeserializeObject<EvaluationDetailModel>(await response.Content.ReadAsStringAsync());
+            evaluation.Should().NotBeNull();
+            evaluation.Should().BeEquivalentTo(_evaluationsDetailModel[index]);
         }
 
-        /// <summary>
-        /// Try GetById with empty id (non-existing Evaluation). Should return BadRequest (400) 
-        /// </summary>
         [Fact]
-        public async Task GetById_With_empty_Id()
+        public async Task GetById_with_empty_Id_should_return_NotFound()
         {
             // Act
             var response = await _client.GetAsync($"api/Evaluation/{Guid.Empty}");
@@ -241,10 +191,10 @@ namespace PcShop.Api.Tests
         /*===============================    Create Tests    ===============================*/
 
         [Fact]
-        public async Task Create_Should_return_new_ID()
+        public async Task Create_should_return_new_ID()
         {
             // Arrange
-            var newEvaluationSerialized = JsonConvert.SerializeObject(EvaluationS_NEW[0]);
+            var newEvaluationSerialized = JsonConvert.SerializeObject(_evaluationsNewModel[0]);
             var stringContent = new StringContent(newEvaluationSerialized, Encoding.UTF8, "application/json");
 
             // Act 
@@ -257,10 +207,10 @@ namespace PcShop.Api.Tests
         }
 
         [Fact]
-        public async Task Create_Should_create_findable_Evaluation()
+        public async Task Create_should_create_findable_evaluation()
         {
             // Arrange
-            var newEvaluationSerialized = JsonConvert.SerializeObject(EvaluationS_NEW[0]);
+            var newEvaluationSerialized = JsonConvert.SerializeObject(_evaluationsNewModel[0]);
             var stringContent = new StringContent(newEvaluationSerialized, Encoding.UTF8, "application/json");
 
             // Act 
@@ -271,43 +221,29 @@ namespace PcShop.Api.Tests
             var newEvaluationGuid = JsonConvert.DeserializeObject<Guid>(await response.Content.ReadAsStringAsync());
             newEvaluationGuid.Should().NotBeEmpty();
 
-            // GetById
-            var response_GetById = await _client.GetAsync($"api/Evaluation/{newEvaluationGuid}");
-            response_GetById.StatusCode.Should().Be(HttpStatusCode.OK);
+            var responseGetById = await _client.GetAsync($"api/Evaluation/{newEvaluationGuid}");
+            responseGetById.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var Evaluation = JsonConvert.DeserializeObject<EvaluationDetailModel>(await response_GetById.Content.ReadAsStringAsync());
-            Evaluation.Id.Should().NotBe(Guid.Empty);
-            EvaluationS_DETAIL_EXPECTED[0].Id = Evaluation.Id;
-            Evaluation.Should().BeEquivalentTo(EvaluationS_DETAIL_EXPECTED[0]);
+            var evaluation = JsonConvert.DeserializeObject<EvaluationDetailModel>(await responseGetById.Content.ReadAsStringAsync());
+            _evalutaionsExpectedDetailModel[0].Id = evaluation.Id;
+            evaluation.Should().BeEquivalentTo(_evalutaionsExpectedDetailModel[0]);
         }
 
 
         /*===============================    Update Tests    ===============================*/
 
-        /// <summary>
-        /// Create new Evaluation and then try update its prize to double, should return OK. Then GetById updated Evaluation
-        /// </summary>
         [Fact]
-        public async Task Update_Should_update_existing_Evaluation()
+        public async Task Update_should_update_existing_evaluation_and_return_OK()
         {
-            // Create new Evaluation 
-            // Arrange
-            var newEvaluationSerialized = JsonConvert.SerializeObject(EvaluationS_NEW[2]);
-            var stringContent_create = new StringContent(newEvaluationSerialized, Encoding.UTF8, "application/json");
-
-            // Act 
-            var response_create = await _client.PostAsync("api/Evaluation", stringContent_create);
-
-            // Assert
-            response_create.StatusCode.Should().Be(HttpStatusCode.OK);
-            var newEvaluationGuid = JsonConvert.DeserializeObject<Guid>(await response_create.Content.ReadAsStringAsync());
-            newEvaluationGuid.Should().NotBeEmpty();
-            Evaluation_UPDATE.Id = newEvaluationGuid;
-
-
             // Arange
-            var EvaluationToUpdateSerialized = JsonConvert.SerializeObject(Evaluation_UPDATE);
-            var stringContent = new StringContent(EvaluationToUpdateSerialized, Encoding.UTF8, "application/json");
+            var newEvaluationSerialized = JsonConvert.SerializeObject(_evaluationsNewModel[2]) ?? throw new ArgumentNullException($"JsonConvert.SerializeObject(_evaluationsNewModel[2])");
+            var stringContentCreate = new StringContent(newEvaluationSerialized, Encoding.UTF8, "application/json");
+            var responseCreate = await _client.PostAsync("api/Evaluation", stringContentCreate);
+            var newEvaluationGuid = JsonConvert.DeserializeObject<Guid>(await responseCreate.Content.ReadAsStringAsync());
+            _evaluationUpdateModel.Id = newEvaluationGuid;
+
+            var evaluationToUpdateSerialized = JsonConvert.SerializeObject(_evaluationUpdateModel);
+            var stringContent = new StringContent(evaluationToUpdateSerialized, Encoding.UTF8, "application/json");
 
             // Act
             var response = await _client.PutAsync("api/Evaluation?verison=3.0&culture=en", stringContent);
@@ -315,35 +251,24 @@ namespace PcShop.Api.Tests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            // GetById
-            var response_GetById = await _client.GetAsync($"api/Evaluation/{Evaluation_UPDATE.Id}");
-            response_GetById.StatusCode.Should().Be(HttpStatusCode.OK);
+            var responseGetById = await _client.GetAsync($"api/Evaluation/{_evaluationUpdateModel.Id}");
 
-            var Evaluation = JsonConvert.DeserializeObject<EvaluationDetailModel>(await response_GetById.Content.ReadAsStringAsync());
-            EvaluationS_DETAIL_EXPECTED[1].Id = Evaluation.Id;
-            Evaluation.Should().BeEquivalentTo(EvaluationS_DETAIL_EXPECTED[1]);
+            var foundEvaluation = JsonConvert.DeserializeObject<EvaluationDetailModel>(await responseGetById.Content.ReadAsStringAsync());
+            _evalutaionsExpectedDetailModel[1].Id = foundEvaluation.Id;
+            foundEvaluation.Should().BeEquivalentTo(_evalutaionsExpectedDetailModel[1]);
         }
 
         /*===============================    Delete Tests    ===============================*/
 
-
-        /// <summary>
-        /// Try delete existing Evaluation and then find it. Should return NotFound
-        /// </summary>
         [Fact]
-        public async Task Delete_Should_delete_Evaluation()
+        public async Task Delete_should_delete_evaluation_and_return_NotFound()
         {
-            // Arrange - Create new Evaluation
-            var newEvaluationSerialized = JsonConvert.SerializeObject(EvaluationS_NEW[0]);
+            var newEvaluationSerialized = JsonConvert.SerializeObject(_evaluationsNewModel[0]);
             var stringContent = new StringContent(newEvaluationSerialized, Encoding.UTF8, "application/json");
+            var responseCreate = await _client.PostAsync("api/Evaluation", stringContent);
+            responseCreate.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            // Act 
-            var response_create = await _client.PostAsync("api/Evaluation", stringContent);
-
-            // Assert
-            response_create.StatusCode.Should().Be(HttpStatusCode.OK);
-            var newEvaluationGuid = JsonConvert.DeserializeObject<Guid>(await response_create.Content.ReadAsStringAsync());
-            newEvaluationGuid.Should().NotBeEmpty();
+            var newEvaluationGuid = JsonConvert.DeserializeObject<Guid>(await responseCreate.Content.ReadAsStringAsync());
 
             // Act
             var response = await _client.DeleteAsync($"api/Evaluation/{newEvaluationGuid}");
@@ -351,20 +276,12 @@ namespace PcShop.Api.Tests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            // GetById deleted Evaluation -> assert NotFound
-            // Act
-            var response_GetById = await _client.GetAsync($"api/Category/{newEvaluationGuid}");
-
-            // Assert
-            response_GetById.Should().NotBeNull();
-            response_GetById.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            var responseGetById = await _client.GetAsync($"api/Category/{newEvaluationGuid}");
+            responseGetById.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
-        /// <summary>
-        /// Try delete non-existing Evaluation. Should return BadRequest
-        /// </summary>
         [Fact]
-        public async Task Delete_Empty_Id()
+        public async Task Delete_empty_Id_should_return_BadRequest()
         {
             // Arrange 
             var newEvaluationGuid = Guid.Empty;
@@ -374,7 +291,6 @@ namespace PcShop.Api.Tests
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            //response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);  - It actually returns InternalServerError
         }
     }
 }

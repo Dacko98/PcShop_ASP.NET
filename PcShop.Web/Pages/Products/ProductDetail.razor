@@ -1,0 +1,63 @@
+﻿@page "/product/{Id:guid}"
+@page "/evaluation/{EvaluationId:guid}"
+
+
+<EditForm Model="@Product">
+    <div class="container">
+        <NavLink href="@($"/product/edit/{Product.Id}")" Match="NavLinkMatch.All" ActiveClass="active" class="nav-link">
+            <button type="button" class="btn btn-primary">Edit</button>
+        </NavLink>
+        <div class="grid-containerDetail">
+            <div class="Description">
+                @Product.Description
+            </div>
+            <div class="Photo">
+                <img class="pdimg" src="/images/@Product.Photo" />
+            </div>
+            <div class="Name">
+                <h1 class="pdh1">@Product.Name</h1>
+            </div>
+            <div class="Manufacturer">
+                <h2 class="pdh2">
+                    <strong>Manufacturer:</strong>&nbsp;@Product.ManufacturerName <br />
+                    <strong>Average evaluation:&nbsp;</strong>
+                    @if (@Product.AverageScore > -1)
+                    {
+                        <p class="inline">
+                            @Product.AverageScore&nbsp;%
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="inline">N/A</p>
+                    }
+                </h2>
+            </div>
+            <div class="Price">
+                <h2 class="pdh2"><strong>Price:</strong>&nbsp;@Product.Price €</h2><br />
+                <strong>In stock:</strong>&nbsp;@Product.CountInStock
+            </div>
+            <div class="Stats">
+                <strong>Category:</strong>&nbsp;@Product.CategoryName &nbsp;&nbsp;&nbsp; <strong>Weight:</strong>&nbsp;@Product.Weight g<br>
+                <strong>GPU:</strong> &nbsp;@Product.Gpu &nbsp;&nbsp;&nbsp;<strong>CPU:</strong>&nbsp;@Product.Cpu<br>
+                <strong>HDD:</strong>&nbsp;@Product.Hdd &nbsp;&nbsp;&nbsp; <strong>RAM:</strong>&nbsp;@Product.Ram
+            </div>
+        </div>
+
+
+        @if (Evaluations.ToList().FindAll(p => p.ProductName == Product.Name).Any())
+        {
+            <h2 style="padding-left: 200px">Evaluations:</h2>
+            @foreach (var evaluation in Evaluations)
+            {
+                if (evaluation.ProductName.Equals(Product.Name))
+                {
+                    <div class="pdeval">
+                        <h4 class="pdeval-text">@evaluation.PercentEvaluation %</h4>
+                        <p class="pdeval-text">@evaluation.TextEvaluation</p>
+                    </div>
+                }
+            }
+        }
+    </div>
+</EditForm>

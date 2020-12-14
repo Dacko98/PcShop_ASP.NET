@@ -7,7 +7,6 @@ namespace PcShop.DAL.Entities
     public class CategoryEntity : IEntity
     {
         public Guid Id { get; set; }
-        public EntityTypeEnum EntityType => EntityTypeEnum.CategoryEntity;
 
         public string Name { get; set; }
 

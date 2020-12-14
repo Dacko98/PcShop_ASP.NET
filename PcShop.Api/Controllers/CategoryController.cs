@@ -15,27 +15,27 @@ namespace PcShop.Api.Controllers
     public class CategoryController : ControllerBase
     {
         private const string ApiOperationBaseName = "Category";
-        private readonly CategoryFacade categoryFacade;
+        private readonly CategoryFacade _categoryFacade;
         
 
         public CategoryController(
             CategoryFacade categoryFacade)
         {
-            this.categoryFacade = categoryFacade;
+            this._categoryFacade = categoryFacade;
         }
 
         [HttpGet]
         [OpenApiOperation(ApiOperationBaseName + nameof(GetAll))]
         public ActionResult<List<CategoryListModel>> GetAll()
         {
-            return categoryFacade.GetAll().ToList();
+            return _categoryFacade.GetAll().ToList();
         }
 
         [HttpGet("{id}")]
         [OpenApiOperation(ApiOperationBaseName + nameof(GetById))]
         public ActionResult<CategoryDetailModel> GetById(Guid id)
         {
-            var category = categoryFacade.GetById(id);
+            var category = _categoryFacade.GetById(id);
             if (category == null)
             {
                 return NotFound();
@@ -48,14 +48,14 @@ namespace PcShop.Api.Controllers
         public ActionResult<Guid> Create(CategoryNewModel category)
         {
 
-            return categoryFacade.Create(category);
+            return _categoryFacade.Create(category);
         }
 
         [HttpPut]
         [OpenApiOperation(ApiOperationBaseName + nameof(Update))]
         public ActionResult<Guid> Update(CategoryUpdateModel category)
         {
-            var returnValue =  categoryFacade.Update(category);
+            var returnValue =  _categoryFacade.Update(category);
 
             if (returnValue == null)
             {
@@ -71,9 +71,9 @@ namespace PcShop.Api.Controllers
         {
             try
             {
-                categoryFacade.Delete(id);
+                _categoryFacade.Delete(id);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return BadRequest();
             }

@@ -8,49 +8,49 @@ namespace PcShop.DAL.Repositories
 {
     public class ProductRepository : IAppRepository<ProductEntity>
     {
-        private readonly IList<ProductEntity> products;
-        private readonly IMapper mapper;
+        private readonly IList<ProductEntity> _products;
+        private readonly IMapper _mapper;
 
         public ProductRepository(
             Storage storage,
             IMapper mapper)
         {
-            products = storage.Product;
-            this.mapper = mapper;
+            _products = storage.Product;
+            this._mapper = mapper;
         }
 
         public IList<ProductEntity> GetAll()
         {
-            return products;
+            return _products;
         }
 
         public ProductEntity GetById(Guid id)
         {
-            return products.SingleOrDefault(entity => entity.Id == id);
+            return _products.FirstOrDefault(entity => entity.Id == id);
         }
 
         public Guid Insert(ProductEntity product)
         {
             product.Id = Guid.NewGuid();
-            products.Add(product);
+            _products.Add(product);
             return product.Id;
         }
         public IList<ProductEntity> GetByCategoryId(Guid categoryId)
         {
-            return products.Where(product => product.CategoryId == categoryId).ToList();
+            return _products.Where(product => product.CategoryId == categoryId).ToList();
         }
 
         public IList<ProductEntity> GetByManufacturerId(Guid manufacturerId)
         {
-            return products.Where(product => product.ManufacturerId == manufacturerId).ToList();
+            return _products.Where(product => product.ManufacturerId == manufacturerId).ToList();
         }
 
         public Guid? Update(ProductEntity productUpdated)
         {
-            var productExisting = products.SingleOrDefault(productInStorage => productInStorage.Id == productUpdated.Id);
+            var productExisting = _products.SingleOrDefault(productInStorage => productInStorage.Id == productUpdated.Id);
             if (productExisting != null)
             {
-                mapper.Map(productUpdated, productExisting);
+                _mapper.Map(productUpdated, productExisting);
             }
 
             return productExisting?.Id;
@@ -58,8 +58,8 @@ namespace PcShop.DAL.Repositories
 
         public void Remove(Guid id)
         {
-            var productToRemove = products.Single(product => product.Id.Equals(id));
-            products.Remove(productToRemove);
+            var productToRemove = _products.Single(product => product.Id.Equals(id));
+            _products.Remove(productToRemove);
         }
     }
 }

@@ -6,10 +6,9 @@ using PcShop.Common.Extensions;
 
 namespace PcShop.BL.Api.Models.Evaluation
 {
-    public class EvaluationListModel : IListModel
+    public class EvaluationListModel : IModel
     {
         public Guid Id { get; set; }
-        public EntityTypeEnum EntityType { get; set; }
 
         public string TextEvaluation { get; set; }
         public int PercentEvaluation { get; set; }

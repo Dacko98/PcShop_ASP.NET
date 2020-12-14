@@ -7,7 +7,6 @@ namespace PcShop.DAL.Entities
     public class ProductEntity : IEntity
     {
         public Guid Id { get; set; }
-        public EntityTypeEnum EntityType => EntityTypeEnum.ManufacturerEntity;
 
         public string Name { get; set; }
         public string Photo { get; set; }
@@ -16,13 +15,15 @@ namespace PcShop.DAL.Entities
         public int Weight { get; set; }
         public int CountInStock { get; set; }
 
-        public string RAM { get; set; }
+        public string Ram { get; set; }
 
-        public string CPU  { get; set; }
+        public string Cpu  { get; set; }
 
-        public string GPU { get; set; }
+        public string Gpu { get; set; }
 
-        public string HDD { get; set; }
+        public string Hdd { get; set; }
+
+        public int AverageScore { get; set; }
 
         public Guid ManufacturerId { get; set; }
         public virtual ManufacturerEntity Manufacturer { get; set; }

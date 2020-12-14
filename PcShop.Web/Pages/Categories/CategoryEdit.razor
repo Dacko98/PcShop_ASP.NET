@@ -1,0 +1,23 @@
+﻿@page "/category/create"
+@page "/category/edit/{Id:guid}"
+@namespace PcShop.Web.Pages.Categories
+
+<h1>Edit category</h1>
+
+<EditForm Model="@Category" OnValidSubmit="SaveData">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label class="w-100">
+            Name:
+            <InputText @bind-Value="@Category.Name" class="form-control" />
+            <small class="form-text text-danger"><ValidationMessage For="@(() => Category.Name)" /></small>
+        </label>
+    </div>
+    <div class="d-block">
+        <button type="submit" class="btn btn-success d-inline">Save</button>
+        <button type="submit" @onclick="DeleteEntity" class="btn btn-danger d-inline">Delete</button>
+    </div>
+</EditForm>
+
+
+<br />

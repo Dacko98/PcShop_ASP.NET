@@ -1,0 +1,22 @@
+﻿@page "/categories"
+
+<div class="container">
+    <div class="d-block pb-5 text-center">
+        <NavLink href="@($"/category/create")" Match="NavLinkMatch.All" ActiveClass="active" class="d-inline align-middle nav-link">
+            <button type="button" class="btn btn-primary">Create</button>
+        </NavLink>
+        <h1 class="d-inline align-middle">Categories</h1>
+    </div>
+    <div class="Categories">
+        @foreach (var category in Category)
+        {
+            <div>
+                <h2>
+                    <a href="@($"/category/{category.Id}")">
+                        @category.Name
+                    </a>
+                </h2>
+            </div>
+        }
+    </div>
+</div>

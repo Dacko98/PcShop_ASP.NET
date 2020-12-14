@@ -3,47 +3,46 @@ using PcShop.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PcShop.DAL.Entities;
 
 namespace PcShop.DAL.Repositories
 {
     public class CategoryRepository : IAppRepository<CategoryEntity>
     {
-        private readonly IList<CategoryEntity> categories;
-        private readonly IMapper mapper;
+        private readonly IList<CategoryEntity> _categories;
+        private readonly IMapper _mapper;
 
         public CategoryRepository(
             Storage storage,
             IMapper mapper)
         {
-            categories = storage.Categories;
-            this.mapper = mapper;
+            _categories = storage.Categories;
+            this._mapper = mapper;
         }
 
         public IList<CategoryEntity> GetAll()
         {
-            return categories;
+            return _categories;
         }
 
         public CategoryEntity GetById(Guid id)
         {
-            return categories.SingleOrDefault(entity => entity.Id == id);
+            return _categories.SingleOrDefault(entity => entity.Id == id);
         }
 
 
         public Guid Insert(CategoryEntity category)
         {
             category.Id = Guid.NewGuid();
-            categories.Add(category);
+            _categories.Add(category);
             return category.Id;
         }
 
         public Guid? Update(CategoryEntity categoryUpdated)
         {
-            var categoryExisting = categories.SingleOrDefault(categoryInStorage => categoryInStorage.Id == categoryUpdated.Id);
+            var categoryExisting = _categories.SingleOrDefault(categoryInStorage => categoryInStorage.Id == categoryUpdated.Id);
             if (categoryExisting != null)
             {
-                mapper.Map(categoryUpdated, categoryExisting);
+                _mapper.Map(categoryUpdated, categoryExisting);
             }
 
             return categoryExisting?.Id;
@@ -51,8 +50,8 @@ namespace PcShop.DAL.Repositories
 
         public void Remove(Guid id)
         {
-            var categoryToRemove = categories.Single(category => category.Id.Equals(id));
-            categories.Remove(categoryToRemove);
+            var categoryToRemove = _categories.Single(category => category.Id.Equals(id));
+            _categories.Remove(categoryToRemove);
         }
     }
 }

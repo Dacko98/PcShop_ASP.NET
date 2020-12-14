@@ -1,0 +1,20 @@
+﻿@page "/deleted/{Redirect}"
+
+<h1 class="p-5 text-center">Deleted</h1>
+
+<div class="pb-5">
+    <a class="form-control text-center" href="" @onclick="NavigateToNextComponent">OK</a>
+</div>
+
+@inject NavigationManager UriHelper
+@code {
+
+    [Parameter]
+    public string Redirect { get; set; }
+
+    void NavigateToNextComponent()
+    {
+        UriHelper.NavigateTo(Redirect);
+    }
+
+}

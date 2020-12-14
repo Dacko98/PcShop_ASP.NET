@@ -6,63 +6,59 @@ using System.Collections.Generic;
 using System.Linq;
 using PcShop.BL.Api.Facades.Interfaces;
 using PcShop.BL.Api.Models.Category;
-using PcShop.BL.Api.Models.Product;
 
 namespace PcShop.BL.Api.Facades
 {
     public class CategoryFacade : IAppFacade
     {
-        private readonly CategoryRepository categoryRepository;
-        private readonly ProductRepository productRepository;
-        private readonly ProductFacade productFacade;
-        private readonly IMapper mapper;
+        private readonly CategoryRepository _categoryRepository;
+        private readonly ProductRepository _productRepository;
+        private readonly IMapper _mapper;
 
         public CategoryFacade(
             ProductRepository productRepository,
             CategoryRepository categoryRepository,
-            ProductFacade productFacade,
             IMapper mapper)
         {
-            this.categoryRepository = categoryRepository;
-            this.mapper = mapper;
-            this.productFacade = productFacade;
-            this.productRepository = productRepository;
+            this._categoryRepository = categoryRepository;
+            this._mapper = mapper;
+            this._productRepository = productRepository;
         }
 
         public List<CategoryListModel> GetAll()
         {
-            return mapper.Map<List<CategoryListModel>>(categoryRepository.GetAll());
+            return _mapper.Map<List<CategoryListModel>>(_categoryRepository.GetAll());
         }
 
         public CategoryDetailModel GetById(Guid id)
         {
-            var categoryEntity = categoryRepository.GetById(id);
+            var categoryEntity = _categoryRepository.GetById(id);
             if (categoryEntity == null)
             {
                 return null;
             }
-            categoryEntity.Product = productRepository.GetByCategoryId(id);
-            return mapper.Map<CategoryDetailModel>(categoryEntity);
+            categoryEntity.Product = _productRepository.GetByCategoryId(id);
+            return _mapper.Map<CategoryDetailModel>(categoryEntity);
         }
 
         public Guid Create(CategoryNewModel category)
         {
-            var categoryEntity = mapper.Map<CategoryEntity>(category);
-            return categoryRepository.Insert(categoryEntity);
+            var categoryEntity = _mapper.Map<CategoryEntity>(category);
+            return _categoryRepository.Insert(categoryEntity);
         }
 
         public Guid? Update(CategoryUpdateModel categoryUpdateModel)
         {
-            var categoryEntityExisting = categoryRepository.GetById(categoryUpdateModel.Id);
+            var categoryEntityExisting = _categoryRepository.GetById(categoryUpdateModel.Id);
             if (categoryEntityExisting == null)
             {
                 return null;
             }
-            categoryEntityExisting.Product = productRepository.GetByCategoryId(categoryUpdateModel.Id);
+            categoryEntityExisting.Product = _productRepository.GetByCategoryId(categoryUpdateModel.Id);
             UpdateCategory(categoryUpdateModel, categoryEntityExisting);
 
-            var categoryEntityUpdated = mapper.Map<CategoryEntity>(categoryUpdateModel);
-            return categoryRepository.Update(categoryEntityUpdated);
+            var categoryEntityUpdated = _mapper.Map<CategoryEntity>(categoryUpdateModel);
+            return _categoryRepository.Update(categoryEntityUpdated);
         }
 
         private void UpdateCategory(CategoryUpdateModel categoryUpdateModel, CategoryEntity categoryEntity)
@@ -74,7 +70,7 @@ namespace PcShop.BL.Api.Facades
             {
                 product.CategoryId = Guid.Empty;
                 product.Category = null;
-                productRepository.Update(product);
+                _productRepository.Update(product);
             }
         
             var productToAdd = categoryUpdateModel.Product.Where(
@@ -83,23 +79,23 @@ namespace PcShop.BL.Api.Facades
 
             foreach (var product in productToAdd)
             {
-                var goodEntity = productRepository.GetById(product.Id);
+                var goodEntity = _productRepository.GetById(product.Id);
                 goodEntity.CategoryId = categoryUpdateModel.Id;
-                productRepository.Update(goodEntity);
+                _productRepository.Update(goodEntity);
             }
             
         }
 
         public void Delete(Guid id)
         {
-            var categoryEntity = categoryRepository.GetById(id);
-            categoryEntity.Product = productRepository.GetByCategoryId(id);
+            var categoryEntity = _categoryRepository.GetById(id);
+            categoryEntity.Product = _productRepository.GetByCategoryId(id);
             foreach (var product in categoryEntity.Product)
             {
                 product.CategoryId = Guid.Empty;
                 product.Category = null;
             }
-            categoryRepository.Remove(id);
+            _categoryRepository.Remove(id);
         }
     }
 }

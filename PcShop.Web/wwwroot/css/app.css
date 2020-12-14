@@ -1,0 +1,146 @@
+﻿
+.grid-containerList {
+    display: grid;
+    grid-template-columns: 1fr 25px 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "FiltersArea . Products Products Products Products " "FiltersArea . Products Products Products Products " "FiltersArea . Products Products Products Products " "FiltersArea . Products Products Products Products " "FiltersArea . Products Products Products Products ";
+}
+
+.FiltersArea {
+    grid-area: FiltersArea;
+}
+
+
+.Products {
+    grid-area: Products;
+}
+
+.plimg {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    height: 200px;
+    object-position: center;
+}
+
+a {
+    text-decoration: none !important;
+    color: black
+}
+
+
+.others {
+    color: black
+}
+
+.flexFilters {
+    border: 1px solid;
+    padding: 5px;
+}
+
+.filterInput {
+    width: 60px
+}
+
+.grid-containerDetail {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 0px 0px;
+    grid-template-areas: "Photo Photo Photo Photo Photo Name Name Name Name Name" "Photo Photo Photo Photo Photo Manufacturer Manufacturer Manufacturer Manufacturer Manufacturer" "Photo Photo Photo Photo Photo Price Price Price Price Price" "Photo Photo Photo Photo Photo Stats Stats Stats Stats Stats" "Description Description Description Description Description Description Description Description Description Description" "Description Description Description Description Description Description Description Description Description Description";
+}
+
+.Description {
+    grid-area: Description;
+}
+
+.Photo {
+    grid-area: Photo;
+}
+
+.Stats {
+    grid-area: Stats;
+}
+
+.Manufacturer {
+    grid-area: Manufacturer;
+}
+
+.Price {
+    grid-area: Price;
+}
+
+.Name {
+    grid-area: Name;
+}
+
+
+.Categories {
+    text-align: center;
+}
+
+
+
+.pdh1 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-family: system-ui;
+}
+
+.pdh2 {
+    font-size: 1.75rem;
+}
+
+.pdimg {
+    padding: 50px;
+    width: 100%;
+    height: 540px;
+    object-position: center;
+    object-fit: cover;
+}
+
+.pdeval {
+    width: 60%;
+    background-color: #ADADAD;
+    position: relative;
+    left: 15%;
+    margin-bottom: 15px;
+    height: auto;
+    border-radius: 15px;
+}
+
+.pdeval-text{
+    padding-left: 25px;
+    padding-right: 25px
+}
+
+.pl-text {
+    padding-left: 5px;
+    padding-right: 5px
+}
+
+body {
+    background: #DEDDDF;
+}
+
+.d-flex.flex-column.bd-highlight.mb-3.flexFilters {
+    background: #B9B9BA;
+}
+
+p.pl-text {
+    height: 3em;
+    padding-bottom: 1em;
+    overflow: hidden;
+}
+
+.inline {
+    display: inline;
+}
+
+.plcol {
+    padding: 10px;
+}
+
+textarea.form-control.mr-sm-2.valid {
+    height: 2.4em;
+}

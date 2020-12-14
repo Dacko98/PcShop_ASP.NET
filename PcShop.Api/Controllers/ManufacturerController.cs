@@ -15,27 +15,27 @@ namespace PcShop.Api.Controllers
     public class ManufacturerController : ControllerBase
     {
         private const string ApiOperationBaseName = "Manufacturer";
-        private readonly ManufacturerFacade manufacturerFacade;
+        private readonly ManufacturerFacade _manufacturerFacade;
 
 
         public ManufacturerController(
             ManufacturerFacade manufacturerFacade)
         {
-            this.manufacturerFacade = manufacturerFacade;
+            this._manufacturerFacade = manufacturerFacade;
         }
 
         [HttpGet]
         [OpenApiOperation(ApiOperationBaseName + nameof(GetAll))]
         public ActionResult<List<ManufacturerListModel>> GetAll()
         {
-            return manufacturerFacade.GetAll().ToList();
+            return _manufacturerFacade.GetAll().ToList();
         }
 
         [HttpGet("{id}")]
         [OpenApiOperation(ApiOperationBaseName + nameof(GetById))]
         public ActionResult<ManufacturerDetailModel> GetById(Guid id)
         {
-            var manufacturer = manufacturerFacade.GetById(id);
+            var manufacturer = _manufacturerFacade.GetById(id);
             if (manufacturer == null)
             {
                 return NotFound();
@@ -47,14 +47,14 @@ namespace PcShop.Api.Controllers
         [OpenApiOperation(ApiOperationBaseName + nameof(Create))]
         public ActionResult<Guid> Create(ManufacturerNewModel manufacturer)
         {
-            return manufacturerFacade.Create(manufacturer);
+            return _manufacturerFacade.Create(manufacturer);
         }
 
         [HttpPut]
         [OpenApiOperation(ApiOperationBaseName + nameof(Update))]
         public ActionResult<Guid> Update(ManufacturerUpdateModel manufacturer)
         {
-            var returnValue =  manufacturerFacade.Update(manufacturer);
+            var returnValue =  _manufacturerFacade.Update(manufacturer);
 
             if (returnValue == null)
             {
@@ -70,9 +70,9 @@ namespace PcShop.Api.Controllers
         {
             try
             {
-                manufacturerFacade.Delete(id);
+                _manufacturerFacade.Delete(id);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return BadRequest();
             }

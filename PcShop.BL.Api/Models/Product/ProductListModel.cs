@@ -6,10 +6,9 @@ using PcShop.Common.Extensions;
 
 namespace PcShop.BL.Api.Models.Product
 {
-    public class ProductListModel : IListModel
+    public class ProductListModel : IModel
     {
         public Guid Id { get; set; }
-        public EntityTypeEnum EntityType { get; set; }
 
         public string Name { get; set; }
         public string Photo { get; set; }
@@ -17,6 +16,12 @@ namespace PcShop.BL.Api.Models.Product
 
         public string ManufacturerName { get; set; }
         public string CategoryName { get; set; }
+
+        public int Price { get; set; }
+
+        public int Weight{ get; set; }
+        public int CountInStock { get; set; }
+        public int AverageScore { get; set; }
     }
 
     public class ProductListModelMapperProfile : Profile

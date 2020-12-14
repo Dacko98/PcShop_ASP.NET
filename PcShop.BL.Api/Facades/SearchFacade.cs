@@ -1,55 +1,97 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PcShop.BL.Api.Facades.Interfaces;
 using PcShop.BL.Api.Models.Evaluation;
-using PcShop.BL.Api.Models.Interfaces;
 using PcShop.BL.Api.Models.Manufacturer;
-using PcShop.BL.Api.Models.Product;
+using PcShop.BL.Api.Models.Search;
 
 namespace PcShop.BL.Api.Facades
 {
     public class SearchFacade : IAppFacade
     {
-        private readonly EvaluationFacade evaluationFacade;
-        private readonly ManufacturerFacade manufacturerFacade;
-        private readonly ProductFacade productFacade;
+        private readonly EvaluationFacade _evaluationFacade;
+        private readonly ManufacturerFacade _manufacturerFacade;
+        private readonly ProductFacade _productFacade;
 
         public SearchFacade(
             EvaluationFacade evaluationFacade,
             ManufacturerFacade manufacturerFacade,
             ProductFacade productFacade)
         {
-            this.evaluationFacade = evaluationFacade;
-            this.manufacturerFacade = manufacturerFacade;
-            this.productFacade = productFacade;
+            this._evaluationFacade = evaluationFacade;
+            this._manufacturerFacade = manufacturerFacade;
+            this._productFacade = productFacade;
         }
 
-        public IList<IListModel> GetAllContainingText(string searchedText)
+        public SearchResultModel GetAllContainingText(string searchedText)
         {
-            searchedText = searchedText.ToLower();
+            searchedText = searchedText.ToLower().Trim();
 
-            IList<IListModel> foundEntities = new List<IListModel>();
+            var searchModel = new SearchResultModel
+            {
+                EvaluationEntities = _evaluationFacade.GetAll(),
+                ManufacturerEntities = _manufacturerFacade.GetAll(),
+                ProductEntities = _productFacade.GetAll()
+            };
 
-            List<EvaluationListModel> evaluationEntities = evaluationFacade.GetAll();
-            List<ManufacturerListModel> manufacturerEntities = manufacturerFacade.GetAll();
-            List<ProductListModel> productEntities = productFacade.GetAll();
+            var searchResultModel = new SearchResultModel();
 
+            var texts = searchedText.Split(' ').ToList();
+            texts.RemoveAll(s => s.Trim() == "");
 
-            foreach (var evaluationEntity in evaluationEntities)
-                if ((evaluationEntity.TextEvaluation ?? "").ToLower().Contains(searchedText))
-                    foundEntities.Add(evaluationEntity);
+            bool firstLoop = true;
 
-            foreach (var manufacturerEntity in manufacturerEntities)
-                if ((manufacturerEntity.Name ?? "").ToLower().Contains(searchedText)
-                    || (manufacturerEntity.Description ?? "").ToLower().Contains(searchedText)
-                    || (manufacturerEntity.CountryOfOrigin ?? "").ToLower().Contains(searchedText))
-                    foundEntities.Add(manufacturerEntity);
+            foreach (var t in texts)
+            {
+                searchResultModel.EvaluationEntities.AddRange(
+                    searchModel.EvaluationEntities.FindAll(e => (e.TextEvaluation ?? "").ToLower().Contains(t)));
 
-            foreach (var productEntity in productEntities)
-                if ((productEntity.Name ?? "").ToLower().Contains(searchedText)
-                    || (productEntity.Description ?? "").ToLower().Contains(searchedText))
-                    foundEntities.Add(productEntity);
+                searchResultModel.ProductEntities.AddRange(searchModel.ProductEntities.FindAll(p =>
+                    (p.Name ?? "").ToLower().Contains(t) ||
+                    (p.Description ?? "").ToLower().Contains(t)));
 
-            return foundEntities;
+                searchResultModel.ManufacturerEntities.AddRange(searchModel.ManufacturerEntities.FindAll(m =>
+                    (m.Name ?? "").ToLower().Contains(t) ||
+                    (m.Description ?? "").ToLower().Contains(t) ||
+                    (m.CountryOfOrigin ?? "").ToLower().Contains(t)));
+
+                if (firstLoop)
+                    firstLoop = false;
+                else
+                {
+                    // for searching phrases all required
+                    searchResultModel.EvaluationEntities = searchResultModel.EvaluationEntities.GroupBy(e => e.Id)
+                        .SelectMany(e => e.Skip(1)).ToList();
+
+                    searchResultModel.ManufacturerEntities = searchResultModel.ManufacturerEntities.GroupBy(e => e.Id)
+                        .SelectMany(e => e.Skip(1)).ToList();
+
+                    searchResultModel.ProductEntities = searchResultModel.ProductEntities.GroupBy(e => e.Id)
+                        .SelectMany(e => e.Skip(1)).ToList();
+
+                    // for searching phrases 1 required
+                    //searchResultModel.ProductEntities = searchResultModel.ProductEntities.Distinct().ToList();
+                    //searchResultModel.ManufacturerEntities = searchResultModel.ManufacturerEntities.Distinct().ToList();
+                    //searchResultModel.EvaluationEntities = searchResultModel.EvaluationEntities.Distinct().ToList();
+                }
+            }
+
+            return searchResultModel;
+
+            //return new SearchResultModel
+            //{
+            //    EvaluationEntities = _evaluationFacade.GetAll()
+            //        .FindAll(e => (e.TextEvaluation ?? "").ToLower().Contains(searchedText)),
+
+            //    ManufacturerEntities = _manufacturerFacade.GetAll()
+            //        .FindAll(m => (m.Name ?? "").ToLower().Contains(searchedText)
+            //                      || (m.Description ?? "").ToLower().Contains(searchedText)
+            //                      || (m.CountryOfOrigin ?? "").ToLower().Contains(searchedText)),
+
+            //    ProductEntities = _productFacade.GetAll()
+            //        .FindAll(p => (p.Name ?? "").ToLower().Contains(searchedText)
+            //                      || (p.Description ?? "").ToLower().Contains(searchedText))
+            //};
         }
     }
 }

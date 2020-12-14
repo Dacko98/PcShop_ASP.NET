@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PcShop.BL.Api\PcShop.BL.Api.csproj" />
+    <ProjectReference Include="..\PcShop.Common\PcShop.Common.csproj" />
+  </ItemGroup>
+
+</Project>

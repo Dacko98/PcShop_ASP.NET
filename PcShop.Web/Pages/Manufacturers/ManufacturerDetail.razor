@@ -1,0 +1,89 @@
+﻿@page "/manufacturer/{Id:guid}"
+
+
+<EditForm Model="@Manufacturer">
+
+    <div class="container">
+        <div class="d-block">
+            <div class="d-block pb-5 text-center">
+                <NavLink href="@($"/manufacturer/edit/{Manufacturer.Id}")" Match="NavLinkMatch.All" ActiveClass="active" class="d-inline align-middle nav-link">
+                    <button type="button" class="btn btn-primary">Edit</button>
+                </NavLink>
+                <h1 class="d-inline align-middle">@Manufacturer.Name</h1>
+            </div>
+            <div class="row">
+                <div class="text-left col">
+                    <p>
+                        <strong>Name:</strong>&nbsp;@Manufacturer.Name<br />
+                        <strong>Country&nbsp;of&nbsp;origin:</strong>&nbsp;@Manufacturer.CountryOfOrigin<br />
+                        <strong>Description:</strong>&nbsp;@Manufacturer.Description<br />
+                    </p>
+                </div>
+                <div class="col-2">
+                    <img class="plimg" src="/images/@Manufacturer.Logo" />
+                </div>
+            </div>
+        </div>
+
+        @if (printMenu())
+        {
+            <h1> Notebooks</h1>
+            <div class="grid-containerList">
+                <div class="FiltersArea">
+                    <div class="d-flex flex-column bd-highlight mb-3 flexFilters">
+                        <h2>Filters</h2>
+                        <h3>Category:</h3>
+                        <div class="p-2 bd-highlight">
+                            <select @onchange=@categorySelect id="select3">
+                                <option value="All" style="color:gray">--Category--</option>
+                                @foreach (var category in Categories)
+                                {
+                                    <option value="@category.Name" class="others">@category.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <h3>Price range</h3>
+                        <div>
+                            <input class="filterInput" @onchange="PriceStart" type="number" />-
+                            <input class="filterInput" @onchange="PriceEnd" type="number" />€
+                        </div>
+
+                        <h3>Weight range</h3>
+                        <div>
+                            <input class="filterInput" @onchange="WeightStart" type="number" />-
+                            <input class="filterInput" @onchange="WeightEnd" type="number" />g
+                        </div>
+                        <h3>Evaluation</h3>
+                        <div>
+                            <input class="filterInput" @onchange="EvaluationStart" type="number" />-
+                            <input class="filterInput" @onchange="EvaluationEnd" type="number" />%
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <input type="checkbox" @onchange="eventArgs => { Stock(eventArgs.Value); }" />
+                            In stock<br />
+                        </div>
+                    </div>
+                    <NavLink href="/product/create" Match="NavLinkMatch.All" ActiveClass="active" class="nav-link">
+                        <button type="button" class="btn btn-primary">Create new product</button>
+                    </NavLink>
+                </div>
+
+                <div class="Products">
+                    <div class="row">
+                        @foreach (var product in Products)
+                        {
+                            <div class="col-3">
+                                <a href="@($"/product/{product.Id}")">
+                                    <img class="plimg" src="/images/@product.Photo" />
+                                    <p>@product.Name</p>
+                                    <p>@product.Price€</p>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        <br />
+    </div>
+</EditForm>
