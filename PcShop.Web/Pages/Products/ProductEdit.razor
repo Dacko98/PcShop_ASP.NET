@@ -83,7 +83,7 @@
 
         @if (_createNewManufacturer)
         {
-            <div class="form-smaller">
+            <div class="input-group">
                 <label class="w-100">
                     Manufacturer name:
                     <InputText @bind-Value="@_newManufacturer.Name" class="form-control" />
@@ -150,22 +150,27 @@
     </ul>
 
     <h3>Add new evaluation:</h3>
-    <div class="input-group">
-        <InputNumber min="0" @bind-Value="_newEvaluation.PercentEvaluation" class="form-control" />
-        <InputText @bind-Value="_newEvaluation.TextEvaluation" class="form-control" />
-        <small class="form-text text-danger"><ValidationMessage For="@(() => _newEvaluation.TextEvaluation)" /></small>
-        <div class="input-group-append">
-            <button type="button" class="btn btn-primary" @onclick="@AddEvaluation">Add</button>
+    <div class="form-group">
+        <div class="input-group">
+            <InputNumber min="0" @bind-Value="_newEvaluation.PercentEvaluation" class="form-control" />
+            <InputText @bind-Value="_newEvaluation.TextEvaluation" class="form-control" />
+            <div class="input-group-append">
+                <button class="btn btn-primary" @onclick="@AddEvaluation">Add</button>
+            </div>
+        </div>
+        <div class="input-group">
+            <small class="form-text text-danger"><ValidationMessage For="@(() => _newEvaluation.PercentEvaluation)" /></small>
+            <small class="form-text text-danger"><ValidationMessage For="@(() => _newEvaluation.TextEvaluation)" /></small>
+            <small class="form-text text-danger">@_newEvalutionMessage</small>
         </div>
     </div>
 
     <br />
 
     <button type="submit" class="btn btn-success">Save</button>
-    
+
     <br />
 
 
 </EditForm>
 
-<NavLink href="/products" class="btn btn-primary btn-lg">Go back</NavLink>
