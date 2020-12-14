@@ -1,4 +1,5 @@
 ﻿@page "/product/{Id:guid}"
+@page "/evaluation/{EvaluationId:guid}"
 
 
 <EditForm Model="@Product">
@@ -11,7 +12,7 @@
                 @Product.Description
             </div>
             <div class="Photo">
-                <img class="pdimg" src="/images/@Product.Photo"/>
+                <img class="pdimg" src="/images/@Product.Photo" />
             </div>
             <div class="Name">
                 <h1 class="pdh1">@Product.Name</h1>
@@ -22,7 +23,7 @@
                 </h2>
             </div>
             <div class="Price">
-                <h2 class="pdh2"><strong>Price:</strong>@Product.Price €</h2><br/>
+                <h2 class="pdh2"><strong>Price:</strong>@Product.Price €</h2><br />
                 <strong>In stock:</strong>@Product.CountInStock
             </div>
             <div class="Stats">
