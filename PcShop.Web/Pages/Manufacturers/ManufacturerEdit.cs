@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using PcShop.BL.Api.Models.Manufacturer;
 using Microsoft.AspNetCore.Components;
-using PcShop.BL.Api.Models.Category;
-using PcShop.BL.Api.Models.Manufacturer;
 using PcShop.BL.Api.Models.Product;
+using System.Threading.Tasks;
 using PcShop.WEB.BL.Facades;
+using System.Linq;
+using System;
 
 namespace PcShop.Web.Pages.Manufacturers
 {
     public partial class ManufacturerEdit
     {
         [Inject] private ManufacturersFacade ManufacturersFacade { get; set; }
-        [Inject] private ProductsFacade ProductsFacadde { get; set; }
+        [Inject] private ProductsFacade ProductsFacade { get; set; }
         [Inject] NavigationManager UriHelper { get; set; }
 
         [Parameter] public Guid Id { get; set; }
@@ -52,8 +50,8 @@ namespace PcShop.Web.Pages.Manufacturers
                 });
             else
             {
-                var products = (await ProductsFacadde.GetProductsAsync())
-                    .ToList().FindAll(p => p.CategoryName == ManufacturerOldName);
+                var products = (await ProductsFacade.GetProductsAsync())
+                    .ToList().FindAll(p => p.ManufacturerName == ManufacturerOldName);
 
                 response = await ManufacturersFacade.UpdateAsync(new ManufacturerUpdateModel
                 {
