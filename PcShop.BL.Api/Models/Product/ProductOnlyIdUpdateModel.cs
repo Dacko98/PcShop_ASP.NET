@@ -33,7 +33,8 @@ namespace PcShop.BL.Api.Models.Product
                 .Ignore(dst => dst.CPU)
                 .Ignore(dst => dst.GPU)
                 .Ignore(dst => dst.RAM)
-                .Ignore(dst => dst.HDD);
+                .Ignore(dst => dst.HDD)
+                .Ignore(dst => dst.AverageScore);
         }
     }
 }

@@ -45,7 +45,8 @@ namespace PcShop.BL.Api.Models.Product
         {
             CreateMap<ProductUpdateModel, ProductEntity>()
                 .Ignore(dst => dst.Manufacturer)
-                .Ignore(dst => dst.Category);
+                .Ignore(dst => dst.Category)
+                .Ignore(dst => dst.AverageScore);
         }
     }
 }

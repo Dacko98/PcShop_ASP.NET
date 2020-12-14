@@ -28,13 +28,18 @@
                     <h3>Price range</h3>
                     <div>
                         <input class="filterInput" @onchange="PriceStart" type="number" />-
-                        <input  class="filterInput"@onchange="PriceEnd" type="number" />€
+                        <input class="filterInput" @onchange="PriceEnd" type="number" />€
                     </div>
 
                     <h3>Weight range</h3>
                     <div>
                         <input class="filterInput" @onchange="WeightStart" type="number" />-
                         <input class="filterInput" @onchange="WeightEnd" type="number" />g
+                    </div>
+                    <h3>Evaluation</h3>
+                    <div>
+                        <input class="filterInput" @onchange="EvaluationStart" type="number" />-
+                        <input class="filterInput" @onchange="EvaluationEnd" type="number" />%
                     </div>
                     <div class="p-2 bd-highlight">
                         <input type="checkbox" @onchange="eventArgs =>{ Stock(eventArgs.Value); }" />
@@ -50,11 +55,20 @@
                 <div class="row">
                     @foreach (var product in Products)
                     {
-                        <div class="col-3">
+                        <div class="col-3 plcol">
                             <a href="@($"/product/{product.Id}")">
-                                <img class="plimg"src="/images/@product.Photo" />
-                                <p>@product.Name</p>
-                                <p>@product.Price€</p>
+                                <img class="plimg" src="/images/@product.Photo" />
+                                <p class="pl-text">@product.Name</p>
+                                <p class="pl-text">@product.Price€</p>
+                                <strong  class="pl-text">Average evaluation:</strong>
+                                @if (@product.AverageScore > -1)
+                                {
+                                    <p class="inline">@product.AverageScore</p>
+                                }
+                                else
+                                {
+                                    <p class="inline">N/A</p>
+                                }
                             </a>
                         </div>
                     }

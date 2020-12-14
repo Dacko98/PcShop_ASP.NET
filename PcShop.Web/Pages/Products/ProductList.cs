@@ -41,6 +41,9 @@ namespace PcShop.Web.Pages.Products
         public int weightStart { get; set; } = 0;
         public int weightEnd { get; set; } = Int32.MaxValue;
 
+        public int evaluationStart { get; set; } = 0;
+        public int evaluationEnd { get; set; } = Int32.MaxValue;
+
         public bool inStock { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
@@ -97,6 +100,23 @@ namespace PcShop.Web.Pages.Products
             applyFilters();
         }
 
+        public void EvaluationStart(ChangeEventArgs e)
+        {
+            string val = e.Value.ToString();
+
+            evaluationStart = val.Equals("") ? 0 : Int32.Parse(val);
+
+
+            applyFilters();
+        }
+        public void EvaluationEnd(ChangeEventArgs e)
+        {
+            string val = e.Value.ToString();
+            evaluationEnd = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
+
+            applyFilters();
+        }
+
 
         public void CheckBoxChecked(string aSelectedId, object aChecked)
         {
@@ -133,6 +153,7 @@ namespace PcShop.Web.Pages.Products
             Products = !SelectedValues.Any() ? Products : Products.Where(f => SelectedValues.Contains(f.ManufacturerName)).ToList();
             Products = Products.Where(f => f.Price <= priceEnd && f.Price >= priceStart).ToList();
             Products = Products.Where(f => f.Weight <= weightEnd && f.Weight >= weightStart).ToList();
+            Products = Products.Where(f => f.AverageScore <= evaluationEnd && f.AverageScore >= evaluationStart).ToList();
             if (inStock)
             {
                 Products = Products.Where(f => f.CountInStock > 0).ToList();

@@ -38,7 +38,9 @@ namespace PcShop.BL.Api.Models.Product
 
         public string HDD { get; set; }
         public virtual IList<EvaluationListModel> Evaluations { get; set; }
-       
+
+        public int AverageScore { get; set; }
+
     }
 
     public class ProductDetailModelMapperProfile : Profile

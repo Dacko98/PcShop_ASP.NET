@@ -23,6 +23,8 @@ namespace PcShop.DAL.Entities
 
         public string HDD { get; set; }
 
+        public int AverageScore { get; set; }
+
         public Guid ManufacturerId { get; set; }
         public virtual ManufacturerEntity Manufacturer { get; set; }
 
