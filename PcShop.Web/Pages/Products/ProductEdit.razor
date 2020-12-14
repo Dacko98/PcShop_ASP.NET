@@ -87,19 +87,19 @@
                 <label class="w-100">
                     Manufacturer name:
                     <InputText @bind-Value="@_newManufacturer.Name" class="form-control" />
-                    <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Name)" /></small>
+                    <small class="form-text text-danger"><ValidationMessage For="@(() => _newManufacturer.Name)" /></small>
                 </label>
 
                 <label class="w-100">
                     Manufacturer description:
                     <InputTextArea @bind-Value="@_newManufacturer.Description" class="form-control" />
-                    <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Name)" /></small>
+                    <small class="form-text text-danger"><ValidationMessage For="@(() => _newManufacturer.Description)" /></small>
                 </label>
 
                 <label class="w-100">
                     Country of origin:
                     <InputText @bind-Value="@_newManufacturer.CountryOfOrigin" class="form-control" />
-                    <small class="form-text text-danger"><ValidationMessage For="@(() => Product.Name)" /></small>
+                    <small class="form-text text-danger"><ValidationMessage For="@(() => _newManufacturer.CountryOfOrigin)" /></small>
                 </label>
             </div>
         }
