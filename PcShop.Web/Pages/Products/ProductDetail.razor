@@ -1,5 +1,5 @@
 ﻿@page "/product/{Id:guid}"
-@using AutoMapper.Internal
+@page "/evaluation/{EvaluationId:guid}"
 
 
 <EditForm Model="@Product">
@@ -45,7 +45,7 @@
         </div>
 
 
-        @if (Evaluations.ToList().FindAll(p=>p.ProductName == Product.Name).Any())
+        @if (Evaluations.ToList().FindAll(p => p.ProductName == Product.Name).Any())
         {
             <h2 style="padding-left: 200px">Evaluations:</h2>
             @foreach (var evaluation in Evaluations)
