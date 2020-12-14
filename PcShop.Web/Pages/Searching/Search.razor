@@ -15,7 +15,7 @@
                     <div class="pdeval">
                         <h4 class="pdeval">@manufacturer.Name</h4>
                         <h5 class="pdeval">@manufacturer.CountryOfOrigin</h5>
-                        <p class="pdeval">todo this element @manufacturer.Description</p>
+                        <p class="pdeval">@manufacturer.Description</p>
                     </div>
                 </NavLink>
             }
@@ -32,7 +32,7 @@
                             <a href="@($"/product/{product.Id}")">
                                 <img class="plimg" src="/images/@product.Photo"/>
                                 <p>@product.Name</p>
-                                <p>@product.Price€</p>
+                                <p>@product.Price&nbsp;€</p>
                             </a>
                         </div>
                     }
@@ -47,7 +47,7 @@
             {
                 <NavLink href=@("/evaluation/" + evaluation.Id) Match="NavLinkMatch.All" ActiveClass="active">
                     <div class="pdeval">
-                        <h4 class="pdeval">@evaluation.PercentEvaluation %</h4>
+                        <h4 class="pdeval">@evaluation.PercentEvaluation&nbsp;%</h4>
                         <h5 class="pdeval">@evaluation.ProductName</h5>
                         <p class="pdeval">@evaluation.TextEvaluation</p>
                     </div>
