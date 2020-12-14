@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using PcShop.BL.Api.Models.Manufacturer;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PcShop.WEB.BL.Facades;
-using PcShop.BL.Api.Models.Manufacturer;
 
 
 namespace PcShop.Web.Pages.Manufacturers
