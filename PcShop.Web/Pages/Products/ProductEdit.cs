@@ -32,7 +32,6 @@ namespace PcShop.Web.Pages.Products
         [Inject]
         private EvaluationsFacade EvaluationsFacade { get; set; }
 
-        private bool createNewProduct = false;
         private bool createNewCategory = false;
         private bool createNewManufacturer = false;
         private EvaluationNewModel NewEvaluation = new EvaluationNewModel();
@@ -62,7 +61,6 @@ namespace PcShop.Web.Pages.Products
                     CountInStock = 0,
                     Evaluations = new List<EvaluationListModel>()
                 };
-                createNewProduct = true;
             }
             else
             {
@@ -80,7 +78,8 @@ namespace PcShop.Web.Pages.Products
             createNewCategory = createNewManufacturer = false;
             Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
             Categories = await CategoryFacade.GetCategorysAsync();
-            product.ManufacturerName = newManufacturer.Name;
+            if(createNewManufacturer)
+                product.ManufacturerName = newManufacturer.Name;
         }
 
         public void categorySelect(ChangeEventArgs e)
