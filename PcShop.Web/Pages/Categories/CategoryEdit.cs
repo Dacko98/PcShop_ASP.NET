@@ -13,6 +13,7 @@ namespace PcShop.Web.Pages.Categories
         [Inject] private CategoriesFacade CategoryFacade { get; set; }
         [Inject] private ProductsFacade ProductFacade { get; set; }
         [Inject] NavigationManager UriHelper { get; set; }
+
         [Parameter] public Guid Id { get; set; }
 
         private string CategoryOldName { get; set; }
@@ -39,20 +40,23 @@ namespace PcShop.Web.Pages.Categories
 
         protected async Task SaveData()
         {
+            Guid response;
             if (NewCategory)
-                await CategoryFacade.CreateAsync(new CategoryNewModel {Name = Category.Name});
+                response=await CategoryFacade.CreateAsync(new CategoryNewModel {Name = Category.Name});
             else
             {
                 var products = (await ProductFacade.GetProductsAsync())
                     .ToList().FindAll(p => p.CategoryName == CategoryOldName);
 
-                await CategoryFacade.UpdateAsync(new CategoryUpdateModel
+                response=await CategoryFacade.UpdateAsync(new CategoryUpdateModel
                 {
                     Name = Category.Name, 
                     Id = Id,
                     Product = products.Select(product => new ProductOnlyIdUpdateModel { Id = product.Id }).ToList()
                 });
             }
+
+            UriHelper.NavigateTo("/category/" + response);
         }
     }
 }
