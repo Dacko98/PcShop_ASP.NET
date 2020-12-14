@@ -34,7 +34,7 @@ namespace PcShop.Web.Pages.Products
 
         private bool createNewCategory = false;
         private bool createNewManufacturer = false;
-        private bool createNewEvaluation = false;
+        // private bool createNewEvaluation = false;
         private EvaluationNewModel NewEvaluation = new EvaluationNewModel();
         private readonly EvaluationNewModel EMPTY_EVALUATION = new EvaluationNewModel();
 
@@ -45,7 +45,7 @@ namespace PcShop.Web.Pages.Products
         //private ICollection<ProductListModel> AllProducts { get; set; } = new List<ProductListModel>();
         private ICollection<ManufacturerListModel> Manufacturers { get; set; } = new List<ManufacturerListModel>();
         private ICollection<CategoryListModel> Categories { get; set; } = new List<CategoryListModel>();
-        private ICollection<EvaluationListModel> Evaluations { get; set; } = new List<EvaluationListModel>();
+        //private List<EvaluationListModel> Evaluations { get; set; } = new List<EvaluationListModel>();
         private List<EvaluationNewModel> EvaluationNews { get; set; } = new List<EvaluationNewModel>();
 
         protected override async Task OnInitializedAsync()
@@ -57,7 +57,6 @@ namespace PcShop.Web.Pages.Products
 
             Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
             Categories = await CategoryFacade.GetCategorysAsync();
-            //Evaluations = await EvaluationsFacade.GetEvaluationsAsync();
             EvaluationNews = DetailEvaluationsToNews();
 
             await base.OnInitializedAsync();
@@ -67,13 +66,20 @@ namespace PcShop.Web.Pages.Products
         {
             Debug.WriteLine("Data should be saved");
 
-            // UpdateAsync(product) or something
+            // evaluationNews pres product.evaluation (ktery pridat a ktery nechat) to evaluation upgrade
+
             // actualize all evaluations 
             // push the new evaluation if there is one
             // save new manufacturer name to product
             // push new category and manufacturer
-            // evaluationNews pres product.evaluation (ktery pridat a ktery nechat) to evaluation upgrade
+            
             await ProductFacade.UpdateAsync(await UpdateProduct());
+
+            createNewCategory = createNewManufacturer = false;
+            Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
+            Categories = await CategoryFacade.GetCategorysAsync();
+            product.ManufacturerName = newManufacturer.Name;
+            // UpdateAsync(product)
         }
 
         public void categorySelect(ChangeEventArgs e)
@@ -83,7 +89,7 @@ namespace PcShop.Web.Pages.Products
             else
             {
                 createNewCategory = false;
-                product.CategoryName = e.Value.ToString();
+                //product.CategoryName = e.Value.ToString();
             }
         }
 
@@ -100,44 +106,6 @@ namespace PcShop.Web.Pages.Products
                 product.ManufacturerName = e.Value.ToString();
             }
         }
-
-        /*public async void AddEvaluation()
-        {
-            Debug.WriteLine("Adding evaluation is working");
-            Debug.WriteLine("Evaluations.Count: " + Evaluations.Count);
-            if (createNewEvaluation)
-            {
-                Debug.WriteLine("Evaluation percent is: " + NewEvaluation.PercentEvaluation + ".");
-
-                if (NewEvaluation.TextEvaluation != EMPTY_EVALUATION.TextEvaluation)
-                {
-                    // There is one already, should be pushed and saved to the list
-                    Debug.WriteLine("The new vec is here");
-                    Debug.WriteLine("text of the new vec: " + NewEvaluation.TextEvaluation + ".");
-                    Debug.WriteLine("percent of the new vec: " + NewEvaluation.PercentEvaluation + ".");
-                    NewEvaluation.ProductId = product.Id;
-
-                    Guid newEvaluationId = await EvaluationsFacade.CreateAsync(NewEvaluation);
-
-                    // EvaluationDetailModel newEvaluationDetail = await EvaluationsFacade.GetEvaluationAsync(newEvaluationId);
-
-                    // actualize list of all evaluations
-                    Evaluations = await EvaluationsFacade.GetEvaluationsAsync();
-
-                    Debug.WriteLine("Evaluations.Count: " + Evaluations.Count);
-
-                    NewEvaluation = new EvaluationNewModel();
-                }
-                else
-                {
-                    Debug.WriteLine("else aaaaaaaaaaaaaaaa");
-                }
-            }
-            else
-            {
-                createNewEvaluation = true;
-            }
-        }*/
 
         public async Task<ProductUpdateModel> UpdateProduct()
         {
@@ -163,15 +131,24 @@ namespace PcShop.Web.Pages.Products
 
         public async Task<Guid> DecideNewManufacturer()
         {
-            foreach (var manufacturer in Manufacturers)
+            Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
+
+            if (!createNewManufacturer)
             {
-                if (manufacturer.Name == product.ManufacturerName)
-                    return manufacturer.Id;
+                foreach(var manufacturer in Manufacturers)
+                {
+                    if (manufacturer.Name == product.ManufacturerName)
+                        return manufacturer.Id;
+                }
             }
 
-            // create new Manufacturer 
+            // create new Manufacturer
+            var response = await ManufacturerFacade.CreateAsync(newManufacturer);
 
-            return Guid.Empty;
+            Debug.WriteLine("NewManufacturer response: " + response.ToString());
+            Debug.WriteLine("NewManufacturer name: " + product.CategoryName);
+            Debug.WriteLine("ManufacturersCount: " + Manufacturers.Count);
+            return response;
         }
 
         public async Task<Guid> DecideNewCategory()
@@ -214,18 +191,32 @@ namespace PcShop.Web.Pages.Products
 
         public List<EvaluationUpdateModel> GetProductUpdateEvaluations()
         {
-            List<EvaluationUpdateModel> listEvaluationUpdate = new List<EvaluationUpdateModel>();
-            foreach (var evaluation in product.Evaluations)
+            // delete all evalutaions in product.evaluations and create new ones
+
+            List<EvaluationUpdateModel> EvaluationUpdateList = new List<EvaluationUpdateModel>();
+
+            product.Evaluations = new List<EvaluationListModel>();
+
+            foreach (var evaluation in EvaluationNews)
             {
-                listEvaluationUpdate.Add(new EvaluationUpdateModel
+                // maybe first create this evaluation, idk...
+
+
+                product.Evaluations.Add(new EvaluationListModel 
+                { 
+                    TextEvaluation = evaluation.TextEvaluation,
+                    PercentEvaluation = evaluation.PercentEvaluation,
+                    ProductName = product.Name
+                });
+
+                EvaluationUpdateList.Add(new EvaluationUpdateModel
                 {
-                    Id = evaluation.Id,
                     TextEvaluation = evaluation.TextEvaluation,
                     PercentEvaluation = evaluation.PercentEvaluation,
                     ProductId = product.Id
                 });
             }
-            return listEvaluationUpdate;
+            return EvaluationUpdateList;
         }
 
         public void DeleteEvaluation(EvaluationNewModel evaluation)

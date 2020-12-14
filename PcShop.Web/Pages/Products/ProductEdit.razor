@@ -62,7 +62,7 @@
             </select>
             @if (createNewCategory)
             {
-                <InputText @bind-Value="@product.CategoryName" class="form-control" />
+                <InputText @bind-Value="@product.CategoryName" class="form-control"/>
             }
         </div>
     </div>
@@ -152,21 +152,19 @@
     <h3>Add new evaluation:</h3>
     <div class="input-group">
         <InputNumber min="0" @bind-Value="NewEvaluation.PercentEvaluation" class="form-control" />
-        <InputTextArea @bind-Value="NewEvaluation.TextEvaluation" class="form-control" />
+        <InputText @bind-Value="NewEvaluation.TextEvaluation" class="form-control" />
         <small class="form-text text-danger"><ValidationMessage For="@(() => NewEvaluation.TextEvaluation)" /></small>
         <div class="input-group-append">
             <button type="button" class="btn btn-primary" @onclick="@AddEvaluation">Add</button>
         </div>
     </div>
 
-    <button type="submit" class="btn btn-success">Save</button>
-
     <br />
 
-    <NavLink href="@($"/evalutaions/editByProduct/{product.Id}")" class="btn-secondary" type="submit">Edit evalutaions</NavLink>
+    <button type="submit" class="btn btn-success">Save</button>
 
 </EditForm>
 
 <br />
 
-<NavLink href="/products" class="btn btn-primary btn-lg">Go back.</NavLink>
+<NavLink href="/products" class="btn btn-primary btn-lg">Go back</NavLink>
