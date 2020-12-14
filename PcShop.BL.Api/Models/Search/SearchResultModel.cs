@@ -8,8 +8,8 @@ namespace PcShop.BL.Api.Models.Search
 {
     public class SearchResultModel : IModel
     {
-        public List<EvaluationListModel> EvaluationEntities { get; set; }
-        public List<ManufacturerListModel> ManufacturerEntities { get; set; }
-        public List<ProductListModel> ProductEntities { get; set; }
+        public List<EvaluationListModel> EvaluationEntities { get; set; } = new List<EvaluationListModel>();
+        public List<ManufacturerListModel> ManufacturerEntities { get; set; } = new List<ManufacturerListModel>();
+        public List<ProductListModel> ProductEntities { get; set; } = new List<ProductListModel>();
     }
 }

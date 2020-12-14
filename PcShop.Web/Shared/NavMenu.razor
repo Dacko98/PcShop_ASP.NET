@@ -22,9 +22,13 @@
                 </NavLink>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="location.href='/search';">Search</button>
-        </form>
+
+        <EditForm Model="@SearchingModel" class="form-inline my-2 my-lg-0">
+            <InputTextArea @bind-Value="SearchingModel.SearchedPhraseSet" placeholder="Search" aria-label="Search" type="search" class="form-control mr-sm-2" />
+            <NavLink href="@SearchingModel.SearchedPhraseSearch" Match="NavLinkMatch.All" ActiveClass="active">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </NavLink>
+        </EditForm>
     </div>
 </nav>
+

@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using PcShop.BL.Api.Models.Category;
 using PcShop.BL.Api.Models.Manufacturer;
 using PcShop.BL.Api.Models.Product;
+using PcShop.BL.Api.Models.Search;
 using PcShop.WEB.BL.Facades;
 
-namespace PcShop.Web.Pages.Categories
+namespace PcShop.Web.Pages.Searching
 {
-    public partial class CategoryDetail : ComponentBase
+    public partial class Search : ComponentBase
     {
+        [Inject] private SearchingFacade SearchFacade { get; set; }
+        [Inject] private ManufacturersFacade ManufacturerFacade { get; set; }
         [Inject] private CategoriesFacade CategoryFacade { get; set; }
         [Inject] private ProductsFacade ProductFacade { get; set; }
-        [Inject] private ManufacturersFacade ManufacturerFacade { get; set; }
 
-        [Parameter] public Guid Id { get; set; }
-
-        public CategoryDetailModel Category { get; set; }
+        [Parameter] public string Phrase { get; set; } = "";
+        
+        public SearchResultModel FoundedEntities { get; set; } = new SearchResultModel();
         private ICollection<ProductListModel> Products { get; set; } = new List<ProductListModel>();
-
         private ICollection<ProductListModel> AllProducts { get; set; } = new List<ProductListModel>();
-        private ICollection<ManufacturerListModel> Manufacturers { get; set; } = new List<ManufacturerListModel>();
+        private ICollection<ManufacturerListModel> AllManufacturers { get; set; } = new List<ManufacturerListModel>();
+        private ICollection<CategoryListModel> AllCategories { get; set; } = new List<CategoryListModel>();
 
         public List<string> SelectedValues { get; set; } = new List<string>();
-
-        public string CategoryVal= "All";
+        public string CategoryVal = "All";
         public int PriceStartVal { get; set; } = 0;
         public int PriceEndVal { get; set; } = Int32.MaxValue;
 
@@ -35,21 +37,35 @@ namespace PcShop.Web.Pages.Categories
 
         public bool InStockVal { get; set; } = false;
 
-        protected override async Task OnInitializedAsync()
+        public async Task HandleSearchChange()
         {
-            await LoadData();
+            Debug.WriteLine("aaaa");
+            Phrase = Phrase.Trim();
+
+            FoundedEntities = Phrase == "" ? new SearchResultModel() : await SearchFacade.GetAllContainingText(Phrase);
+            Products = FoundedEntities.ProductEntities;
 
             await base.OnInitializedAsync();
         }
 
-        private async Task LoadData()
+        protected override async Task OnInitializedAsync()
         {
-            Category = await CategoryFacade.GetCategoryAsync(Id);
-            Products = (await ProductFacade.GetProductsAsync())
-                .ToList().FindAll(p=>p.CategoryName == Category.Name);
+            Phrase = Phrase.Trim();
 
-            AllProducts = Products;
-            Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
+            FoundedEntities = Phrase == "" ? new SearchResultModel() : await SearchFacade.GetAllContainingText(Phrase);
+            AllManufacturers = await ManufacturerFacade.GetManufacturersAsync();
+            AllCategories = await CategoryFacade.GetCategorysAsync();
+            AllProducts = await ProductFacade.GetProductsAsync();
+
+            Products = FoundedEntities.ProductEntities;
+
+            await base.OnInitializedAsync();
+        }
+
+        public void CategorySelect(ChangeEventArgs e)
+        {
+            CategoryVal = e.Value.ToString();
+            ApplyFilters();
         }
 
         public void PriceStart(ChangeEventArgs e)
@@ -72,6 +88,7 @@ namespace PcShop.Web.Pages.Categories
             string val = e.Value.ToString();
 
             WeightStartVal = val.Equals("") ? 0 : Int32.Parse(val);
+
 
             ApplyFilters();
         }
@@ -114,8 +131,7 @@ namespace PcShop.Web.Pages.Categories
 
         public void ApplyFilters()
         {
-
-            Products = CategoryVal.Equals("All") ? AllProducts : AllProducts.Where(f => f.CategoryName.Equals(CategoryVal)).ToList();
+            Products = CategoryVal.Equals("All") ? FoundedEntities.ProductEntities : FoundedEntities.ProductEntities.Where(f => f.CategoryName.Equals(CategoryVal)).ToList();
             Products = !SelectedValues.Any() ? Products : Products.Where(f => SelectedValues.Contains(f.ManufacturerName)).ToList();
             Products = Products.Where(f => f.Price <= PriceEndVal && f.Price >= PriceStartVal).ToList();
             Products = Products.Where(f => f.Weight <= WeightEndVal && f.Weight >= WeightStartVal).ToList();

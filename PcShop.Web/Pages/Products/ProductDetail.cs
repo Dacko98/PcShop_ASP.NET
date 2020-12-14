@@ -17,12 +17,19 @@ namespace PcShop.Web.Pages.Products
         [Inject] private EvaluationsFacade EvaluationsFacade { get; set; }
 
         [Parameter] public Guid Id { get; set; }
+        [Parameter] public Guid EvaluationId { get; set; }
         
         public ProductDetailModel Product { get; set; }
         private ICollection<EvaluationListModel> Evaluations { get; set; } = new List<EvaluationListModel>();
 
         protected override async Task OnInitializedAsync()
         {
+            if (EvaluationId != Guid.Empty)
+            {
+                EvaluationDetailModel eval = await EvaluationsFacade.GetEvaluationAsync(EvaluationId);
+                Id = eval.ProductId;
+            }
+
             Product = await ProductFacade.GetProductAsync(Id);
             Evaluations = await EvaluationsFacade.GetEvaluationsAsync();
             await base.OnInitializedAsync();
