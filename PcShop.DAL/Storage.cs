@@ -547,7 +547,7 @@ namespace PcShop.DAL
             Manufacturers.Add(new ManufacturerEntity
             {
                 Id = _manufacturerGuids[5],
-                Name = "LG",
+                Name = "LG–Life's Good",
                 Description = "Founded in 1958 as GoldStar, LG (Life's Good) Electronics is a company who manufacturers a wide range of products. Their computer-related products today include monitor, data storage, USB modems, and various computer accessories.",
                 Logo = "default_manufacturer_logo.jpg",
                 CountryOfOrigin = "U.S.",
@@ -555,7 +555,7 @@ namespace PcShop.DAL
             Manufacturers.Add(new ManufacturerEntity
             {
                 Id = _manufacturerGuids[6],
-                Name = "MSI",
+                Name = "MSI–Micro Star Int.",
                 Description = "Founded in 1986, MSI (Micro-Star International) is a manufacturer of computer notebooks, tablets, motherboards, video cards and other accessories.",
                 Logo = "default_manufacturer_logo.jpg",
                 CountryOfOrigin = "USA",
