@@ -19,7 +19,7 @@ namespace PcShop.Web.Pages.Products
     public partial class ProductEdit : ComponentBase
     {
         [Parameter]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.Empty;
 
         public ProductDetailModel product { get; set; }
 
@@ -32,6 +32,7 @@ namespace PcShop.Web.Pages.Products
         [Inject]
         private EvaluationsFacade EvaluationsFacade { get; set; }
 
+        private bool createNewProduct = false;
         private bool createNewCategory = false;
         private bool createNewManufacturer = false;
         // private bool createNewEvaluation = false;
@@ -50,13 +51,40 @@ namespace PcShop.Web.Pages.Products
 
         protected override async Task OnInitializedAsync()
         {
-            if (Id == Guid.Empty)
-                product = new ProductDetailModel();
-            else
-                product = await ProductFacade.GetProductAsync(Id);
-
             Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
             Categories = await CategoryFacade.GetCategorysAsync();
+            Debug.WriteLine("ManufacturersCount: " + Manufacturers.Count);
+            
+
+            if (Id == Guid.Empty)
+            {
+                Debug.WriteLine("if good.");
+
+                var newProductId = await ProductFacade.CreateAsync(new ProductNewModel());
+
+                product = new ProductDetailModel()
+                {
+                    Id = newProductId,
+                    Name = "",
+                    Photo = "default.jpg",
+                    Description = "",
+                    Price = 0,
+                    Weight = 0,
+                    CountInStock = 0,
+                    Evaluations = new List<EvaluationListModel>()
+                };
+
+                createNewProduct = true;
+
+                Debug.WriteLine("Photo: " + product.Photo);
+
+            }
+            else
+            {
+                Debug.WriteLine("else aaaaaaaa");
+                product = await ProductFacade.GetProductAsync(Id);
+            }
+
             EvaluationNews = DetailEvaluationsToNews();
 
             await base.OnInitializedAsync();
@@ -89,7 +117,7 @@ namespace PcShop.Web.Pages.Products
             else
             {
                 createNewCategory = false;
-                //product.CategoryName = e.Value.ToString();
+                product.CategoryName = e.Value.ToString();
             }
         }
 
