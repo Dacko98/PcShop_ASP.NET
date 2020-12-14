@@ -4,14 +4,14 @@ using PcShop.DAL.Repositories;
 
 namespace PcShop.DAL.Installers
 {
-    public class DALInstaller : IInstaller
+    public class DalInstaller : IInstaller
     {
         public void Install(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<Storage>();
 
             serviceCollection.Scan(selector =>
-                selector.FromAssemblyOf<DALInstaller>()
+                selector.FromAssemblyOf<DalInstaller>()
                     .AddClasses(filter => filter.AssignableTo(typeof(IAppRepository<>)))
                     .AsSelf()
                     .WithTransientLifetime());

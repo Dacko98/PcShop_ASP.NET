@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using PcShop.BL.Api.Facades;
 using PcShop.BL.Api.Models.Evaluation;
 using PcShop.BL.Api.Models.Product;
 using PcShop.WEB.BL.Facades;

@@ -1,10 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 using PcShop.WEB.BL.Facades;
 using PcShop.BL.Api.Models.Product;
@@ -34,17 +31,17 @@ namespace PcShop.Web.Pages.Products
         private ICollection<CategoryListModel> Category { get; set; } = new List<CategoryListModel>();
 
         public List<string> SelectedValues { get; set; } = new List<string>();
-        public string category = "All";
-        public int priceStart { get; set; } = 0;
-        public int priceEnd { get; set; } = Int32.MaxValue;
+        public string CategoryVal = "All";
+        public int PriceStartVal { get; set; }
+        public int PriceEndVal { get; set; } = Int32.MaxValue;
 
-        public int weightStart { get; set; } = 0;
-        public int weightEnd { get; set; } = Int32.MaxValue;
+        public int WeightStartVal { get; set; }
+        public int WeightEndVal { get; set; } = Int32.MaxValue;
 
-        public int evaluationStart { get; set; } = 0;
-        public int evaluationEnd { get; set; } = Int32.MaxValue;
+        public int EvaluationStartVal { get; set; }
+        public int EvaluationEndVal { get; set; } = Int32.MaxValue;
 
-        public bool inStock { get; set; } = false;
+        public bool InStockVal { get; set; } 
 
         protected override async Task OnInitializedAsync()
         {
@@ -62,59 +59,59 @@ namespace PcShop.Web.Pages.Products
             Category = await CategoryFacade.GetCategorysAsync();
         }
 
-        public void categorySelect(ChangeEventArgs e)
+        public void CategorySelect(ChangeEventArgs e)
         {
-            category = e.Value.ToString();
-            applyFilters();
+            CategoryVal = e.Value.ToString();
+            ApplyFilters();
         }
 
         public void PriceStart(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            priceStart = val.Equals("") ? 0 : Int32.Parse(val);
+            PriceStartVal = val.Equals("") ? 0 : Int32.Parse(val);
 
-            applyFilters();
+            ApplyFilters();
         }
         public void PriceEnd(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            priceEnd = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
+            PriceEndVal = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
 
-            applyFilters();
+            ApplyFilters();
         }
 
         public void WeightStart(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
 
-            weightStart = val.Equals("") ? 0 : Int32.Parse(val);
+            WeightStartVal = val.Equals("") ? 0 : Int32.Parse(val);
 
 
-            applyFilters();
+            ApplyFilters();
         }
         public void WeightEnd(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            weightEnd = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
+            WeightEndVal = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
 
-            applyFilters();
+            ApplyFilters();
         }
 
         public void EvaluationStart(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
 
-            evaluationStart = val.Equals("") ? 0 : Int32.Parse(val);
+            EvaluationStartVal = val.Equals("") ? 0 : Int32.Parse(val);
 
 
-            applyFilters();
+            ApplyFilters();
         }
         public void EvaluationEnd(ChangeEventArgs e)
         {
             string val = e.Value.ToString();
-            evaluationEnd = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
+            EvaluationEndVal = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
 
-            applyFilters();
+            ApplyFilters();
         }
 
 
@@ -136,25 +133,25 @@ namespace PcShop.Web.Pages.Products
                     }
                 }
             }
-            applyFilters();
+            ApplyFilters();
         }
 
         public void Stock(object aChecked)
         {
 
-            inStock = ((bool)aChecked);
-            applyFilters();
+            InStockVal = ((bool)aChecked);
+            ApplyFilters();
         }
 
-        public void applyFilters()
+        public void ApplyFilters()
         {
 
-            Products = category.Equals("All") ? AllProducts : AllProducts.Where(f => f.CategoryName.Equals(category)).ToList();
+            Products = CategoryVal.Equals("All") ? AllProducts : AllProducts.Where(f => f.CategoryName.Equals(CategoryVal)).ToList();
             Products = !SelectedValues.Any() ? Products : Products.Where(f => SelectedValues.Contains(f.ManufacturerName)).ToList();
-            Products = Products.Where(f => f.Price <= priceEnd && f.Price >= priceStart).ToList();
-            Products = Products.Where(f => f.Weight <= weightEnd && f.Weight >= weightStart).ToList();
-            Products = Products.Where(f => f.AverageScore <= evaluationEnd && f.AverageScore >= evaluationStart).ToList();
-            if (inStock)
+            Products = Products.Where(f => f.Price <= PriceEndVal && f.Price >= PriceStartVal).ToList();
+            Products = Products.Where(f => f.Weight <= WeightEndVal && f.Weight >= WeightStartVal).ToList();
+            Products = Products.Where(f => f.AverageScore <= EvaluationEndVal && f.AverageScore >= EvaluationStartVal).ToList();
+            if (InStockVal)
             {
                 Products = Products.Where(f => f.CountInStock > 0).ToList();
             }

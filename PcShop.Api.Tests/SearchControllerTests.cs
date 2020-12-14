@@ -1,7 +1,6 @@
 ﻿using PcShop.BL.Api.Models.Manufacturer;
 using Microsoft.AspNetCore.Mvc.Testing;
 using PcShop.BL.Api.Models.Product;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using System.Net.Http;
@@ -31,10 +30,10 @@ namespace PcShop.Api.Tests
                 Price = 8000,
                 Weight = 550,
                 CountInStock = 50,
-                RAM = null,
-                CPU = null,
-                GPU = null,
-                HDD = null,
+                Ram = null,
+                Cpu = null,
+                Gpu = null,
+                Hdd = null,
                 ManufacturerId = new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
                 CategoryId = new Guid("fabde0cd-eefe-443f-baf6-3d96cc2cbf2e")
             },
@@ -46,10 +45,10 @@ namespace PcShop.Api.Tests
                 Price = 8000,
                 Weight = 550,
                 CountInStock = 50,
-                RAM = null,
-                CPU = null,
-                GPU = null,
-                HDD = null,
+                Ram = null,
+                Cpu = null,
+                Gpu = null,
+                Hdd = null,
                 ManufacturerId = new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
                 CategoryId = new Guid("fabde0cd-eefe-443f-baf6-3d96cc2cbf2e")
             },
@@ -61,10 +60,10 @@ namespace PcShop.Api.Tests
                 Price = 123456,
                 Weight = 654321,
                 CountInStock = 42,
-                RAM = null,
-                CPU = null,
-                GPU = null,
-                HDD = null,
+                Ram = null,
+                Cpu = null,
+                Gpu = null,
+                Hdd = null,
                 ManufacturerId = new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
                 CategoryId = new Guid("fabde0cd-eefe-443f-baf6-3d96cc2cbf2e")
             },
@@ -76,10 +75,10 @@ namespace PcShop.Api.Tests
                 Price = 123456,
                 Weight = 654321,
                 CountInStock = 42,
-                RAM = null,
-                CPU = null,
-                GPU = null,
-                HDD = null,
+                Ram = null,
+                Cpu = null,
+                Gpu = null,
+                Hdd = null,
                 ManufacturerId = new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
                 CategoryId = new Guid("fabde0cd-eefe-443f-baf6-3d96cc2cbf2e")
             }

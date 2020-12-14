@@ -5,7 +5,7 @@ using PcShop.Console.Api;
 
 namespace PcShop.WEB.BL
 {
-    public class BLWebInstaller : IInstaller
+    public class BlWebInstaller : IInstaller
     {
         public void Install(IServiceCollection serviceCollection)
         {

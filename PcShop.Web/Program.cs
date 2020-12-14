@@ -25,7 +25,7 @@ namespace PcShop.Web
 
         private static void Install(WebAssemblyHostBuilder builder)
         {
-            new BLWebInstaller().Install(builder.Services);
+            new BlWebInstaller().Install(builder.Services);
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
         }
     }

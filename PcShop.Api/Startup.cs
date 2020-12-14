@@ -32,7 +32,7 @@ namespace PcShop.Api
         {
             services.AddControllers()
                 .AddNewtonsoftJson()
-                .AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<BLApiInstaller>());
+                .AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<BlApiInstaller>());
 
             services.AddOpenApiDocument(document =>
             {
@@ -40,10 +40,10 @@ namespace PcShop.Api
                // document.ApiGroupNames = new[] { "1.0" };
             });
 
-            new DALInstaller().Install(services);
-            new BLApiInstaller().Install(services);
+            new DalInstaller().Install(services);
+            new BlApiInstaller().Install(services);
 
-            services.AddAutoMapper(typeof(DALInstaller), typeof(BLApiInstaller));
+            services.AddAutoMapper(typeof(DalInstaller), typeof(BlApiInstaller));
 
             services.AddCors(options =>
             {

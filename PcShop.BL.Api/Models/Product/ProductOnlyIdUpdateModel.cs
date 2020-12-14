@@ -30,10 +30,10 @@ namespace PcShop.BL.Api.Models.Product
                 .Ignore(dst => dst.Description)
                 .Ignore(dst => dst.ManufacturerId)
                 .Ignore(dst => dst.Weight)
-                .Ignore(dst => dst.CPU)
-                .Ignore(dst => dst.GPU)
-                .Ignore(dst => dst.RAM)
-                .Ignore(dst => dst.HDD)
+                .Ignore(dst => dst.Cpu)
+                .Ignore(dst => dst.Gpu)
+                .Ignore(dst => dst.Ram)
+                .Ignore(dst => dst.Hdd)
                 .Ignore(dst => dst.AverageScore);
         }
     }

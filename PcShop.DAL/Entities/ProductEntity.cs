@@ -15,13 +15,13 @@ namespace PcShop.DAL.Entities
         public int Weight { get; set; }
         public int CountInStock { get; set; }
 
-        public string RAM { get; set; }
+        public string Ram { get; set; }
 
-        public string CPU  { get; set; }
+        public string Cpu  { get; set; }
 
-        public string GPU { get; set; }
+        public string Gpu { get; set; }
 
-        public string HDD { get; set; }
+        public string Hdd { get; set; }
 
         public int AverageScore { get; set; }
 

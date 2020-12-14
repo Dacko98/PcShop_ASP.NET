@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using PcShop.BL.Api.Facades.Interfaces;
 using PcShop.BL.Api.Models.Category;
-using PcShop.BL.Api.Models.Product;
 
 namespace PcShop.BL.Api.Facades
 {
@@ -14,18 +13,15 @@ namespace PcShop.BL.Api.Facades
     {
         private readonly CategoryRepository _categoryRepository;
         private readonly ProductRepository _productRepository;
-        private readonly ProductFacade _productFacade;
         private readonly IMapper _mapper;
 
         public CategoryFacade(
             ProductRepository productRepository,
             CategoryRepository categoryRepository,
-            ProductFacade productFacade,
             IMapper mapper)
         {
             this._categoryRepository = categoryRepository;
             this._mapper = mapper;
-            this._productFacade = productFacade;
             this._productRepository = productRepository;
         }
 

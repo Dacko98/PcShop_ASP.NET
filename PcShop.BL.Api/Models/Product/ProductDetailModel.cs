@@ -30,13 +30,13 @@ namespace PcShop.BL.Api.Models.Product
         [StringLength(50, MinimumLength = 4, ErrorMessage = "Name is too short or too long, insert name of length between 4 and 50")]
         public string CategoryName { get; set; }
 
-        public string RAM { get; set; }
+        public string Ram { get; set; }
 
-        public string CPU { get; set; }
+        public string Cpu { get; set; }
 
-        public string GPU { get; set; }
+        public string Gpu { get; set; }
 
-        public string HDD { get; set; }
+        public string Hdd { get; set; }
         public virtual IList<EvaluationListModel> Evaluations { get; set; }
 
         public int AverageScore { get; set; }
@@ -49,7 +49,7 @@ namespace PcShop.BL.Api.Models.Product
         {
             CreateMap<ProductEntity, ProductDetailModel>()
                 .MapMember(dst => dst.ManufacturerName, src => src.Manufacturer.Name)
-                .MapMember(dst => dst.CategoryName, src => src.Category.Name); ;
+                .MapMember(dst => dst.CategoryName, src => src.Category.Name);
         }
     }
 }

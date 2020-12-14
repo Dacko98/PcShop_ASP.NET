@@ -8,40 +8,40 @@ namespace PcShop.DAL.Repositories
 {
     public class ManufacturerRepository : IAppRepository<ManufacturerEntity>
     {
-        private readonly IList<ManufacturerEntity> manufacturers;
-        private readonly IMapper mapper;
+        private readonly IList<ManufacturerEntity> _manufacturers;
+        private readonly IMapper _mapper;
 
         public ManufacturerRepository(
             Storage storage,
             IMapper mapper)
         {
-            manufacturers = storage.Manufacturers;
-            this.mapper = mapper;
+            _manufacturers = storage.Manufacturers;
+            this._mapper = mapper;
         }
 
         public IList<ManufacturerEntity> GetAll()
         {
-            return manufacturers;
+            return _manufacturers;
         }
 
         public ManufacturerEntity GetById(Guid id)
         {
-            return manufacturers.SingleOrDefault(entity => entity.Id == id);
+            return _manufacturers.SingleOrDefault(entity => entity.Id == id);
         }
 
         public Guid Insert(ManufacturerEntity manufacturer)
         {
             manufacturer.Id = Guid.NewGuid();
-            manufacturers.Add(manufacturer);
+            _manufacturers.Add(manufacturer);
             return manufacturer.Id;
         }
 
         public Guid? Update(ManufacturerEntity manufacturerUpdated)
         {
-            var manufacturerExisting = manufacturers.SingleOrDefault(manufacturerInStorage => manufacturerInStorage.Id == manufacturerUpdated.Id);
+            var manufacturerExisting = _manufacturers.SingleOrDefault(manufacturerInStorage => manufacturerInStorage.Id == manufacturerUpdated.Id);
             if (manufacturerExisting != null)
             {
-                mapper.Map(manufacturerUpdated, manufacturerExisting);
+                _mapper.Map(manufacturerUpdated, manufacturerExisting);
             }
 
             return manufacturerExisting?.Id;
@@ -49,8 +49,8 @@ namespace PcShop.DAL.Repositories
 
         public void Remove(Guid id)
         {
-            var manufacturerToRemove = manufacturers.Single(manufacturer => manufacturer.Id.Equals(id));
-            manufacturers.Remove(manufacturerToRemove);
+            var manufacturerToRemove = _manufacturers.Single(manufacturer => manufacturer.Id.Equals(id));
+            _manufacturers.Remove(manufacturerToRemove);
         }
     }
 }

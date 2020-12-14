@@ -16,26 +16,26 @@ namespace PcShop.Api.Tests
     [Collection(name: "CategoryControllerTests")]
     public class CategoryControllerTests : IClassFixture<WebApplicationFactory<Startup>>
     {
-        private HttpClient client;
+        private readonly HttpClient _client;
 
-        private const string TOO_SHORT_NAME = "c";
-        private const string TOO_LONG_NAME = "This name is too long for the model. This name is too long for the model. This name is too long for the model. " +
+        private const string TooShortName = "c";
+        private const string TooLongName = "This name is too long for the model. This name is too long for the model. This name is too long for the model. " +
             "This name is too long for the model. This name is too long for the model. This name is too long for the model. ";
-        private const string CATEGORY_ID_1 = "fabde0cd-eefe-443f-baf6-3d96cc2cbf2e";
-        private const string CATEGORY_ID_2 = "23b3902d-7d4f-4213-9cf0-112348f56238";
+        private const string CategoryId1 = "fabde0cd-eefe-443f-baf6-3d96cc2cbf2e";
+        private const string CategoryId2 = "23b3902d-7d4f-4213-9cf0-112348f56238";
 
-        private readonly CategoryUpdateModel[] CATEGORIES_UPDATE =
+        private readonly CategoryUpdateModel[] _categoriesUpdate =
         {
             new CategoryUpdateModel
             {
-                Id = new Guid(CATEGORY_ID_1),
+                Id = new Guid(CategoryId1),
                 Name = "For gamers",
                 Product = new List<ProductOnlyIdUpdateModel>()
             },
             
             new CategoryUpdateModel 
             {
-                Id = new Guid(CATEGORY_ID_2),
+                Id = new Guid(CategoryId2),
                 Name = "Home Office",
                 Product = new List<ProductOnlyIdUpdateModel>()
             }
@@ -43,8 +43,7 @@ namespace PcShop.Api.Tests
 
         public CategoryControllerTests(WebApplicationFactory<Startup> fixture)
         {
-            client = fixture.CreateClient();
-            var newId = Guid.Empty;        
+            _client = fixture.CreateClient();
         }
 
         /*===============================    GetAll Tests    ===============================*/
@@ -52,7 +51,7 @@ namespace PcShop.Api.Tests
         [Fact]
         public async Task GetAll_should_result_OK()
         {
-            var response = await client.GetAsync("api/Category");
+            var response = await _client.GetAsync("api/Category");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
@@ -60,7 +59,7 @@ namespace PcShop.Api.Tests
         [Fact]
         public async Task GetAll_should_return_some_categories()
         {
-            var response = await client.GetAsync("api/Category");
+            var response = await _client.GetAsync("api/Category");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -72,7 +71,7 @@ namespace PcShop.Api.Tests
         public async Task GetAll_should_return_Proffessional_and_Graphic_design()
         {
             // Act
-            var response = await client.GetAsync("api/Category");
+            var response = await _client.GetAsync("api/Category");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -82,20 +81,20 @@ namespace PcShop.Api.Tests
             categories.Should().HaveCountGreaterOrEqualTo(2);
 
             categories[0].Name.Should().Be("Professional");
-            categories[0].Id.Should().Be(CATEGORY_ID_1);
+            categories[0].Id.Should().Be(CategoryId1);
 
             categories[1].Name.Should().Be("Graphic design");
-            categories[1].Id.Should().Be(CATEGORY_ID_2);
+            categories[1].Id.Should().Be(CategoryId2);
         }
 
         /*===============================    GetById Tests    ===============================*/
 
         [Theory]
-        [InlineData(CATEGORY_ID_1)]
-        [InlineData(CATEGORY_ID_2)]
+        [InlineData(CategoryId1)]
+        [InlineData(CategoryId2)]
         public async Task GetById_should_return_something(string wantedId)
         {
-            var response = await client.GetAsync($"api/Category/{wantedId}");
+            var response = await _client.GetAsync($"api/Category/{wantedId}");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -107,10 +106,10 @@ namespace PcShop.Api.Tests
         public async Task GetById_with_empty_Id_should_return_NotFound()
         {
             // Arrange 
-            string EmptyId = Guid.Empty.ToString();
+            string emptyId = Guid.Empty.ToString();
 
             // Act
-            var response = await client.GetAsync($"api/Category/{EmptyId}");
+            var response = await _client.GetAsync($"api/Category/{emptyId}");
 
             // Assert
             response.Should().NotBeNull();
@@ -129,7 +128,7 @@ namespace PcShop.Api.Tests
             var stringContent = new StringContent(newCategorySerialized, Encoding.UTF8, "application/json");
 
             // Act 
-            var response = await client.PostAsync("api/Category", stringContent);
+            var response = await _client.PostAsync("api/Category", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -148,15 +147,15 @@ namespace PcShop.Api.Tests
             var stringContent = new StringContent(newCategorySerialized, Encoding.UTF8, "application/json");
 
             // Act 
-            var response = await client.PostAsync("api/Category", stringContent);
+            var response = await _client.PostAsync("api/Category", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var newCategoryGuid = JsonConvert.DeserializeObject<Guid>(await response.Content.ReadAsStringAsync());
             newCategoryGuid.Should().NotBeEmpty();
 
-            var response_GetById = await client.GetAsync($"api/Category/{newCategoryGuid}");
-            var category = JsonConvert.DeserializeObject<CategoryDetailModel>(await response_GetById.Content.ReadAsStringAsync());
+            var responseGetById = await _client.GetAsync($"api/Category/{newCategoryGuid}");
+            var category = JsonConvert.DeserializeObject<CategoryDetailModel>(await responseGetById.Content.ReadAsStringAsync());
             category.Name.Should().Be(newCategoryName);
             category.Id.Should().Be(newCategoryGuid);
         }
@@ -165,33 +164,33 @@ namespace PcShop.Api.Tests
         public async Task Create_should_create_2_categories_with_unique_IDs()
         {
             // Arrange 
-            var newCategory_1 = new CategoryNewModel{ Name = "do 100 000"};
-            var newCategory_2 = new CategoryNewModel { Name = "nad 100 000" };
+            var newCategory1 = new CategoryNewModel{ Name = "do 100 000"};
+            var newCategory2 = new CategoryNewModel { Name = "nad 100 000" };
             
-            var newCategorySerialized_1 = JsonConvert.SerializeObject(newCategory_1);
-            var newCategorySerialized_2 = JsonConvert.SerializeObject(newCategory_2);
+            var newCategorySerialized1 = JsonConvert.SerializeObject(newCategory1);
+            var newCategorySerialized2 = JsonConvert.SerializeObject(newCategory2);
 
-            var stringContent_1 = new StringContent(newCategorySerialized_1, Encoding.UTF8, "application/json");
-            var stringContent_2 = new StringContent(newCategorySerialized_2, Encoding.UTF8, "application/json");
+            var stringContent1 = new StringContent(newCategorySerialized1, Encoding.UTF8, "application/json");
+            var stringContent2 = new StringContent(newCategorySerialized2, Encoding.UTF8, "application/json");
 
             // Act 
-            var response_1 = await client.PostAsync("api/Category", stringContent_1);
-            var response_2 = await client.PostAsync("api/Category", stringContent_2);
+            var response1 = await _client.PostAsync("api/Category", stringContent1);
+            var response2 = await _client.PostAsync("api/Category", stringContent2);
 
             // Assert
-            response_1.StatusCode.Should().Be(HttpStatusCode.OK);
-            response_2.StatusCode.Should().Be(HttpStatusCode.OK);
-            var newCategoryGuid_1 = JsonConvert.DeserializeObject<Guid>(await response_1.Content.ReadAsStringAsync());
-            var newCategoryGuid_2 = JsonConvert.DeserializeObject<Guid>(await response_2.Content.ReadAsStringAsync());
-            newCategoryGuid_1.Should().NotBeEmpty();
-            newCategoryGuid_2.Should().NotBeEmpty();
+            response1.StatusCode.Should().Be(HttpStatusCode.OK);
+            response2.StatusCode.Should().Be(HttpStatusCode.OK);
+            var newCategoryGuid1 = JsonConvert.DeserializeObject<Guid>(await response1.Content.ReadAsStringAsync());
+            var newCategoryGuid2 = JsonConvert.DeserializeObject<Guid>(await response2.Content.ReadAsStringAsync());
+            newCategoryGuid1.Should().NotBeEmpty();
+            newCategoryGuid2.Should().NotBeEmpty();
 
-            newCategoryGuid_1.Should().NotBe(newCategoryGuid_2);
+            newCategoryGuid1.Should().NotBe(newCategoryGuid2);
         }
 
         [Theory]
-        [InlineData(TOO_SHORT_NAME)]
-        [InlineData(TOO_LONG_NAME)]
+        [InlineData(TooShortName)]
+        [InlineData(TooLongName)]
         public async Task Create_with_invalid_name_should_return_BadRequest(string name)
         {
             var newCategory = new CategoryNewModel
@@ -203,7 +202,7 @@ namespace PcShop.Api.Tests
             var stringContent = new StringContent(newCategorytSerialized, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await client.PostAsync("api/Category", stringContent);
+            var response = await _client.PostAsync("api/Category", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -217,18 +216,18 @@ namespace PcShop.Api.Tests
         public async Task Update_Should_update_existing_category(int index)
         {
             // Arrange
-            var categoryToUpdateSerialized = JsonConvert.SerializeObject(CATEGORIES_UPDATE[index]);
+            var categoryToUpdateSerialized = JsonConvert.SerializeObject(_categoriesUpdate[index]);
             var stringContent = new StringContent(categoryToUpdateSerialized, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await client.PutAsync("api/Category?verison=3.0&culture=en", stringContent);
+            var response = await _client.PutAsync("api/Category?verison=3.0&culture=en", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var response_GetById = await client.GetAsync($"api/Category/{CATEGORIES_UPDATE[index].Id}");
-            var category = JsonConvert.DeserializeObject<CategoryDetailModel>(await response_GetById.Content.ReadAsStringAsync());
-            category.Should().BeEquivalentTo(CATEGORIES_UPDATE[index]);
+            var responseGetById = await _client.GetAsync($"api/Category/{_categoriesUpdate[index].Id}");
+            var category = JsonConvert.DeserializeObject<CategoryDetailModel>(await responseGetById.Content.ReadAsStringAsync());
+            category.Should().BeEquivalentTo(_categoriesUpdate[index]);
         }
 
         [Fact]
@@ -246,25 +245,25 @@ namespace PcShop.Api.Tests
             var stringContent = new StringContent(categoryToUpdateSerialized, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await client.PutAsync("api/Category?verison=3.0&culture=en", stringContent);
+            var response = await _client.PutAsync("api/Category?verison=3.0&culture=en", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Theory]
-        [InlineData(TOO_SHORT_NAME)]
-        [InlineData(TOO_LONG_NAME)]
+        [InlineData(TooShortName)]
+        [InlineData(TooLongName)]
         public async Task Update_valid_Id_with_invalid_name_should_return_BadRequest(string newName)
         {
             // Check if Category exists
-            var response_GetById = await client.GetAsync($"api/Category/{CATEGORY_ID_1}");
-            response_GetById.StatusCode.Should().Be(HttpStatusCode.OK);
+            var responseGetById = await _client.GetAsync($"api/Category/{CategoryId1}");
+            responseGetById.StatusCode.Should().Be(HttpStatusCode.OK);
 
             // Arrange 
             var categoryToUpdate = new CategoryUpdateModel
             {
-                Id = new Guid(CATEGORY_ID_1),
+                Id = new Guid(CategoryId1),
                 Name = newName,
                 Product = new List<ProductOnlyIdUpdateModel>()
             };
@@ -273,7 +272,7 @@ namespace PcShop.Api.Tests
             var stringContent = new StringContent(categoryToUpdateSerialized, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await client.PutAsync("api/Category?verison=3.0&culture=en", stringContent);
+            var response = await _client.PutAsync("api/Category?verison=3.0&culture=en", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -288,17 +287,17 @@ namespace PcShop.Api.Tests
             var newCategory = new CategoryNewModel { Name = "Do 10 000,-" };
             var newCategorySerialized = JsonConvert.SerializeObject(newCategory);
             var stringContent = new StringContent(newCategorySerialized, Encoding.UTF8, "application/json");
-            var response_create = await client.PostAsync("api/Category", stringContent);
-            var newCategoryGuid = JsonConvert.DeserializeObject<Guid>(await response_create.Content.ReadAsStringAsync());
+            var responseCreate = await _client.PostAsync("api/Category", stringContent);
+            var newCategoryGuid = JsonConvert.DeserializeObject<Guid>(await responseCreate.Content.ReadAsStringAsync());
 
             // Act
-            var response = await client.DeleteAsync($"api/Category/{newCategoryGuid}");
+            var response = await _client.DeleteAsync($"api/Category/{newCategoryGuid}");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             
-            var response_GetById = await client.GetAsync($"api/Category/{newCategoryGuid}");
-            response_GetById.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            var responseGetById = await _client.GetAsync($"api/Category/{newCategoryGuid}");
+            responseGetById.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]
@@ -308,7 +307,7 @@ namespace PcShop.Api.Tests
             var newCategoryGuid = Guid.Empty;
 
             // Act
-            var response = await client.DeleteAsync($"api/Category/{newCategoryGuid}");
+            var response = await _client.DeleteAsync($"api/Category/{newCategoryGuid}");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

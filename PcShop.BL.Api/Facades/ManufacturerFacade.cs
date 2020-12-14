@@ -14,17 +14,14 @@ namespace PcShop.BL.Api.Facades
         private readonly ManufacturerRepository _manufacturerRepository;
         private readonly IMapper _mapper;
         private readonly ProductRepository _productRepository;
-        private readonly ProductFacade _productFacade;
 
         public ManufacturerFacade(
             ProductRepository productRepository,
             ManufacturerRepository manufacturerRepository,
-            ProductFacade productFacade,
             IMapper mapper)
         {
             this._manufacturerRepository = manufacturerRepository;
             this._mapper = mapper;
-            this._productFacade = productFacade;
             this._productRepository = productRepository;
         }
 

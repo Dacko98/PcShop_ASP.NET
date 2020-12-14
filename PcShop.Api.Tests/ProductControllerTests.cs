@@ -1,12 +1,8 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using PcShop.BL.Api.Models.Evaluation;
-using PcShop.BL.Api.Models.Category;
 using PcShop.BL.Api.Models.Product;
 using System.Collections.Generic;
-using FluentAssertions.Common;
 using System.Threading.Tasks;
-using PcShop.DAL.Entities;
-using System.Diagnostics;
 using FluentAssertions;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -20,35 +16,13 @@ namespace PcShop.Api.Tests
     [Collection(name: "productControllerTests")]
     public class ProductControllerTests : IClassFixture<WebApplicationFactory<Startup>>
     {
-        private HttpClient client;
+        private readonly HttpClient _client;
 
-        private const string TOO_SHORT_NAME = "c";
-        private const string TOO_LONG_NAME = "This name is too long for the model. This name is too long for the model. This name is too long for the model. " +
+        private const string TooShortName = "c";
+        private const string TooLongName = "This name is too long for the model. This name is too long for the model. This name is too long for the model. " +
             "This name is too long for the model. This name is too long for the model. This name is too long for the model. ";
-
-        private readonly ProductListModel[] PRODUCTS_LIST_MODEL =
-        {
-            new ProductListModel
-            {
-            Id = new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5a"),
-            Name = "Lattitude E6440",
-            Photo = "path",
-            ManufacturerName = "Dell",
-            CategoryName = "Graphic design",
-            Description = "...",
-            },
-            new ProductListModel
-            {
-            Id = new Guid("23b3902d-7d4f-4213-9cf0-112348f56233"),
-            Name = "Thinkpad L580",
-            Photo = "path",
-            ManufacturerName = "Lenovo",
-            CategoryName = "Professional",
-            Description = "...",
-            }
-        };
-
-        private readonly ProductDetailModel[] PRODUCTS_DETAIL_MODEL =
+        
+        private readonly ProductDetailModel[] _productsDetailModel =
         {
             new ProductDetailModel
             {
@@ -78,7 +52,7 @@ namespace PcShop.Api.Tests
             }
         };
 
-        private readonly ProductNewModel[] PRODUCTS_NEW_MODEL =
+        private readonly ProductNewModel[] _productsNewModel =
         {
             new ProductNewModel
             {
@@ -88,10 +62,10 @@ namespace PcShop.Api.Tests
                 Price = 8000,
                 Weight = 550,
                 CountInStock = 50,
-                RAM = null,
-                CPU = null,
-                GPU = null, 
-                HDD = null, 
+                Ram = null,
+                Cpu = null,
+                Gpu = null, 
+                Hdd = null, 
                 ManufacturerId = new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
                 CategoryId = new Guid("fabde0cd-eefe-443f-baf6-3d96cc2cbf2e")
             },
@@ -103,10 +77,10 @@ namespace PcShop.Api.Tests
                 Price = 123456,
                 Weight = 654321,
                 CountInStock = 42,
-                RAM = null,
-                CPU = null,
-                GPU = null,
-                HDD = null,
+                Ram = null,
+                Cpu = null,
+                Gpu = null,
+                Hdd = null,
                 ManufacturerId = new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
                 CategoryId = new Guid("fabde0cd-eefe-443f-baf6-3d96cc2cbf2e")
             }, 
@@ -118,16 +92,16 @@ namespace PcShop.Api.Tests
                 Price = 123456,
                 Weight = 654321,
                 CountInStock = 42,
-                RAM = null,
-                CPU = null,
-                GPU = null,
-                HDD = null,
+                Ram = null,
+                Cpu = null,
+                Gpu = null,
+                Hdd = null,
                 ManufacturerId = new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
                 CategoryId = new Guid("fabde0cd-eefe-443f-baf6-3d96cc2cbf2e")
             }
         };
 
-        private readonly ProductUpdateModel PRODUCT_UPDATE_MODEL = new ProductUpdateModel
+        private readonly ProductUpdateModel _productUpdateModel = new ProductUpdateModel
         {
             Id = Guid.Empty,
             Name = "MacBook Air",
@@ -136,16 +110,16 @@ namespace PcShop.Api.Tests
             Price = 123456,
             Weight = 654321,
             CountInStock = 42,
-            RAM = null,
-            CPU = null,
-            GPU = null,
-            HDD = null,
+            Ram = null,
+            Cpu = null,
+            Gpu = null,
+            Hdd = null,
             ManufacturerId = new Guid("0d4fa150-ad80-4d46-a511-4c666166ec5e"),
             CategoryId = new Guid("fabde0cd-eefe-443f-baf6-3d96cc2cbf2e"),
             Evaluations = new List<EvaluationUpdateModel>()
         };
 
-        private ProductDetailModel[] productsDetailModelExpected =
+        private readonly ProductDetailModel[] _productsDetailModelExpected =
         {
             new ProductDetailModel
             {
@@ -158,10 +132,10 @@ namespace PcShop.Api.Tests
                 CountInStock = 50,
                 ManufacturerName = "Dell",
                 CategoryName = "Professional",
-                RAM = null,
-                CPU = null,
-                GPU = null,
-                HDD = null, 
+                Ram = null,
+                Cpu = null,
+                Gpu = null,
+                Hdd = null, 
                 Evaluations = new List<EvaluationListModel>()
             },
             new ProductDetailModel
@@ -173,10 +147,10 @@ namespace PcShop.Api.Tests
                 Price = 123456,
                 Weight = 654321,
                 CountInStock = 42,
-                RAM = null,
-                CPU = null,
-                GPU = null,
-                HDD = null,
+                Ram = null,
+                Cpu = null,
+                Gpu = null,
+                Hdd = null,
                 ManufacturerName = "Dell",
                 CategoryName = "Professional",
                 Evaluations = new List<EvaluationListModel>()
@@ -185,7 +159,7 @@ namespace PcShop.Api.Tests
 
         public ProductControllerTests(WebApplicationFactory<Startup> fixture)
         {
-            client = fixture.CreateClient();
+            _client = fixture.CreateClient();
         }
 
         /*===============================    GetAll Tests    ===============================*/
@@ -193,7 +167,7 @@ namespace PcShop.Api.Tests
         [Fact]
         public async Task GetAll_should_result_OK()
         {
-            var response = await client.GetAsync("api/Product");
+            var response = await _client.GetAsync("api/Product");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
@@ -201,7 +175,7 @@ namespace PcShop.Api.Tests
         [Fact]
         public async Task GetAll_should_return_some_product()
         {
-            var response = await client.GetAsync("api/Product");
+            var response = await _client.GetAsync("api/Product");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -216,7 +190,7 @@ namespace PcShop.Api.Tests
         [InlineData(1)]
         public async Task GetById_should_return_something(int indexOfTestedProduct)
         {
-            var response = await client.GetAsync($"api/Product/{PRODUCTS_DETAIL_MODEL[indexOfTestedProduct].Id}");
+            var response = await _client.GetAsync($"api/Product/{_productsDetailModel[indexOfTestedProduct].Id}");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -228,7 +202,7 @@ namespace PcShop.Api.Tests
         public async Task GetById_with_empty_Id_should_return_NotFound()
         {
             // Act
-            var response = await client.GetAsync($"api/Product/{Guid.Empty}");
+            var response = await _client.GetAsync($"api/Product/{Guid.Empty}");
 
             // Assert
             response.Should().NotBeNull();
@@ -241,11 +215,11 @@ namespace PcShop.Api.Tests
         public async Task Create_should_return_new_ID()
         {
             // Arrange
-            var newProductSerialized = JsonConvert.SerializeObject(PRODUCTS_NEW_MODEL[0]);
+            var newProductSerialized = JsonConvert.SerializeObject(_productsNewModel[0]);
             var stringContent = new StringContent(newProductSerialized, Encoding.UTF8, "application/json");
 
             // Act 
-            var response = await client.PostAsync("api/Product", stringContent);
+            var response = await _client.PostAsync("api/Product", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -257,36 +231,36 @@ namespace PcShop.Api.Tests
         public async Task Create_should_create_findable_Product()
         {
             // Arrange
-            var newProductSerialized = JsonConvert.SerializeObject(PRODUCTS_NEW_MODEL[0]);
+            var newProductSerialized = JsonConvert.SerializeObject(_productsNewModel[0]);
             var stringContent = new StringContent(newProductSerialized, Encoding.UTF8, "application/json");
 
             // Act 
-            var response = await client.PostAsync("api/Product", stringContent);
+            var response = await _client.PostAsync("api/Product", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var newProductGuid = JsonConvert.DeserializeObject<Guid>(await response.Content.ReadAsStringAsync());
             newProductGuid.Should().NotBeEmpty();
 
-            var response_GetById = await client.GetAsync($"api/Product/{newProductGuid}");
-            response_GetById.StatusCode.Should().Be(HttpStatusCode.OK);
-            var product = JsonConvert.DeserializeObject<ProductDetailModel>(await response_GetById.Content.ReadAsStringAsync());
-            productsDetailModelExpected[0].Id = product.Id;
-            product.Should().BeEquivalentTo(productsDetailModelExpected[0]);
+            var responseGetById = await _client.GetAsync($"api/Product/{newProductGuid}");
+            responseGetById.StatusCode.Should().Be(HttpStatusCode.OK);
+            var product = JsonConvert.DeserializeObject<ProductDetailModel>(await responseGetById.Content.ReadAsStringAsync());
+            _productsDetailModelExpected[0].Id = product.Id;
+            product.Should().BeEquivalentTo(_productsDetailModelExpected[0]);
         }
 
         [Theory]
-        [InlineData(TOO_SHORT_NAME)]
-        [InlineData(TOO_LONG_NAME)]
+        [InlineData(TooShortName)]
+        [InlineData(TooLongName)]
         public async Task Create_with_invalid_name_should_return_BadRequest(string wrongName)
         {
             // Arrange 
-            PRODUCTS_NEW_MODEL[1].Name = wrongName;
-            var newProductSerialized = JsonConvert.SerializeObject(PRODUCTS_NEW_MODEL[1]);
+            _productsNewModel[1].Name = wrongName;
+            var newProductSerialized = JsonConvert.SerializeObject(_productsNewModel[1]);
             var stringContent = new StringContent(newProductSerialized, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await client.PostAsync("api/Product", stringContent);
+            var response = await _client.PostAsync("api/Product", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -299,36 +273,36 @@ namespace PcShop.Api.Tests
         {
             // Create new product 
                 // Arrange
-            var newProductSerialized = JsonConvert.SerializeObject(PRODUCTS_NEW_MODEL[2]);
-            var stringContent_create = new StringContent(newProductSerialized, Encoding.UTF8, "application/json");
+            var newProductSerialized = JsonConvert.SerializeObject(_productsNewModel[2]);
+            var stringContentCreate = new StringContent(newProductSerialized, Encoding.UTF8, "application/json");
 
                 // Act 
-            var response_create = await client.PostAsync("api/Product", stringContent_create);
+            var responseCreate = await _client.PostAsync("api/Product", stringContentCreate);
 
                 // Assert
-            response_create.StatusCode.Should().Be(HttpStatusCode.OK);
-            var newProductGuid = JsonConvert.DeserializeObject<Guid>(await response_create.Content.ReadAsStringAsync());
+            responseCreate.StatusCode.Should().Be(HttpStatusCode.OK);
+            var newProductGuid = JsonConvert.DeserializeObject<Guid>(await responseCreate.Content.ReadAsStringAsync());
             newProductGuid.Should().NotBeEmpty();
-            PRODUCT_UPDATE_MODEL.Id = newProductGuid;
+            _productUpdateModel.Id = newProductGuid;
 
 
             // Arange
-            var productToUpdateSerialized = JsonConvert.SerializeObject(PRODUCT_UPDATE_MODEL);
+            var productToUpdateSerialized = JsonConvert.SerializeObject(_productUpdateModel);
             var stringContent = new StringContent(productToUpdateSerialized, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await client.PutAsync("api/Product?verison=3.0&culture=en", stringContent);
+            var response = await _client.PutAsync("api/Product?verison=3.0&culture=en", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             
             // GetById
-            var response_GetById = await client.GetAsync($"api/Product/{PRODUCT_UPDATE_MODEL.Id}");
-            response_GetById.StatusCode.Should().Be(HttpStatusCode.OK);
+            var responseGetById = await _client.GetAsync($"api/Product/{_productUpdateModel.Id}");
+            responseGetById.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var product = JsonConvert.DeserializeObject<ProductDetailModel>(await response_GetById.Content.ReadAsStringAsync());
-            productsDetailModelExpected[1].Id = product.Id;
-            product.Should().BeEquivalentTo(productsDetailModelExpected[1]);
+            var product = JsonConvert.DeserializeObject<ProductDetailModel>(await responseGetById.Content.ReadAsStringAsync());
+            _productsDetailModelExpected[1].Id = product.Id;
+            product.Should().BeEquivalentTo(_productsDetailModelExpected[1]);
         }
 
         /*===============================    Delete Tests    ===============================*/
@@ -337,30 +311,30 @@ namespace PcShop.Api.Tests
         public async Task Delete_should_delete_product()
         {
             // Arrange - Create new product
-            var newProductSerialized = JsonConvert.SerializeObject(PRODUCTS_NEW_MODEL[0]);
+            var newProductSerialized = JsonConvert.SerializeObject(_productsNewModel[0]);
             var stringContent = new StringContent(newProductSerialized, Encoding.UTF8, "application/json");
 
                 // Act 
-            var response_create = await client.PostAsync("api/Product", stringContent);
+            var responseCreate = await _client.PostAsync("api/Product", stringContent);
 
                 // Assert
-            response_create.StatusCode.Should().Be(HttpStatusCode.OK);
-            var newProductGuid = JsonConvert.DeserializeObject<Guid>(await response_create.Content.ReadAsStringAsync());
+            responseCreate.StatusCode.Should().Be(HttpStatusCode.OK);
+            var newProductGuid = JsonConvert.DeserializeObject<Guid>(await responseCreate.Content.ReadAsStringAsync());
             newProductGuid.Should().NotBeEmpty();
 
             // Act
-            var response = await client.DeleteAsync($"api/Product/{newProductGuid}");
+            var response = await _client.DeleteAsync($"api/Product/{newProductGuid}");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             // GetById deleted Product -> assert NotFound
                 // Act
-            var response_GetById = await client.GetAsync($"api/Product/{newProductGuid}");
+            var responseGetById = await _client.GetAsync($"api/Product/{newProductGuid}");
 
             // Assert
-            response_GetById.Should().NotBeNull();
-            response_GetById.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            responseGetById.Should().NotBeNull();
+            responseGetById.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]
@@ -370,7 +344,7 @@ namespace PcShop.Api.Tests
             var newProductGuid = Guid.Empty;
 
             // Act
-            var response = await client.DeleteAsync($"api/Product/{newProductGuid}");
+            var response = await _client.DeleteAsync($"api/Product/{newProductGuid}");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
