@@ -53,7 +53,7 @@ namespace PcShop.DAL.Repositories
 
         public void Remove(Guid id)
         {
-            var evaluationToRemove = _evaluations.Single(evaluation => evaluation.Id.Equals(id));
+            var evaluationToRemove = _evaluations.FirstOrDefault(evaluation => evaluation.Id.Equals(id));
             _evaluations.Remove(evaluationToRemove);
         }
     }
