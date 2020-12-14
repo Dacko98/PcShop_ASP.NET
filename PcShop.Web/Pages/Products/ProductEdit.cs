@@ -52,7 +52,9 @@ namespace PcShop.Web.Pages.Products
                     Price = 0,
                     Weight = 0,
                     CountInStock = 0,
-                    Evaluations = new List<EvaluationListModel>()
+                    Evaluations = new List<EvaluationListModel>(),
+                    ManufacturerName = Manufacturers.ToList().Any() ? Manufacturers.ToList().First().Name : "",
+                    CategoryName = Categories.ToList().Any() ? Categories.ToList().First().Name : ""
                 };
             }
             else
