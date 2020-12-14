@@ -4,9 +4,10 @@
 <div class="container">
     
     <EditForm Model="@Phrase" class="my-2 my-lg-0">
-        <InputTextArea @bind-Value="Phrase" placeholder="Search" aria-label="Search" type="search" class="form-control mr-sm-2" />
+        <InputText @bind-Value="Phrase" @onchange="HandleSearchChange" placeholder="Search" aria-label="Search" type="search" class="form-control mr-sm-2"/>
 
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="@HandleSearchChange()">Search</button>
+        @*<button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="@(a = async () => await HandleSearchChange())">Search</button>*@
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" @onclick="HandleSearchChange">Search</button>
 
         @if (FoundedEntities.ManufacturerEntities.Any())
         {
@@ -32,7 +33,7 @@
                     {
                         <div class="col-3">
                             <a href="@($"/product/{product.Id}")">
-                                <img class="plimg" src="/images/@product.Photo" />
+                                <img class="plimg" src="/images/@product.Photo"/>
                                 <p>@product.Name</p>
                                 <p>@product.Price€</p>
                             </a>
