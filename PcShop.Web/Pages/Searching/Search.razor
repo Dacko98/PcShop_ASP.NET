@@ -8,22 +8,24 @@
 
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="@HandleSearchChange()">Search</button>
 
-
         @if (FoundedEntities.ManufacturerEntities.Any())
         {
-    <h1> Found manufacturers</h1>
-
-
-
-
-
-
-
+            <h1 class="pt-3 pb-4"> Found manufacturers:</h1>
+            @foreach (var manufacturer in FoundedEntities.ManufacturerEntities)
+            {
+                <NavLink href=@("/manufacturer/" + manufacturer.Id) Match="NavLinkMatch.All" ActiveClass="active">
+                    <div class="pdeval">
+                        <h4 class="pdeval">@manufacturer.Name</h4>
+                        <h5 class="pdeval">@manufacturer.CountryOfOrigin</h5>
+                        <p class="pdeval">todo this element @manufacturer.Description</p>
+                    </div>
+                </NavLink>
+            }
         }
 
         @if (FoundedEntities.ProductEntities.Any())
         {
-            <h1> Found notebooks</h1>
+            <h1 class="pt-2 pb-4"> Found notebooks:</h1>
             <div class="Products">
                 <div class="row">
                     @foreach (var product in FoundedEntities.ProductEntities)
@@ -42,25 +44,17 @@
 
         @if (FoundedEntities.EvaluationEntities.Any())
         {
-    <h1> Found evaluations</h1>
-
-
-    
+            <h1 class="pt-2 pb-4"> Found evaluations:</h1>
             @foreach (var evaluation in FoundedEntities.EvaluationEntities)
             {
                 <NavLink href=@("/evaluation/" + evaluation.Id) Match="NavLinkMatch.All" ActiveClass="active">
                     <div class="pdeval">
-                        <h4>@evaluation.PercentEvaluation %</h4>
-                        <h5>@evaluation.ProductName</h5>
-                        <p>@evaluation.TextEvaluation</p>
+                        <h4 class="pdeval">@evaluation.PercentEvaluation %</h4>
+                        <h5 class="pdeval">@evaluation.ProductName</h5>
+                        <p class="pdeval">@evaluation.TextEvaluation</p>
                     </div>
                 </NavLink>
             }
-
-
-
-
         }
-
     </EditForm>
 </div>
