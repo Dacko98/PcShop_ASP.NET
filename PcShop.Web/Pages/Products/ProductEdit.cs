@@ -6,6 +6,7 @@ using PcShop.BL.Api.Models.Product;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PcShop.WEB.BL.Facades;
+using System.Linq;
 using System;
 
 namespace PcShop.Web.Pages.Products
@@ -20,11 +21,14 @@ namespace PcShop.Web.Pages.Products
         [Inject] private ProductsFacade ProductFacade { get; set; }
         [Inject] private ManufacturersFacade ManufacturerFacade { get; set; }
         [Inject] private CategoriesFacade CategoryFacade { get; set; }
+        [Inject] NavigationManager UriHelper { get; set; }
 
+        private bool _save = true;
         private bool _createNewCategory = false;
         private bool _createNewManufacturer = false;
         private EvaluationNewModel _newEvaluation = new EvaluationNewModel();
         private readonly EvaluationNewModel _emptyEvaluation = new EvaluationNewModel();
+        private string _newEvalutionMessage = "";
 
         private ManufacturerNewModel _newManufacturer = new ManufacturerNewModel();
         private ICollection<ManufacturerListModel> Manufacturers { get; set; } = new List<ManufacturerListModel>();
@@ -62,12 +66,13 @@ namespace PcShop.Web.Pages.Products
 
         protected async Task SaveData()
         {
-            await ProductFacade.UpdateAsync(await UpdateProduct());
-
-            _createNewCategory = _createNewManufacturer = false;
-            Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
-            Categories = await CategoryFacade.GetCategorysAsync();
-            Product.ManufacturerName = _newManufacturer.Name;
+            if (_save)
+            {
+                await ProductFacade.UpdateAsync(await UpdateProduct());
+                UriHelper.NavigateTo("/product/" + Product.Id);
+            }
+            else
+                _save = true;
         }
 
         public void CategorySelect(ChangeEventArgs e)
@@ -121,13 +126,9 @@ namespace PcShop.Web.Pages.Products
         {
             Manufacturers = await ManufacturerFacade.GetManufacturersAsync();
 
-            if (!_createNewManufacturer)
+            if (! _createNewManufacturer)
             {
-                foreach (var manufacturer in Manufacturers)
-                {
-                    if (manufacturer.Name == Product.ManufacturerName)
-                        return manufacturer.Id;
-                }
+                return Manufacturers.ToList().Find(manufacturer => manufacturer.Name == Product.ManufacturerName).Id;
             }
 
             // create new Manufacturer
@@ -137,36 +138,17 @@ namespace PcShop.Web.Pages.Products
 
         public async Task<Guid> DecideNewCategory()
         {
-            foreach (var category in Categories)
+            var OldCategory = Categories.ToList().Find(category => category.Name == Product.CategoryName);
+            if (OldCategory != null)
             {
-                if (category.Name == Product.CategoryName)
-                    return category.Id;
+                return OldCategory.Id;
             }
 
+            // create new category
             CategoryNewModel newCategoryModel = new CategoryNewModel() { Name = Product.CategoryName };
             var response = await CategoryFacade.CreateAsync(newCategoryModel);
 
             return response;
-        }
-
-        public Guid FindManufacturerByName(string manufacturerName)
-        {
-            foreach (var manufacturer in Manufacturers)
-            {
-                if (manufacturer.Name == manufacturerName)
-                    return manufacturer.Id;
-            }
-            return Guid.Empty;  // shouldn't come to this
-        }
-
-        public Guid FindCategoryByName(string categoryName)
-        {
-            foreach (var category in Categories)
-            {
-                if (category.Name == categoryName)
-                    return category.Id;
-            }
-            return Guid.Empty;  // shouldn't come to this
         }
 
         public List<EvaluationUpdateModel> GetProductUpdateEvaluations()
@@ -201,11 +183,18 @@ namespace PcShop.Web.Pages.Products
 
         public void AddEvaluation()
         {
-            if (_newEvaluation.TextEvaluation != "")
+            if (_newEvaluation.PercentEvaluation >= 0 && 
+                _newEvaluation.PercentEvaluation <= 100)
             {
+                _newEvalutionMessage = "";
                 EvaluationNews.Add(_newEvaluation);
                 _newEvaluation = new EvaluationNewModel();
             }
+            else
+            {
+                _newEvalutionMessage = "Evaluation out of range, insert number between 0 and 100";
+            }
+            _save = false;
         }
 
         public List<EvaluationNewModel> DetailEvaluationsToNews()
@@ -226,3 +215,4 @@ namespace PcShop.Web.Pages.Products
         }
     }
 }
+
