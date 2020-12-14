@@ -18,6 +18,9 @@
 .plimg {
     display: block;
     width: 100%;
+    object-fit: cover;
+    height: 200px;
+    object-position: center;
 }
 
 a {
