@@ -32,7 +32,8 @@ namespace PcShop.Web.Pages.Manufacturers
 
         public int WeightStartVal { get; set; } = 0;
         public int WeightEndVal { get; set; } = Int32.MaxValue;
-
+        public int EvaluationStartVal { get; set; } = 0;
+        public int EvaluationEndVal { get; set; } = Int32.MaxValue;
         public bool InStockVal { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
@@ -83,6 +84,23 @@ namespace PcShop.Web.Pages.Manufacturers
             ApplyFilters();
         }
 
+        public void EvaluationStart(ChangeEventArgs e)
+        {
+            string val = e.Value.ToString();
+
+            EvaluationStartVal = val.Equals("") ? 0 : Int32.Parse(val);
+
+
+            ApplyFilters();
+        }
+        public void EvaluationEnd(ChangeEventArgs e)
+        {
+            string val = e.Value.ToString();
+            EvaluationEndVal = val.Equals("") ? Int32.MaxValue : Int32.Parse(val);
+
+            ApplyFilters();
+        }
+
         public void categorySelect(ChangeEventArgs e)
         {
             CategoryVal = e.Value.ToString();
@@ -101,6 +119,7 @@ namespace PcShop.Web.Pages.Manufacturers
             Products = !SelectedValues.Any() ? Products : Products.Where(f => SelectedValues.Contains(f.ManufacturerName)).ToList();
             Products = Products.Where(f => f.Price <= PriceEndVal && f.Price >= PriceStartVal).ToList();
             Products = Products.Where(f => f.Weight <= WeightEndVal && f.Weight >= WeightStartVal).ToList();
+            Products = Products.Where(f => f.AverageScore <= EvaluationEndVal && f.AverageScore >= EvaluationStartVal).ToList();
             if (InStockVal)
             {
                 Products = Products.Where(f => f.CountInStock > 0).ToList();

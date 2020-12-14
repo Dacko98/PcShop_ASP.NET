@@ -53,6 +53,11 @@
                             <input class="filterInput" @onchange="WeightStart" type="number" />-
                             <input class="filterInput" @onchange="WeightEnd" type="number" />g
                         </div>
+                        <h3>Evaluation</h3>
+                        <div>
+                            <input class="filterInput" @onchange="EvaluationStart" type="number" />-
+                            <input class="filterInput" @onchange="EvaluationEnd" type="number" />%
+                        </div>
                         <div class="p-2 bd-highlight">
                             <input type="checkbox" @onchange="eventArgs => { Stock(eventArgs.Value); }" />
                             In stock<br />
