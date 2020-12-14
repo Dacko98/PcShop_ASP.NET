@@ -106,5 +106,10 @@ namespace PcShop.Web.Pages.Manufacturers
                 Products = Products.Where(f => f.CountInStock > 0).ToList();
             }
         }
+
+        public bool printMenu()
+        {
+            return Products.Count > 0;
+        }
     }
 }
